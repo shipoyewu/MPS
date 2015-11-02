@@ -1,12 +1,11 @@
 package com.zzu.daoImp;
 
-
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-
-
+import java.sql.SQLException;
 import com.zzu.dao.MessageDao;
+import com.zzu.modle.Message;
 
 import databaseconnection.DataBase;
 
@@ -15,10 +14,9 @@ import databaseconnection.DataBase;
  * @author 徐富国
  *
  */
-public class MessageDaoImpl implements MessageDao {
+public class MessageDaoImp implements MessageDao {
 
 	// 得到消息的标题
-	@Override
 	public String getTitle(long messageid) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -151,6 +149,6 @@ public class MessageDaoImpl implements MessageDao {
 	}
 
 	public static void main(String args[]) {
-		MessageDaoImpl mes = new MessageDaoImpl();
+		MessageDaoImp mes = new MessageDaoImp();
 	}
 }
