@@ -23,7 +23,12 @@ import com.zzu.modle.User;
 import databaseconnection.DataBase;
 
 public class RelationDaoImp implements RelationDao {
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.RelationDao#findDown(long)
+	 * 根据groupid得到全部的下级的groupid
+	 */
 	@Override
 	public ArrayList<ArrayList<Long>> findDown(long groupid) {
 		// TODO Auto-generated method stub
@@ -77,6 +82,12 @@ public class RelationDaoImp implements RelationDao {
 
 	}
 
+	/*
+	 * 得到所有的同级的fork的group不会有重复
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.RelationDao#findSameRank(long)
+	 * 
+	 */
 	@Override
 	public ArrayList<Long> findSameRank(long groupid) {
 		// TODO Auto-generated method stub
@@ -113,20 +124,15 @@ public class RelationDaoImp implements RelationDao {
 			try {
 				if(pre2 != null)
 				pre2.close();
-
 				System.out.println("dasda");
 				pre.close();
-
 				System.out.println("B");
 				if(same!=null)
 				same.close();
-
 				System.out.println("C");
 				res.close();
-
 				System.out.println("D");
 				con.close();
-
 				System.out.println("E");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -146,6 +152,11 @@ public class RelationDaoImp implements RelationDao {
 		return uniqueRank;
 	}
 
+	/*
+	 * 根据userid得到全部的group
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.RelationDao#findAllGroup(long)
+	 */
 	@Override
 	public ArrayList<Long> findAllGroup(long userid) {
 		// TODO Auto-generated method stub
@@ -154,7 +165,7 @@ public class RelationDaoImp implements RelationDao {
 		PreparedStatement pre = null;
 		ArrayList<Long> group = new ArrayList<Long>();
 		
-		String sql = "select groupid from fork where groupid=?";
+		String sql = "select groupid from fork where userid=?";
 		try{
 			pre = con.prepareStatement(sql);
 			pre.setLong(1, userid);
@@ -180,7 +191,12 @@ public class RelationDaoImp implements RelationDao {
 		}
 		return group;
 	}
-
+	
+	/*
+	 *	添加一个关系，如果失败返回false
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.RelationDao#addRelation(com.zzu.modle.Relation)
+	 */
 	@Override
 	public boolean addRelation(Relation relation) {
 		// TODO Auto-generated method stub
@@ -208,7 +224,12 @@ public class RelationDaoImp implements RelationDao {
 	
 		return false;
 	}
-
+	
+	/*
+	 * 根据groupid得到全部的上级
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.RelationDao#findUp(long)
+	 */
 	@Override
 	public ArrayList<ArrayList<Long>> findUp(long groupid) {
 		// TODO Auto-generated method stub
@@ -261,7 +282,9 @@ public class RelationDaoImp implements RelationDao {
 		return tree;
 	}
 
-	
+	/**
+	 * 2015/11/2,23:05 添加了findUp findDwon findSameRank findAllGroup的无数据测试
+	 */
 	private void test() {
 		Long groupid = Long.parseLong("100");
 		ArrayList<Long> b = this.findAllGroup(groupid);
