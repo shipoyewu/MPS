@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -29,12 +30,19 @@ public class RelationDaoImp implements RelationDao {
 		Connection con = new DataBase().getConnection();
 		
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
-		Queue<Long> que =(Queue<Long>) new ArrayList<Long>();
+		Queue<Long> que = null;
+		try {
+			que =(Queue<Long>) new LinkedList<Long>();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		que.offer(groupid);
 		HashMap<Long,Integer> ma = new HashMap<Long, Integer>();
 		ma.put(groupid,0);
 		
-		String sql = "select groupid from relation where up=?";
+		String sql = "select down from relation where up=?";
 		
 		while(!que.isEmpty()){
 			Long u = que.poll();
@@ -76,8 +84,8 @@ public class RelationDaoImp implements RelationDao {
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		ArrayList<Long> sameRank = new ArrayList<Long>();
-		String sql1 = "select groupid from relation where down=?";
-		String sql2 = "select groupid from relation where up=?";
+		String sql1 = "select up from relation where down=?";
+		String sql2 = "select down from relation where up=?";
 		ResultSet same = null;
 		PreparedStatement pre2 = null;
 		
@@ -86,6 +94,8 @@ public class RelationDaoImp implements RelationDao {
 			pre.setLong(1, groupid);
 			res = pre.executeQuery();
 			while(res.next()){
+				
+
 				Long u = res.getLong(1);
 				pre2 = con.prepareStatement(sql2);
 				pre2.setLong(1, u);
@@ -99,12 +109,25 @@ public class RelationDaoImp implements RelationDao {
 			System.out.println("\nshihu:findSameRank\n");
 			e.printStackTrace();
 		}finally{
+			
 			try {
+				if(pre2 != null)
 				pre2.close();
+
+				System.out.println("dasda");
 				pre.close();
+
+				System.out.println("B");
+				if(same!=null)
 				same.close();
+
+				System.out.println("C");
 				res.close();
+
+				System.out.println("D");
 				con.close();
+
+				System.out.println("E");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -131,7 +154,7 @@ public class RelationDaoImp implements RelationDao {
 		PreparedStatement pre = null;
 		ArrayList<Long> group = new ArrayList<Long>();
 		
-		String sql = "select groupid from group where userid=?";
+		String sql = "select groupid from fork where groupid=?";
 		try{
 			pre = con.prepareStatement(sql);
 			pre.setLong(1, userid);
@@ -141,7 +164,9 @@ public class RelationDaoImp implements RelationDao {
 				group.add(u);
 			}
 		}catch(Exception e){
+			System.out.println(pre);
 			System.out.println("\nshihu:findAllGroup\n");
+			
 			e.printStackTrace();
 		}
 		finally{
@@ -188,14 +213,21 @@ public class RelationDaoImp implements RelationDao {
 	public ArrayList<ArrayList<Long>> findUp(long groupid) {
 		// TODO Auto-generated method stub
 		Connection con = new DataBase().getConnection();
-		
+
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
-		Queue<Long> que =(Queue<Long>) new ArrayList<Long>();
+		Queue<Long> que = null;
+		try {
+			que =(Queue<Long>) new LinkedList<Long>();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		que.offer(groupid);
 		HashMap<Long,Integer> ma = new HashMap<Long, Integer>();
 		ma.put(groupid,0);
 		
-		String sql = "select groupid from relation where down=?";
+		String sql = "select up from relation where down=?";
 		
 		while(!que.isEmpty()){
 			Long u = que.poll();
@@ -205,6 +237,7 @@ public class RelationDaoImp implements RelationDao {
 				pre = con.prepareStatement(sql);
 				pre.setLong(1, u);
 				res = pre.executeQuery();
+
 				while(res.next()){
 					Long v = res.getLong(1);
 					int cen = ma.get(u)+1;
@@ -216,7 +249,7 @@ public class RelationDaoImp implements RelationDao {
 					que.add(v);
 				}
 			}catch(Exception e){
-				System.out.println("\nshihu:finddown失败\n");
+				System.out.println("\nshihu:findup失败\n");
 	            e.printStackTrace();
 			}
 		}
@@ -228,8 +261,44 @@ public class RelationDaoImp implements RelationDao {
 		return tree;
 	}
 
-	public static void main(String args[]){
+	
+	private void test() {
+		Long groupid = Long.parseLong("100");
+		ArrayList<Long> b = this.findAllGroup(groupid);
+		for(int i = 0;i < b.size();i++){
+			System.out.println(b.get(i));
+		}
 		
+		ArrayList<ArrayList<Long>> c = this.findUp(groupid);
+		ArrayList<ArrayList<Long>> d = this.findDown(groupid);
+		System.out.println("asdad");
+		if(d == null){
+			System.out.println("sdad");
+		}
+		ArrayList<Long> e = this.findSameRank(groupid);
+
+		
+		for(int i = 0;i < c.size();i++){
+			ArrayList<Long> tmp = c.get(i);
+			for(int j = 0;j < tmp.size();j++){
+				System.out.println(tmp.get(j));
+			}
+		}
+		
+		for(int i = 0;i < d.size();i++){
+			ArrayList<Long> tmp = d.get(i);
+			for(int j = 0;j < tmp.size();j++){
+				System.out.println(tmp.get(j));
+			}
+		}
+		
+		for(int j = 0;j < e.size();j++){
+			System.out.println(e.get(j));
+		}
+	
+	}
+	public static void main(String args[]){
+		new RelationDaoImp().test();
 	}
 }
 ///shihu
