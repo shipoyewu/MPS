@@ -29,7 +29,7 @@ public class UserDaoImp implements UserDao {
 		Connection conn = new DataBase().getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
-		User u = new User();
+		User u = new User()  ;
 		
 		try{
 			pre = conn.prepareStatement(sql);
@@ -65,11 +65,16 @@ public class UserDaoImp implements UserDao {
 		}
 		return u;
 	}
-
+	
+	/*
+	 * 根据邮箱找用户(non-Javadoc)
+	 * @see com.zzu.dao.UserDao#findUser(java.lang.String)
+	 */
 	@Override
 	public User findUser(String email) {
 		// TODO Auto-generated method stub
-		return null;
+		long userid= getId(email,"email");
+		return findUser(userid);
 	}
 
 	@Override
@@ -83,7 +88,11 @@ public class UserDaoImp implements UserDao {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.UserDao#isUser(java.lang.String)
+	 */
 	@Override
 	public boolean isUser(String email) {
 		// TODO Auto-generated method stub
@@ -95,11 +104,43 @@ public class UserDaoImp implements UserDao {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	/*
+	 * 根据给定的串求一个id号，type="tel" || type="email" || type = userid
+	 * (non-Javadoc)
+	 * @see com.zzu.dao.UserDao#getId(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public long getId(String str, String type) {
 		// TODO Auto-generated method stub
-		return 0;
+		String tel= "select userid from user where tel=?";
+		String email="select userid from  user where email=?";
+		Connection conn = new DataBase().getConnection();
+		PreparedStatement pre = null;
+		String sql = null;
+		ResultSet res = null;
+		long ans = 0;
+		if(type.equals("tel")){
+			sql = tel;
+		}
+		else if(type.equals("email")){
+			 sql = email;
+		}
+		else{
+			return Long.parseLong(str);
+		}
+		try{
+			pre = conn.prepareStatement(sql);
+			pre.setString(1, str);
+			res = pre.executeQuery();
+			if(res.next()){
+				ans = res.getLong("userid");
+			}
+		}catch(Exception  e){
+			System.out.println("\nshihu:getid");
+			e.printStackTrace();
+		}
+		return ans;
 	}
 
 	@Override
