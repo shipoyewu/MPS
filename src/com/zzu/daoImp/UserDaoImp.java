@@ -1,8 +1,11 @@
 package com.zzu.daoImp;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.InputStream;
+import java.io.Reader;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -47,6 +50,12 @@ public class UserDaoImp implements UserDao {
 				while((bit = stream.read()) != -1){
 					vec.add(new Byte((byte)bit));
 				}
+				try{
+					stream.close();
+				}catch(Exception e){
+					System.out.println("\nshihu:finduser stream");
+					e.printStackTrace();
+				}
 				u.setPicture(vec);
 				u.setRegistertime(res.getDate("regisertime"));
 				u.setTel(res.getString("tel"));
@@ -80,13 +89,34 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public void updateUser(User user) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void addUser(User user) {
 		// TODO Auto-generated method stub
-
+		String sql = "insert into user(userid,username,password,birthday,tel,email,registertime,picture) value(?,?,?,?,?,?,?,?)";
+		Connection con = new DataBase().getConnection();
+		PreparedStatement pre = null;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1,user.getUserid());
+			pre.setString(2,user.getUsername());
+			pre.setString(3,user.getPassword());
+			pre.setDate(4,(Date) user.getBirthday());
+			pre.setString(5,user.getTel());
+			pre.setString(6, user.getEmail());
+			pre.setDate(7,(Date)user.getRegistertime());
+			
+		
+			
+			
+			
+			
+			
+			  
+			
+		}
 	}
 	
 	/*
@@ -96,13 +126,16 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public boolean isUser(String email) {
 		// TODO Auto-generated method stub
-		return false;
+		String sql = "select * from user where email="+"\'"+email+"\';";
+		
+		return new DBtools().RowConf(sql);
 	}
 
 	@Override
 	public boolean isUser(long userid) {
 		// TODO Auto-generated method stub
-		return false;
+		String sql = "select * from user where userid="+"\'"+userid+"\';";
+		return new DBtools().RowConf(sql);
 	}
 	
 	/*
@@ -139,6 +172,8 @@ public class UserDaoImp implements UserDao {
 		}catch(Exception  e){
 			System.out.println("\nshihu:getid");
 			e.printStackTrace();
+		}finally{
+			new DataBase().free(res, conn, pre);
 		}
 		return ans;
 	}
@@ -146,24 +181,48 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public boolean confUser(long userid, String password) {
 		// TODO Auto-generated method stub
-		return false;
+		String sql = "select * from user where userid="+"\'"+userid+"\'"+" and password="+"\'" +"password"+"\';";
+		System.out.println(sql);
+		return new DBtools().RowConf(sql);
 	}
 
 	@Override
 	public boolean confUser(String email, String password) {
 		// TODO Auto-generated method stub
-		return false;
+		long a = getId(email,"email");
+		return confUser(a, password);
 	}
 
 	@Override
 	public ArrayList<Long> getAllSendMeg(long userid) {
 		// TODO Auto-generated method stub
-		return null;
+		RelationDaoImp R = new RelationDaoImp();
+		String sql = "select voteid from (select * from fork where userid=?) as a,message,vote";
+		ResultSet res = null;
+		ArrayList<Long> li = new ArrayList<Long>();
+		Connection con = null;
+		PreparedStatement pre=null;
+		try{
+			con = new DataBase().getConnection();
+			pre=con.prepareStatement(sql);
+			pre.setLong(1, userid);
+			res=pre.executeQuery();
+			while(res.next()){
+				li.add(res.getLong(1));
+			}
+ 		}catch(Exception e){
+ 			System.out.println("\nshihu:getAllSendMsg\n");
+ 			e.printStackTrace();
+ 		}finally{
+ 			new DataBase().free(res, con, pre);
+ 		}
+		return li;
 	}
 	
 	@Override
 	public ArrayList<Long> getAllVote(long voteid) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

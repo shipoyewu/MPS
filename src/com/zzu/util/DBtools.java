@@ -19,6 +19,9 @@ public class DBtools {
 	 */
 	public static boolean RowConf(String sql){
 		Connection con = new DataBase().getConnection();
+		if(sql.charAt(sql.length()-1)!=';'){
+			sql+=";";
+		}
 		PreparedStatement sta = null;
 		boolean a = false;
 		try{
@@ -27,9 +30,21 @@ public class DBtools {
 		}catch(Exception e){
 			System.out.println("\nshihu: RowConf\n");
 			e.printStackTrace();
+		}finally{
+			try{
+				if(sta!=null){
+					sta.close();
+				}
+				con.close();
+			}catch(Exception e){
+				System.out.println("\nshihu:RowConf");
+				e.printStackTrace();
+			}
 		}
 		return a;
 	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
