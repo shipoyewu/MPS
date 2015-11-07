@@ -2,6 +2,7 @@ package com.zzu.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import databaseconnection.DataBase;
@@ -26,7 +27,10 @@ public class DBtools {
 		boolean a = false;
 		try{
 			sta = con.prepareStatement(sql);
-			a =  sta.execute(sql);
+			ResultSet res = sta.executeQuery();
+			if(res.next()){
+				a = true;
+			}
 		}catch(Exception e){
 			System.out.println("\nshihu: RowConf\n");
 			e.printStackTrace();

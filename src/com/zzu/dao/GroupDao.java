@@ -10,7 +10,7 @@ import com.zzu.modle.Group;
  */
 public interface GroupDao {
 	
-	public ArrayList<Object> findUser(String groupid);//输入Groupid,返回所有user 
+	public ArrayList<ArrayList<Long>> findUser(long groupid);//输入Groupid,返回所有user 
 	public void addGroup(Group group);//新增一个group
 	public void updateGroup(Group group);//更新群组信息
 	public boolean isBelong(long userid,long groupid);//判断用户是否属于该群租
