@@ -18,7 +18,11 @@ import com.mysql.jdbc.Blob;
 import com.mysql.jdbc.PreparedStatement;
 
 import databaseconnection.DataBase;
-
+/**
+ * 
+ * @author zongzan
+ *这样有问题，用Picture类
+ */
 public class BlobOperate {
 
 	public BlobOperate() {

@@ -1,14 +1,23 @@
 package com.zzu.daoImp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import com.mysql.jdbc.Connection;
 import com.zzu.dao.UserDao;
 import com.zzu.modle.User;
+import com.zzu.modle.View;
 
 import databaseconnection.DataBase;
 
@@ -26,13 +35,14 @@ public class UserDaoImp implements UserDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, userid);
 			res = pstmt.executeQuery();
-			while(res.next()){
+			if(res.next()){
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setEmail(res.getString("email"));
 				user.setRegistertime(res.getString("registertime"));
 				user.setTel(res.getString("tel"));
-				user.setPicture(res.getString("picture"));
+				PictureDao pic = new PictureDao();
+				user.setPicture(pic.getUserIcon(userid));	//可能会有问题
 			}
 				return user;
 		} catch (SQLException e) {
@@ -40,14 +50,12 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			System.out.println("failed to find User by userid!");
 		}
-			
 			DataBase.free(res, con, pstmt);
-		
 		return null;
 	}
 
 	@Override
-	public User getUser(String email) {
+	public User getUser(String email) {			//该方法获得的user将不包含头像
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -64,7 +72,8 @@ public class UserDaoImp implements UserDao {
 				user.setUserid(Integer.parseInt(res.getString("userid")));
 				user.setRegistertime(res.getString("registertime"));
 				user.setTel(res.getString("tel"));
-				user.setPicture(res.getString("picture"));
+				//PictureDao pic = new PictureDao();
+				//user.setPicture(pic.getUserIcon(userid).getImage());	//可能会有问题
 			}
 				return user;
 		} catch (SQLException e) {
@@ -78,7 +87,7 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user) {  				//更改用户信息，不包括头像
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -90,7 +99,6 @@ public class UserDaoImp implements UserDao {
 			pstmt.setString(3, user.getEmail());
 			pstmt.setString(4, user.getRegistertime());
 			pstmt.setString(5, user.getTel());
-			pstmt.setString(6, user.getPicture());
 			pstmt = con.prepareStatement(sql);
 			pstmt.executeUpdate();
 	
@@ -117,6 +125,15 @@ public class UserDaoImp implements UserDao {
 			pstmt.setString(3, user.getEmail());
 			pstmt.setString(4, user.getRegistertime());
 			pstmt.setString(5, user.getTel());
+			File image = new File(user.getPicture().getImageFile());
+			FileInputStream fis;
+			try {
+				fis = new FileInputStream(image);
+				pstmt.setBinaryStream(6, fis, (int) image.length());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pstmt = con.prepareStatement(sql);
 			pstmt.executeUpdate();
 	
@@ -327,15 +344,32 @@ public class UserDaoImp implements UserDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@SuppressWarnings({ "null", "unused" })
+	public void updateIcon(User user) { 			 //更新用户头像
+		// TODO Auto-generated method stub
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		File image = new File(user.getPicture().getImageFile());
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(image);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String sql = "update user set picture=? where userid=?";
+		try {
+		  pstmt.setBinaryStream(1, fis, (int) image.length());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args){
 		
 	}
-
-	@Override
-	public void updateIcon(int userid) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
 
 
