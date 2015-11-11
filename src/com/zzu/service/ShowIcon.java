@@ -17,9 +17,13 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-@WebServlet(name="ShowIcon",urlPatterns={"/Icontest"})
+@WebServlet(name="ShowIcon",urlPatterns={"/jsp/Icontest"})
 public class ShowIcon extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Constructor of the object.
 	 */

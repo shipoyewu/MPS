@@ -22,10 +22,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     <!-- <img src="C:\MPSDOWNLOADS\icon.jpg"> -->
-    hahahahha
+  
     <p align="center"> 请您选择需要上传的文件</p>
-	<form id="form1" name="form1" method="post" action="ShowIcon" enctype="multipart/form-data">
-		<table border="0" align="center">
+	<form id="form1" name="form1" method="post" action="/com/zzu/service/ShowIcon" enctype="multipart/form-data">
+		<table border="1" align="center">
 	<tr>		
 		<td>上传文件：</td>
 		<td><input name="file" type="file" size="20" ></td>	
