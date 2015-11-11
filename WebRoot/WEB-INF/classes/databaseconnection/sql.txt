@@ -1,0 +1,4 @@
+driver=com.mysql.jdbc.Driver
+url=jdbc:mysql://qdm177261226.my3w.com:3306/qdm177261226_db
+username=qdm177261226
+password=wohaoshuaia

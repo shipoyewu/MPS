@@ -24,7 +24,7 @@ import databaseconnection.DataBase;
 public class UserDaoImp implements UserDao {
 
 	
-	public User getUser(int userid) {
+	public User getUser(Long userid) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -33,7 +33,7 @@ public class UserDaoImp implements UserDao {
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, userid);
+			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
 			if(res.next()){
 				user.setUsername( res.getString("username"));
@@ -69,7 +69,7 @@ public class UserDaoImp implements UserDao {
 			while(res.next()){
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
-				user.setUserid(Integer.parseInt(res.getString("userid")));
+				user.setUserid(res.getLong("userid"));
 				user.setRegistertime(res.getString("registertime"));
 				user.setTel(res.getString("tel"));
 				//PictureDao pic = new PictureDao();
@@ -172,7 +172,7 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public boolean isUser(int userid) {  //是否存在该用户
+	public boolean isUser(Long userid) {  //是否存在该用户
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -181,7 +181,7 @@ public class UserDaoImp implements UserDao {
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, userid);
+			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
 			while(!res.next())
 				return true;
@@ -252,7 +252,7 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public boolean confUser(int userid, String password) {
+	public boolean confUser(Long userid, String password) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -265,7 +265,7 @@ public class UserDaoImp implements UserDao {
 		String sql = "select password from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, userid);
+			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				if(password.equals(res.getString("password")) ){
@@ -334,13 +334,13 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public ArrayList<Object> getAllSendMeg(int userid) {
+	public ArrayList<Object> getAllSendMeg(Long userid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public ArrayList<Object> getAllVote(int voteid) {
+	public ArrayList<Object> getAllVote(Long voteid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -361,6 +361,7 @@ public class UserDaoImp implements UserDao {
 		String sql = "update user set picture=? where userid=?";
 		try {
 		  pstmt.setBinaryStream(1, fis, (int) image.length());
+		  pstmt.setLong(2, user.getUserid());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -29,13 +29,13 @@ public class PictureDao {
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean setUserIcon(View view, int userid) throws SQLException{			//设置用户头像,view示例至少要有image属性和路径属性
+	public boolean setUserIcon(View view, long userid) throws SQLException{	//设置用户头像,view示例至少要有image属性和路径属性
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		User user = null;
 		FileInputStream fis = null;
 		
-		String sql = "insert into user (picture) values(?)";
+		String sql = "update user set picture=?";
 		if (view.getImageFile() != null) {
             File image = new File(view.getImageFile());//图片在服务器的路径
             try {
@@ -58,7 +58,7 @@ public class PictureDao {
         }
         
 	}
-	public View getUserIcon(int userid){//  返回用户头像
+	public View getUserIcon(Long userid){//  返回用户头像
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
@@ -67,7 +67,7 @@ public class PictureDao {
 		String sql = "select picture from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, userid);
+			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

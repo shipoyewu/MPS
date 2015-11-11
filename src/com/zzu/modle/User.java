@@ -15,7 +15,7 @@ public class User {
 	public long getUserid() {
 		return userid;
 	}
-	public void setUserid(int userid) {
+	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
 	public String getUsername() {

@@ -13,7 +13,26 @@ import javax.servlet.annotation.WebFilter;
 @WebFilter(filterName = "CharacterEncodingFilter", urlPatterns = "/*")
 public class CharacterEncodingFilter implements Filter {
 
-	protected String encoding = null;
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doFilter(ServletRequest arg0, ServletResponse arg1,
+			FilterChain arg2) throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*protected String encoding = null;
 	protected FilterConfig filterConfig = null;
 
 	// 过滤器的初始方法
@@ -35,7 +54,7 @@ public class CharacterEncodingFilter implements Filter {
 	public void destroy() {
 		this.encoding = null;
 		this.filterConfig = null;
-	}
+	}*/
 }
 
 //shihu
