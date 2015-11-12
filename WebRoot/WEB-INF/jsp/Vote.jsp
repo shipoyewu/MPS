@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					投票主题：
   				</td>
   				<td>
-  					<textarea rows="3" clos="20"> </textarea>
+  					<textarea rows="3" cols="20"> </textarea>
   				</td> 
   			</tr>
   			
