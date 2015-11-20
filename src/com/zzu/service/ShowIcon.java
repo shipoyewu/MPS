@@ -49,13 +49,15 @@ public class ShowIcon extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
-	private ServletContext sc;
-	private String savePath;
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		ServletContext sc = null;
+		String savePath = null;
 		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("show icon!");
 		DiskFileItemFactory factory = new DiskFileItemFactory();//上传文件
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		try {
