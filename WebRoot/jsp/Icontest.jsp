@@ -30,6 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<td>上传文件：</td>
 		<td><input name="file" type="file" size="20" ></td>
 	</tr>
+	
 	<tr>
 		<td><input type="submit" name="submit" value="提交" ><td/>
 		<td><input type="reset" name="reset" value="重置" ><td/>
