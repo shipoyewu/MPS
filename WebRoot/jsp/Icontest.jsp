@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <!-- <img src="C:\MPSDOWNLOADS\icon.jpg"> -->
   
     <p align="center"> 请您选择需要上传的文件</p>
-	<form id="form1" name="form1" method="get" action="/jsp/Icontest" enctype="multipart/form-data">
+	<form id="form1" name="form1" method="post" action="Icontest" enctype="multipart/form-data">
 		<table border="1" align="center">
 	<tr>		
 		<td>上传文件：</td>
