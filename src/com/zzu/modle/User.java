@@ -1,7 +1,7 @@
 package com.zzu.modle;
 
+import java.awt.Image;
 import java.util.Date;
-import java.util.Vector;
 
 public class User {
 	private long userid;
@@ -10,12 +10,12 @@ public class User {
 	private Date birthday;
 	private String tel;
 	private String email;
-	private Date registertime;
-	private Vector<Byte> picture;
+	private String registertime;
+	private View picture;
 	public long getUserid() {
 		return userid;
 	}
-	public void setUserid(long userid) {
+	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
 	public String getUsername() {
@@ -48,16 +48,16 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Date getRegistertime() {
+	public String getRegistertime() {
 		return registertime;
 	}
-	public void setRegistertime(Date registertime) {
+	public void setRegistertime(String registertime) {
 		this.registertime = registertime;
 	}
-	public Vector<Byte> getPicture() {
+	public View getPicture() {
 		return picture;
 	}
-	public void setPicture(Vector<Byte> picture) {
+	public void setPicture(View picture) {
 		this.picture = picture;
 	}
 	public static void main(String args[]){
