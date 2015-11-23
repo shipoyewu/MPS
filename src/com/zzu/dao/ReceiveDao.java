@@ -7,6 +7,6 @@ import java.util.ArrayList;
  *
  */
 public interface ReceiveDao {
-	public ArrayList<Object> getAllReceiveMeg(long userid);//返回该用户所有接收的信息
-	public ArrayList<Object> getAllUnReadMeg(long userid);//返回所有
+	public ArrayList<Object> getAllReceiveMeg(long forkid);//返回该用户所有接收的信息
+	public ArrayList<Object> getAllUnReadMeg(long forkid);//返回所有
 }
