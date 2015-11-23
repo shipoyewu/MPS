@@ -1,6 +1,8 @@
 package com.zzu.modle;
 
-import java.util.Date;
+import java.sql.Date;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 public class Vote {
 	private long voteid;
@@ -10,6 +12,8 @@ public class Vote {
 	private long messageid;
 	private boolean ismul;
 	private boolean isvalue;
+    
+	
 	
 	public long getVoteid() {
 		return voteid;

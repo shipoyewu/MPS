@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body >
-	<form action="" onsubmit="check()">
+	<form action="servlet/addVote" onsubmit="check()" method="post">
 		<div align="center">
 		<table>
 			<tr>
@@ -62,7 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				截止时间：
 				</td>
 				<td >
-				<input type="text" id="J-xl" name="date">
+				<input type="text" id="J-xl" name="enddate">
 				<script type="text/javascript" src="./js/laydate.dev.js"></script>
 				<script type="text/javascript">
 			        laydate({
