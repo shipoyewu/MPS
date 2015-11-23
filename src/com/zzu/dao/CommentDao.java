@@ -9,7 +9,7 @@ import com.zzu.modle.Comment;
  *
  */
 public interface CommentDao {
-	public ArrayList<Object> getComm(long messageid);
+	public ArrayList<Comment> getComm(long messageid);
 	public void addComment(Comment comment);
 	public void deleteComment(long commentid);
 
