@@ -12,6 +12,8 @@ public class User {
 	private String email;
 	private Date registertime;
 	private Vector<Byte> picture;
+	
+	
 	public long getUserid() {
 		return userid;
 	}

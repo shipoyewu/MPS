@@ -24,7 +24,7 @@ public interface UserDao
 		public boolean isUser(String email);//通过email判断该用户是否存在
 		public boolean isUser(Long userid);//通过userid判断该用户是否存在
 		
-		public int getId(String str,String type); //通过设置type=="tel" || "email"，都可获得用户ID;
+		public long getId(String str,String type); //通过设置type=="tel" || "email"，都可获得用户ID;
 		public boolean confUser(Long userid,String password);//校验用户信息
 		public boolean confUser(String email,String password);//校验用户信息
 		
