@@ -49,7 +49,7 @@ public class addVote extends HttpServlet {
 		v.setIsvalue(true);
 		
 		String endStr =(String) request.getAttribute("enddate");
-		Date endtime = new baseTools().str2Date(endStr);
+		Date endtime = new baseTools().getNowTosql();
 		v.setEndtime(endtime);
 		v.setMessageid(messageid);
 		
