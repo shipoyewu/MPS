@@ -61,6 +61,6 @@ public class User {
 		this.picture = picture;
 	}
 	public static void main(String args[]){
-		
+		System.out.println("asdasd");
 	}
 }
