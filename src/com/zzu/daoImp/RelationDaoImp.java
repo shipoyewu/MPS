@@ -201,6 +201,24 @@ public class RelationDaoImp implements RelationDao {
 	public boolean addRelation(Relation relation) {
 		// TODO Auto-generated method stub
 		Connection con = new DataBase().getConnection();
+		
+		ArrayList<ArrayList<Long> > up = findUp(relation.getUp());
+		
+		int si = up.size();
+		
+		for(int i = 0;i < up.get(si-1).size();i++){
+			if(up.get(si-1).get(i).longValue() == relation.getDown()) return false;
+			ArrayList<ArrayList<Long>> down = findDown(up.get(si-1).get(i).longValue());
+			for(int j = 0;j < down.size();j++){
+				for(int k = 0;k < down.get(i).size();i++){
+					if(relation.getDown() == down.get(j).get(k).longValue()){
+						return false;
+					}
+				}
+			}
+		}
+		
+		
 		String sql = "insert into relation(up,down,jointime,isvalid) values(?,?,?,?)";
 		PreparedStatement pre = null;
 		try{
@@ -222,7 +240,7 @@ public class RelationDaoImp implements RelationDao {
 			e.printStackTrace();
 		}
 	
-		return false;
+		return true;
 	}
 	
 	/*
