@@ -19,6 +19,7 @@ import com.zzu.dao.RelationDao;
 import com.zzu.modle.Group;
 import com.zzu.modle.Relation;
 import com.zzu.modle.User;
+import com.zzu.util.DBtools;
 
 import databaseconnection.DataBase;
 
@@ -299,7 +300,23 @@ public class RelationDaoImp implements RelationDao {
 		}
 		return tree;
 	}
-
+	
+	
+	@Override
+	public void delRelation(long up, long down) {
+		// TODO Auto-generated method stub
+		String del="delete from relation where up="+"\'"+up+"\'"+"and down="+"\'"+down+"\';";
+		DBtools.RowDel(del);
+	}
+	@Override
+	public void delRelation(long forkid) {
+		// TODO Auto-generated method stub
+		String delup ="delete from relation where down="+"\'"+forkid+"'\";";
+		String deldown = "delete from relation where up="+"\'"+forkid+"'\";";
+		DBtools.RowDel(delup);
+		DBtools.RowDel(deldown);
+	}
+	
 	/**
 	 * 2015/11/2,23:05 添加了findUp findDwon findSameRank findAllGroup的无数据测试
 	 */
@@ -338,8 +355,16 @@ public class RelationDaoImp implements RelationDao {
 		}
 	
 	}
+	
+	
+	
+	
 	public static void main(String args[]){
 		new RelationDaoImp().test();
 	}
+
+	
+	
+
 }
 ///shihu

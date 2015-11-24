@@ -48,6 +48,25 @@ public class DBtools {
 		return a;
 	}
 	
+	public static boolean RowDel(String del){
+		
+		Connection con = new DataBase().getConnection();
+		PreparedStatement pre = null;
+		boolean flag = false; 
+		if(del.charAt(del.length()-1)!=';'){
+			del+=";";
+		}
+		
+		try{
+			pre = con.prepareStatement(del);
+			flag = pre.execute();
+		}catch(Exception e){
+			System.out.println("\nshihu:RowDel");
+			e.printStackTrace();
+		}
+		return flag;
+		
+	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

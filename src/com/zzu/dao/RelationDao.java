@@ -14,6 +14,8 @@ public interface RelationDao {
 	public ArrayList<Long> findSameRank(long groupid);// 返回所有同级用户
 	public ArrayList<Long> findAllGroup(long userid);//查找用户所在的所有群组
 	public boolean addRelation(Relation relation);//增加relation
+	public void delRelation(long up,long down);
+	public void delRelation(long forkid);
 	
 }
 	
