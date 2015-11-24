@@ -18,6 +18,7 @@ import com.mysql.jdbc.Connection;
 import com.zzu.dao.UserDao;
 import com.zzu.modle.User;
 import com.zzu.modle.View;
+import com.zzu.util.baseTools;
 
 import databaseconnection.DataBase;
 
@@ -29,7 +30,8 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		User user = null;
+		User user = new User();
+		user.setUserid(userid);
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -39,12 +41,17 @@ public class UserDaoImp implements UserDao {
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setEmail(res.getString("email"));
+				user.setPassword(res.getString("password"));
 				user.setRegistertime(res.getString("registertime"));
 				user.setTel(res.getString("tel"));
-				PictureDao pic = new PictureDao();
-				user.setPicture(pic.getUserIcon(userid));	//可能会有问题
-			}
+				System.out.println("get user by userid");
 				return user;
+			}
+			else{
+				System.out.println("该用户不存在！");
+				DataBase.free(res, con, pstmt);
+			}
+				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,22 +67,29 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		User user = null;
+		User user = new User();
+		user.setEmail(email);
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
-			while(res.next()){
+			if(res.next()){
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setUserid(res.getLong("userid"));
 				user.setRegistertime(res.getString("registertime"));
 				user.setTel(res.getString("tel"));
-				//PictureDao pic = new PictureDao();
-				//user.setPicture(pic.getUserIcon(userid).getImage());	//可能会有问题
-			}
+				user.setPassword(res.getString("password"));
+				System.out.println("get user by email.");
 				return user;
+			}
+			else{
+					System.out.println("该用户不存在！");
+					DataBase.free(res, con, pstmt);
+			}
+			
+				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,28 +101,44 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public void updateUser(User user) {  				//更改用户信息，不包括头像
+	public boolean updateUser(User user) {  				//更改用户信息，不包括头像,密码 
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
-		String sql = "update user set username=?,birthday=?,email=?,registertime=?,tel=?,picture=? where userid=?";
-		
+		ResultSet res = null;
+		String sql = "select * from user where userid=?";
 		try {
-			pstmt.setString(1, user.getUsername());
-			pstmt.setDate(2, (Date) user.getBirthday());
-			pstmt.setString(3, user.getEmail());
-			pstmt.setString(4, user.getRegistertime());
-			pstmt.setString(5, user.getTel());
 			pstmt = con.prepareStatement(sql);
-			pstmt.executeUpdate();
-	
+			pstmt.setLong(1,user.getUserid());
+			res = pstmt.executeQuery();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			if(res.next()){
+					sql = "update user set username=?,birthday=?,email=?,tel=? where userid=?";
+				 	pstmt.setString(1, user.getUsername());
+					pstmt.setDate(2, (Date) user.getBirthday());
+					pstmt.setString(3, user.getEmail());
+					pstmt.setString(4, user.getTel());
+					pstmt.setLong(5, user.getUserid());
+					pstmt = con.prepareStatement(sql);
+					pstmt.executeUpdate();
+			}
+			else{
+				System.out.println("该用户不存在,无法更新!");
+				DataBase.freeStatement(con, pstmt);
+				return false;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("failed to update user!");
 		}
-			
+					
 			DataBase.freeStatement(con, pstmt);
+			System.out.println("Update success.");
+			return true; 
 	}
 
 	@Override
@@ -368,6 +398,30 @@ public class UserDaoImp implements UserDao {
 		}
 	}
 	public static void main(String[] args){
+		//User u = new User();
+		Long l = new Long(2);
+		UserDaoImp udi = new UserDaoImp();
+		/*User user = udi.getUser(l);
+		System.out.println(user.getUserid());  //getUser----test
+		System.out.println(user.getEmail());
+		System.out.println(user.getPassword());
+		System.out.println(user.getRegistertime());
+		System.out.println(user.getTel());
+		System.out.println(user.getBirthday());
+		System.out.println(user.getUsername());
+		System.out.println("getUser(userid)----test");
+		User user2 = udi.getUser("yolen_@163.com");
+		System.out.println(user2.getUsername());
+		System.out.println(user2.getEmail());
+		System.out.println(user2.getRegistertime());
+		System.out.println(user2.getBirthday());*/
+		User u = new User();
+		u.setUserid(l);
+		u.setEmail("yolenstark@outlook.com");
+		baseTools bt = new baseTools();
+		bt.str2Date("1994-08-06");
+		u.getBirthday();
+		udi.updateUser(u);
 		
 	}
 	

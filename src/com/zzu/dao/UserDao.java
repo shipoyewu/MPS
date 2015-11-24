@@ -17,7 +17,7 @@ public interface UserDao
 {
 		public User getUser(Long userid);//通过userid查找用户，返回User
 		public User getUser(String email);//通过email查找用户，返回User
-		public void updateUser(User user);//更新用户信息,不包含头像
+		public boolean updateUser(User user);//更新用户信息,不包含头像
 		public void addUser(User user);//增加用户
 		public void updateIcon(User user);//设置该用户的头像
 		
