@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.zzu.modle.User;
 import com.zzu.modle.View;
 //登陆使用ID或邮箱
@@ -18,7 +19,7 @@ public interface UserDao
 		public User getUser(Long userid);//通过userid查找用户，返回User
 		public User getUser(String email);//通过email查找用户，返回User
 		public boolean updateUser(User user);//更新用户信息,不包含头像
-		public void addUser(User user);//增加用户
+		public void addUser(User user) throws MySQLIntegrityConstraintViolationException;//增加用户
 		public void updateIcon(User user);//设置该用户的头像
 		
 		public boolean isUser(String email);//通过email判断该用户是否存在

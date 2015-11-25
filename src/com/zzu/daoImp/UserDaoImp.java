@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.zzu.dao.UserDao;
 import com.zzu.modle.User;
 import com.zzu.modle.View;
@@ -42,7 +43,7 @@ public class UserDaoImp implements UserDao {
 				user.setBirthday(res.getDate("birthday"));
 				user.setEmail(res.getString("email"));
 				user.setPassword(res.getString("password"));
-				user.setRegistertime(res.getString("registertime"));
+				user.setRegistertime(res.getDate("registertime"));
 				user.setTel(res.getString("tel"));
 				System.out.println("get user by userid");
 				return user;
@@ -78,7 +79,7 @@ public class UserDaoImp implements UserDao {
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setUserid(res.getLong("userid"));
-				user.setRegistertime(res.getString("registertime"));
+				user.setRegistertime(res.getDate("registertime"));
 				user.setTel(res.getString("tel"));
 				user.setPassword(res.getString("password"));
 				System.out.println("get user by email.");
@@ -88,8 +89,6 @@ public class UserDaoImp implements UserDao {
 					System.out.println("该用户不存在！");
 					DataBase.free(res, con, pstmt);
 			}
-			
-				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,8 +100,8 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public boolean updateUser(User user) {  				//更改用户信息，不包括头像,密码 
-		// TODO Auto-generated method stub
+	public boolean updateUser(User user) {  				//更改用户信息，不包括头像,密码 ,需要填写的信息有：
+		// TODO Auto-generated method stub					//username,birthday，email，tel都不能为空
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
@@ -118,12 +117,12 @@ public class UserDaoImp implements UserDao {
 		try {
 			if(res.next()){
 					sql = "update user set username=?,birthday=?,email=?,tel=? where userid=?";
-				 	pstmt.setString(1, user.getUsername());
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, user.getUsername());
 					pstmt.setDate(2, (Date) user.getBirthday());
 					pstmt.setString(3, user.getEmail());
 					pstmt.setString(4, user.getTel());
 					pstmt.setLong(5, user.getUserid());
-					pstmt = con.prepareStatement(sql);
 					pstmt.executeUpdate();
 			}
 			else{
@@ -134,71 +133,69 @@ public class UserDaoImp implements UserDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 					
 			DataBase.freeStatement(con, pstmt);
-			System.out.println("Update success.");
+			System.out.println("Update success!");
 			return true; 
 	}
 
 	@Override
-	public void addUser(User user) {
+	/**
+	 * 需要完整的信息，username，birthday，email，registertime，tel，password
+	 * 当插入的email或tel和已有的用户重复时，抛出MySQLIntegrityConstraintViolationException异常
+	 */
+	public void addUser(User user) throws MySQLIntegrityConstraintViolationException {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
-		String sql = "insert into user (username,birthday,email,registertime,tel) "
-				+ "values('username'=?,'birthday'=?,'email'=?,'registertime'=?,'tel'=?)";
-		
+		String sql = "insert into user(username,birthday,email,registertime,tel,password) "
+				+ "values(?,?,?,?,?,?)";
 		try {
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user.getUsername());
 			pstmt.setDate(2, (Date) user.getBirthday());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setString(4, user.getRegistertime());
+			pstmt.setDate(4, (Date) user.getRegistertime());
 			pstmt.setString(5, user.getTel());
-			File image = new File(user.getPicture().getImageFile());
-			FileInputStream fis;
-			try {
-				fis = new FileInputStream(image);
-				pstmt.setBinaryStream(6, fis, (int) image.length());
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			pstmt = con.prepareStatement(sql);
+			pstmt.setString(6, user.getPassword());
 			pstmt.executeUpdate();
-	
+			DataBase.freeStatement(con, pstmt);
+			System.out.println("add user success.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("failed to update user!");
+			System.out.println("UNIQUE属性的列插入了相同值");
 		}
-			
-		DataBase.freeStatement(con, pstmt);
+		
 	}
 	
 
 	@Override
-	public boolean isUser(String email) {  //是否存在该用户
+	public boolean isUser(String email) {  //是否存在该用户			------------error
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		User user = null;
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
-			while(!res.next())
+			if(!res.next())
 				return true;
+			else {
+				System.out.println("不存在该用户!");
+			}
+			DataBase.free(res, con, pstmt);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("failed to find User by userid!");
+			return false;
 		}
-			
-			DataBase.free(res, con, pstmt);
-		return false;
+			return false;		
 	}
 
 	@Override
@@ -207,22 +204,23 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		User user = null;
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
-			while(!res.next())
+		
+			if(!res.next())
 				return true;
+			else 	{
+				System.out.println("不存在该用户!");
+			}
+			DataBase.free(res, con, pstmt);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("failed to find User by userid!");
-		}
-			
-			DataBase.free(res, con, pstmt);
-			System.out.println("不存在该用户!");
+			return false;
+		}	
 		return false;
 	}
 		
@@ -415,16 +413,31 @@ public class UserDaoImp implements UserDao {
 		System.out.println(user2.getEmail());
 		System.out.println(user2.getRegistertime());
 		System.out.println(user2.getBirthday());*/
-		User u = new User();
-		u.setUserid(l);
-		u.setEmail("yolenstark@outlook.com");
+		User u = new User();		
+		u.setEmail("yolen_zz@outlook.com");
 		baseTools bt = new baseTools();
-		bt.str2Date("1994-08-06");
-		u.getBirthday();
-		udi.updateUser(u);
-		
+		u.setUsername("fuguo");
+		u.setBirthday(bt.str2Date("1994-08-06"));
+		u.setPassword("6666663");
+		u.setTel("13027711597");
+		//udi.updateUser(u); ----UpdateUser()test
+		/*Date rt = bt.getNowTosql();
+		u.setRegistertime(rt);
+		try {
+			udi.addUser(u);
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		/*if(udi.isUser(l)){  ------isUser() test
+			System.out.println("1存在！");
 	}
-	
+		if(udi.isUser("yolenstark@outlook.com")){
+			System.out.println("2存在！");
+		}
+		else System.out.println("2bucunzai !");
+		*/
+	}
 }
 
 

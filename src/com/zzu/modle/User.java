@@ -10,7 +10,7 @@ public class User {
 	private Date birthday;
 	private String tel;
 	private String email;
-	private String registertime;
+	private Date registertime;
 	private View picture;
 	public long getUserid() {
 		return userid;
@@ -48,10 +48,10 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getRegistertime() {
+	public Date getRegistertime() {
 		return registertime;
 	}
-	public void setRegistertime(String registertime) {
+	public void setRegistertime(Date registertime) {
 		this.registertime = registertime;
 	}
 	public View getPicture() {
