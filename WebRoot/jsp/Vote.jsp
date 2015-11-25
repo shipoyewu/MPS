@@ -18,8 +18,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	<link rel="stylesheet" type="text/css" href="./css/styles.css">
 	<link rel="stylesheet" type="text/css" href="./css/laydate.css">
-	<script type="text/javascript" src="./js/code.js" charset="utf-8"></script>
-	<script type="text/javascript" src="./js/Vote.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="js/code.js" charset="utf-8"></script>
+	<script type="text/javascript" src="js/Vote.js" charset="UTF-8"></script>
   	
   </head>
   
