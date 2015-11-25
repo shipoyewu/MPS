@@ -8,6 +8,8 @@ public class Letter {
 	private long senderuserid;// 发送者id
 	private long receiveuserid;// 接受者id
 	private Date createtime;
+	private boolean status;
+	
 	public long getLetterid() {
 		return letterid;
 	}
@@ -37,6 +39,12 @@ public class Letter {
 	}
 	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	
 }

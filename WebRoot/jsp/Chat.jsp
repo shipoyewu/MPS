@@ -131,13 +131,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        		}
                        	%>
                        	
-                       	
                        	<li>
-                       		<label class=#{cla}></label>
+                       		<label class="${cla}"></label>
                        		
                        	</li>
                        		
-                       	
                         }%>
                             <li>
                                 <label class="online">

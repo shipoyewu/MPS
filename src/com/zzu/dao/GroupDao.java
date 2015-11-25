@@ -16,5 +16,5 @@ public interface GroupDao {
 	public boolean isBelong(long userid,long groupid);//判断用户是否属于该群租
 	public boolean isvalid(long groupid);//该群组是否有效（是否已被删除）
 	public void deleteGroup(long groupid);//删除群组,isvalid置为false
-	
+	public Group getGroup(long groupid)
 }

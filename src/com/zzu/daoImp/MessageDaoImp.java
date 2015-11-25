@@ -1,13 +1,11 @@
 package com.zzu.daoImp;
 
-import com.zzu.dao.MessageDao;
-import com.zzu.modle.Message;
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mysql.jdbc.Statement;
 import com.zzu.dao.MessageDao;
 import com.zzu.modle.Message;
 
@@ -44,12 +42,13 @@ public class MessageDaoImp implements MessageDao {
 	}
 
 	// 添加消息
-	public void addMessage(Message msg) {
+	public long addMessage(Message msg) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
+		long id=0;//返回0则添加失败
 		String sql = "insert into message values(?,?,?,?,?,?,?,?,?,?)";
 		try {
-			ptmt = conn.prepareStatement(sql);
+			ptmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
 			ptmt.setLong(1, msg.getMessageid());
 			ptmt.setString(2, msg.getMessagetitle());
 			ptmt.setLong(3, msg.getContentid());
@@ -61,6 +60,13 @@ public class MessageDaoImp implements MessageDao {
 			ptmt.setDate(9, new java.sql.Date(msg.getRemindtime().getTime()));
 			ptmt.setDate(10, new java.sql.Date(msg.getDeletetime().getTime()));
 			int result = ptmt.executeUpdate(sql);
+            //检索由于执行此 Statement 对象而创建的所有自动生成的键
+            ResultSet rs = ptmt.getGeneratedKeys();
+            if (rs.next()) {
+                    //知其仅有一列，故获取第一列
+                   	id = rs.getLong(1);
+                    System.out.println("-----预定义SQL模式-----id = " + id);
+            } 
 			if (result != 0) {
 				System.out.println("添加消息成功!");
 			} else {
@@ -71,6 +77,7 @@ public class MessageDaoImp implements MessageDao {
 		} finally {
 			DataBase.freeStatement(conn, ptmt);
 		}
+		return id;
 	}
 
 	// 查看该消息是否有效，即是否被删除
@@ -106,7 +113,7 @@ public class MessageDaoImp implements MessageDao {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
 		ResultSet rs = null;
-		boolean isValue = false;
+		//boolean isValue = false;
 		String sql = "update message set isvalue=false where messageid=?";
 		try {
 			ptmt = conn.prepareStatement(sql);

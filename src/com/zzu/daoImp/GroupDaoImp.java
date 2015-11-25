@@ -186,4 +186,10 @@ public class GroupDaoImp implements GroupDao {
 		new GroupDaoImp().test();
 	}
 
+	@Override
+	public Group getGroup(long groupid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

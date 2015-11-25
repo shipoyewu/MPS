@@ -1,15 +1,18 @@
 package com.zzu.daoImp;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.zzu.dao.CommentDao;
 import com.zzu.modle.Comment;
 
-import databaseconnection.DataBase;
+import databaseconnection.DataBase;
+
 /**
  * 
  * @author 徐富国
@@ -58,7 +61,7 @@ public class CommentDaoImp implements CommentDao {
 	public void addComment(Comment comment) {
 		Connection conn = DataBase.getConnection();// 得到数据库的连接
 		PreparedStatement pstmt = null;
-		String sql = "insert into comment values(?,?,?,?,?,?,?)";
+		String sql = "insert into comment values(?,?,?,?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, comment.getCommentid());
@@ -105,9 +108,10 @@ public class CommentDaoImp implements CommentDao {
 
 	public static void main(String args[]) {
 		CommentDaoImp com = new CommentDaoImp();
-		Long messid=(long) 1;
-		ArrayList<Comment> coms=com.getComm(messid);//查询
-		com.addComment(new Comment(10,"测试实例",1,new Date(),new Date(),1));//添加
-		com.deleteComment(10);//删除
+		long messid=(long) 1;
+		//ArrayList<Comment> coms=com.getComm(messid);//查询
+		//System.out.println(coms);
+		com.addComment(new Comment(1,"测试实例",1,new Date(),new Date(),1));//添加
+		//com.deleteComment(10);//删除
 	}
 }

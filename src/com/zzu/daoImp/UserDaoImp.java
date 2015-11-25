@@ -39,7 +39,7 @@ public class UserDaoImp implements UserDao {
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setEmail(res.getString("email"));
-				user.setRegistertime(res.getString("registertime"));
+				user.setRegistertime(res.getDate("registertime"));
 				user.setTel(res.getString("tel"));
 				PictureDao pic = new PictureDao();
 				user.setPicture(pic.getUserIcon(userid));	//可能会有问题
@@ -70,7 +70,7 @@ public class UserDaoImp implements UserDao {
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setUserid(res.getLong("userid"));
-				user.setRegistertime(res.getString("registertime"));
+				user.setRegistertime(res.getDate("registertime"));
 				user.setTel(res.getString("tel"));
 				//PictureDao pic = new PictureDao();
 				//user.setPicture(pic.getUserIcon(userid).getImage());	//可能会有问题
@@ -97,7 +97,7 @@ public class UserDaoImp implements UserDao {
 			pstmt.setString(1, user.getUsername());
 			pstmt.setDate(2, (Date) user.getBirthday());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setString(4, user.getRegistertime());
+			pstmt.setDate(4, user.getRegistertime());
 			pstmt.setString(5, user.getTel());
 			pstmt = con.prepareStatement(sql);
 			pstmt.executeUpdate();
@@ -123,7 +123,7 @@ public class UserDaoImp implements UserDao {
 			pstmt.setString(1, user.getUsername());
 			pstmt.setDate(2, (Date) user.getBirthday());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setString(4, user.getRegistertime());
+			pstmt.setDate(4, user.getRegistertime());
 			pstmt.setString(5, user.getTel());
 			File image = new File(user.getPicture().getImageFile());
 			FileInputStream fis;
