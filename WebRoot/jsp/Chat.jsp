@@ -1,3 +1,6 @@
+<%@page import="com.zzu.daoImp.LetterDaoImp"%>
+<%@page import="com.zzu.modle.User"%>
+<%@page import="com.zzu.daoImp.UserDaoImp"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
@@ -113,8 +116,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div class="chat03_content">
                         <ul>
                         <%
+                        UserDaoImp UD = new UserDaoImp();
+                        User user = (User)session.getAttribute("user");
+                        LetterDaoImp LD = new LetterDaoImp();
                         
-                         %>
+                       	ArrayList<User> hr = UD.getHaveRelation(user.getUserid());
+                       	for(int i = 0;i < hr.size();i++){
+                       		String cla;
+                       		if(LD.ifUnRead(user.getUserid(),hr.get(i).getUserid())){
+                       			cla = "online";
+                       		}
+                       		else{
+                       			cla = "offline";
+                       		}
+                       	%>
+                       	
+                       	
+                       	<li>
+                       		<label class=#{cla}></label>
+                       		
+                       	</li>
+                       		
+                       	
+                        }%>
                             <li>
                                 <label class="online">
                                 </label>

@@ -30,4 +30,7 @@ public interface UserDao
 		
 		public ArrayList<Object> getAllSendMeg(Long userid);//返回该用户所有发送的信息
 		public ArrayList<Object> getAllVote(Long voteid);//返回发起的所有投票
+		
+		public ArrayList<User> getHaveRelation(long userid);//返回所有与他有关的人，有关的意思是能收到他发的消息或者能给他发消息的人
+		
 }

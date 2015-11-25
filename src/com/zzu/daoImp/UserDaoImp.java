@@ -367,6 +367,11 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<User> getHaveRelation(long userid){
+		return null;
+	}
+	
 	public static void main(String[] args){
 		
 	}
