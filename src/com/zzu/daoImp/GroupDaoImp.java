@@ -115,7 +115,7 @@ public class GroupDaoImp implements GroupDao {
 	@Override
 	public boolean isBelong(long userid, long groupid) {
 		// TODO Auto-generated method stub
-		String sql = "select * from fork where groupid="+ "\'" +groupid+"\' "+"and userid="+"\'"+userid+"\';";
+		String sql = "select * from fork where groupid="+ "\'" +groupid+"\' "+"and userid="+"\'"+userid+"\'"+" and isvalue=true"+";";
 		System.out.println(sql);
 		return new DBtools().RowConf(sql);
 	}
@@ -150,7 +150,7 @@ public class GroupDaoImp implements GroupDao {
 	@Override
 	public void deleteGroup(long groupid) {
 		// TODO Auto-generated method stub
-		String sql = "delete from fork where groupid=?";
+		String sql = "update group set isvalue=false where groupid=?";
 		Connection con = new DataBase().getConnection();
 		PreparedStatement pre = null;
 		
@@ -172,6 +172,8 @@ public class GroupDaoImp implements GroupDao {
 				e.printStackTrace();
 			}
 		}
+		RelationDaoImp RD = new RelationDaoImp();
+		RD.delRelation(groupid);
 	}
 	private void test() {
 		findUser(100);
@@ -182,6 +184,12 @@ public class GroupDaoImp implements GroupDao {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new GroupDaoImp().test();
+	}
+
+	@Override
+	public Group getGroup(long groupid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

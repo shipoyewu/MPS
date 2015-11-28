@@ -18,8 +18,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	<link rel="stylesheet" type="text/css" href="./css/styles.css">
 	<link rel="stylesheet" type="text/css" href="./css/laydate.css">
-	<script type="text/javascript" src="./js/code.js" charset="utf-8"></script>
-	<script type="text/javascript" src="./js/Vote.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="js/code.js" charset="utf-8"></script>
+	<script type="text/javascript" src="js/Vote.js" charset="UTF-8"></script>
   	
   </head>
   
@@ -60,29 +60,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<tr>
 				<td>
 				截止时间：
-				</td>
+				</td> 
 				<td >
-				<input type="text" id="J-xl" name="enddate">
-				<script type="text/javascript" src="./js/laydate.dev.js"></script>
+				<input type="date" name="enddate" id="date" />
 				<script type="text/javascript">
-			        laydate({
-			            elem: '#J-xl'
-			        });
-
-   				 </script>
-				<select name="hour">
-					<%for(int i = 1;i <= 24;i++){ %>
-						<option value ="<%=i%>"><%=i%></option>
-					<%}%>	
-				</select>
-					:
-				<select>
-					<%for(int i = 1;i <= 60;i++){ %>
-						<option value ="<%=i%>"><%=i%></option>
-					<%}%>
-				</select>
+					document.getElementById('date').valueAsDate = new Date();
+				</script>
+				<input type="time" name="endtime" id="time"/> 
+				<script type="text/javascript">
+					document.getElementById('time').defaultValue =new Date().getHours()+":"+new Date().getMinutes();
+				</script>				
 				</td>
-			</tr>
+			</tr>	
 			<tr>
 				<td>
 					投票隐私：

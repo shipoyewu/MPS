@@ -19,6 +19,7 @@ import com.zzu.dao.RelationDao;
 import com.zzu.modle.Group;
 import com.zzu.modle.Relation;
 import com.zzu.modle.User;
+import com.zzu.util.DBtools;
 
 import databaseconnection.DataBase;
 
@@ -105,7 +106,7 @@ public class RelationDaoImp implements RelationDao {
 			res = pre.executeQuery();
 			while(res.next()){
 				
-
+				
 				Long u = res.getLong(1);
 				pre2 = con.prepareStatement(sql2);
 				pre2.setLong(1, u);
@@ -200,6 +201,24 @@ public class RelationDaoImp implements RelationDao {
 	public boolean addRelation(Relation relation) {
 		// TODO Auto-generated method stub
 		Connection con = new DataBase().getConnection();
+		
+		ArrayList<ArrayList<Long> > up = findUp(relation.getUp());
+		
+		int si = up.size();
+		
+		for(int i = 0;i < up.get(si-1).size();i++){
+			if(up.get(si-1).get(i).longValue() == relation.getDown()) return false;
+			ArrayList<ArrayList<Long>> down = findDown(up.get(si-1).get(i).longValue());
+			for(int j = 0;j < down.size();j++){
+				for(int k = 0;k < down.get(i).size();i++){
+					if(relation.getDown() == down.get(j).get(k).longValue()){
+						return false;
+					}
+				}
+			}
+		}
+		
+		
 		String sql = "insert into relation(up,down,jointime,isvalid) values(?,?,?,?)";
 		PreparedStatement pre = null;
 		try{
@@ -221,7 +240,7 @@ public class RelationDaoImp implements RelationDao {
 			e.printStackTrace();
 		}
 	
-		return false;
+		return true;
 	}
 	
 	/*
@@ -280,7 +299,23 @@ public class RelationDaoImp implements RelationDao {
 		}
 		return tree;
 	}
-
+	
+	
+	@Override
+	public void delRelation(long up, long down) {
+		// TODO Auto-generated method stub
+		String del="delete from relation where up="+"\'"+up+"\'"+"and down="+"\'"+down+"\';";
+		DBtools.RowDel(del);
+	}
+	@Override
+	public void delRelation(long forkid) {
+		// TODO Auto-generated method stub
+		String delup ="delete from relation where down="+"\'"+forkid+"'\";";
+		String deldown = "delete from relation where up="+"\'"+forkid+"'\";";
+		DBtools.RowDel(delup);
+		DBtools.RowDel(deldown);
+	}
+	
 	/**
 	 * 2015/11/2,23:05 添加了findUp findDwon findSameRank findAllGroup的无数据测试
 	 */
@@ -319,8 +354,16 @@ public class RelationDaoImp implements RelationDao {
 		}
 	
 	}
+	
+	
+	
+	
 	public static void main(String args[]){
 		new RelationDaoImp().test();
 	}
+
+	
+	
+
 }
 ///shihu

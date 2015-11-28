@@ -1,8 +1,6 @@
 package com.zzu.modle;
 
-import java.sql.Date;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
+import java.util.Date;
 
 public class Vote {
 	private long voteid;
@@ -12,9 +10,7 @@ public class Vote {
 	private long messageid;
 	private boolean ismul;
 	private boolean isvalue;
-    
-	
-	
+	private boolean isanonymous;
 	public long getVoteid() {
 		return voteid;
 	}
@@ -74,6 +70,16 @@ public class Vote {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setIsanonymous(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isIsnonymous() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

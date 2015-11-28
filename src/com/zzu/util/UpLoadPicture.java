@@ -30,7 +30,6 @@ public class UpLoadPicture extends UpLoad{
 	try{
 		String pp = null;
 		String upto = null;
-			
 		if(ServletFileUpload.isMultipartContent(request)){
 			DiskFileItemFactory dff = new DiskFileItemFactory();//创建该对象
 			dff.setRepository(tmpDir);//指定上传文件的临时目录
@@ -137,6 +136,8 @@ public class UpLoadPicture extends UpLoad{
 				}
 
 		}
+		
+			
 		/*//定义解压字符串，用于解压上传的rar文件，注意此处需要一个winrar.exe文件
 		String jieya=request.getRealPath("/")+ "WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
 		//String jieya="D:\\Tomcat 5.5\\webapps\\fileupload\\WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
