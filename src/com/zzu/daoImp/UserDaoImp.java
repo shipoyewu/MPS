@@ -521,31 +521,20 @@ public class UserDaoImp implements UserDao {
 		}*/
 		if(udi.isUser(1)){  //------isUser() test
 			System.out.println("1存在！");
-<<<<<<< HEAD
 	}
 		if(udi.isUser("yolenstark@outlook.com")){
 			System.out.println("2存在！");
 		}
 		else System.out.println("2bucunzai !");
-	}
-		//System.out.println(udi.getId("13027711597", "tel"));
-		//if(udi.confUser(l, "6666663")) System.out.println("yes");
-	}
-
-
-
 	
-=======
-	}
-		if(udi.isUser("yolenstark@outlook.com")){
-			System.out.println("2存在！");
-		}
-		else System.out.println("2bucunzai !");
+		//System.out.println(udi.getId("13027711597", "tel"));
+		//if(udi.confUser(l, "6666663")) System.out.println("yes");
+
 	}
 		//System.out.println(udi.getId("13027711597", "tel"));
 		//if(udi.confUser(l, "6666663")) System.out.println("yes");
 	}
->>>>>>> shihu
+
 
 
 

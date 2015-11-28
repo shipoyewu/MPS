@@ -33,16 +33,6 @@ public class ReceiveDaoImp implements ReceiveDao {
 			pre.setLong(1, groupid);
 			res = pre.executeQuery();
 			while(res.next()){
-<<<<<<< HEAD
-				Long u = res.getLong(1);
-				Long m = res.getLong(2);
-				boolean b=res.getBoolean(3);
-				receive.add(u);
-				receive.add(m);
-				receive.add(b);
-			}
-			
-=======
 				mid=res.getLong("messageid");
 				String sql="select * from message where messageid=?";
 				PreparedStatement pre2=null;
@@ -80,7 +70,6 @@ public class ReceiveDaoImp implements ReceiveDao {
 						e.printStackTrace();
 				        }
 			  }
->>>>>>> shihu
 		}catch(Exception e){
 			System.out.println("\nxingjiali:receivedaoimp:getallreceivemeg\n");
 			e.printStackTrace();
