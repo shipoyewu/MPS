@@ -107,7 +107,7 @@ public class RelationDaoImp implements RelationDao {
 			res = pre.executeQuery();
 			while(res.next()){
 				
-
+				
 				Long u = res.getLong(1);
 				pre2 = con.prepareStatement(sql2);
 				pre2.setLong(1, u);

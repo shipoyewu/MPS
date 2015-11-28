@@ -1,3 +1,4 @@
+<%@page import="com.zzu.modle.Message"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 	import="java.util.ArrayList,com.zzu.modle.User,com.zzu.daoImp.UserDaoImp,com.zzu.modle.Receive,com.zzu.daoImp.ReceiveDaoImp"%>
@@ -13,7 +14,7 @@
 	user=new UserDaoImp().getUser(userid);//得到用户的信息    
 	
 	//得到用的接受的所有信息
-	ArrayList<Receive> recList=new ReceiveDaoImp().getAllReceiveMeg(Long.parseLong(userid));
+	ArrayList<Message> recList=new ReceiveDaoImp().getAllReceiveMeg(Long.parseLong(userid));
 %>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/perhome.css" type="text/css" />

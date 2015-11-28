@@ -7,7 +7,6 @@ import com.zzu.modle.Vote;
  *
  */
 public interface VoteDao {
-	public void addVote(Vote vote);
+	public long addVote(Vote vote);
 	public boolean isvalid(long voteid);
-	public Vote getVote(Vote vote);
 }

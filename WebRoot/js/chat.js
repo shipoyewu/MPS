@@ -1,6 +1,3 @@
-/**
- * 
- */
 function message() {
     var a = $.blinkTitle.show();
     setTimeout(function() {
@@ -8,9 +5,27 @@ function message() {
     },
     8e3)
 }
+
 $(document).ready(function() {
-    function e() {
-        function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h())
+	//a为当前的的index，b为sender头像，c为receiver头像，d为receiver的姓名，w为sender的id,uname为名字,u为receiver的id
+	
+	var a = 3,
+    b = $("#master").attr("src"),
+    c = "",
+    d = "",
+    w = $("#master").attr("name"),
+    uname=$("#user").text(),
+    u,
+    first=true;
+	
+	
+	
+	function e() {
+        function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h());
+        }
+        if(c == ""){
+        	alert("请选择一名好友进行聊天！");
+        	return ;
         }
         var e = new Date,
         f = "";
@@ -22,13 +37,20 @@ $(document).ready(function() {
         f += e.getSeconds();
         var g = $("#textarea").val();
         h();
-        var i = "<div class='message clearfix'><div class='user-logo'><img src='" + b + "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>\u5f20\u98de</h5>" + "<div>" + g + "</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>" + "<div class='message clearfix'>" + "<div class='user-logo'>" + "<img src='" + c + "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>" + d + "</h5>" + "<div>" + g + "\u7684\u56de\u590d\u5185\u5bb9</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>";
-        null != g && "" != g ? ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val(""), message()) : alert("\u8bf7\u8f93\u5165\u804a\u5929\u5185\u5bb9!")
+        var i = "<div class='message clearfix'><div class='user-logo'><img src='" +
+            b + 
+            "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>"+
+            uname +
+            "</h5>" + "<div>" + 
+            g + 
+            "</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + 
+            f + 
+            "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>"; 
+        null != g && "" != g ? ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val("")) : alert("\u8bf7\u8f93\u5165\u804a\u5929\u5185\u5bb9!")
     }
-    var a = 3,
-    b = "img/head/2024.jpg",
-    c = "img/head/2015.jpg",
-    d = "\u738b\u65ed";
+	
+	
+	//alert("b:"+b+"c:"+c+"w:"+w+"uname:"+uname);
     $(".close_btn").click(function() {
         $(".chatBox").hide()
     }),
@@ -37,16 +59,47 @@ $(document).ready(function() {
     }).mouseout(function() {
         $(this).removeClass("hover").siblings().removeClass("hover")
     }),
+    
     $(".chat03_content li").dblclick(function() {
-        var b = $(this).index() + 1;
-        a = b,
-        c = "img/head/20" + (12 + a) + ".jpg",
+    	if(first==true){
+    		first=false;
+    		setInterval(function getMessage(){
+    			$.ajax({
+    				type: "POST",
+    				url: "servlet/GetMessage",
+    				data: {"sender":w,"recevier":u},
+    				   success: function(data){
+    					   if(data.msg!=null){
+    						   function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h());
+    					        }
+    						   var f = "asdasd";
+    						   var g = "asdasdasd";
+    						   h();
+    						   var i = "<div class='message clearfix'>" + "<div class='user-logo'>" + "<img src='" + 
+    				            c + 
+    				            "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>" +
+    				            d + "</h5>" + "<div>" + 
+    				            g + 
+    				            "的回复内容</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + 
+    				            f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>";
+    					        ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), message());
+    					   }
+    				   }
+    			});
+    		},
+    	    500);
+    	}
+    	var b = this.id;
+        u = b;
+    	a = $(this).index() + 1,
+        c = "img/head/" + b + ".jpg",
         d = $(this).find(".chat03_name").text(),
         $(".chat01_content").scrollTop(0),
         $(this).addClass("choosed").siblings().removeClass("choosed"),
         $(".talkTo a").text($(this).children(".chat03_name").text()),
-        $(".mes" + b).show().siblings().hide()
+        $(".mes" + a).show().siblings().hide()
     }),
+    
     $(".ctb01").mouseover(function() {
         $(".wl_faces_box").show()
     }).mouseout(function() {
@@ -112,3 +165,5 @@ function(a) {
         }
     })
 } (jQuery);
+
+

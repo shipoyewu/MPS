@@ -18,7 +18,7 @@ public class ContentDaoImp implements ContentDao {
 		// TODO Auto-generated method stub
 	
 		Connection con = new DataBase().getConnection();
-		String sql = "select *from content where contentid=?";
+		String sql = "select * from content where contentid=?";
 		Content  c=new Content();
 		PreparedStatement pre = null;
 		ResultSet res = null;
