@@ -29,8 +29,8 @@ public class ReceiveDaoImp implements ReceiveDao {
 				Long m = res.getLong(2);
 				boolean b=res.getBoolean(3);
 				receive.add(u);
-				receive.add(u);
 				receive.add(m);
+				receive.add(b);
 			}
 			
 		}catch(Exception e){

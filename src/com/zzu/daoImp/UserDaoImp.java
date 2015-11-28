@@ -11,14 +11,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.zzu.dao.UserDao;
+import com.zzu.modle.Message;
+import com.zzu.modle.Relation;
 import com.zzu.modle.User;
 import com.zzu.modle.View;
+import com.zzu.modle.Vote;
 import com.zzu.util.baseTools;
 
 import databaseconnection.DataBase;
@@ -26,7 +30,7 @@ import databaseconnection.DataBase;
 public class UserDaoImp implements UserDao {
 
 	
-	public User getUser(Long userid) {
+	public User getUser(long userid) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -174,7 +178,7 @@ public class UserDaoImp implements UserDao {
 	
 
 	@Override
-	public boolean isUser(String email) {  //是否存在该用户			------------error
+	public boolean isUser(String email) {  //是否存在该用户			
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -184,10 +188,9 @@ public class UserDaoImp implements UserDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
-			if(!res.next())
-				return true;
-			else {
+			if(!res.next()){
 				System.out.println("不存在该用户!");
+				return false;
 			}
 			DataBase.free(res, con, pstmt);
 		} catch (SQLException e) {
@@ -195,11 +198,11 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			return false;
 		}
-			return false;		
+			return true;		
 	}
 
 	@Override
-	public boolean isUser(Long userid) {  //是否存在该用户
+	public boolean isUser(long userid) {  //是否存在该用户
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -210,10 +213,9 @@ public class UserDaoImp implements UserDao {
 			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
 		
-			if(!res.next())
-				return true;
-			else 	{
+			if(!res.next()){
 				System.out.println("不存在该用户!");
+				return false;
 			}
 			DataBase.free(res, con, pstmt);
 		} catch (SQLException e) {
@@ -221,18 +223,22 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			return false;
 		}	
-		return false;
+		return true;
 	}
 		
 
 	@Override
+	/*
+	 * 第二个参数为"email"或"tel",第一个为具体值
+	 * @see com.zzu.dao.UserDao#getId(java.lang.String, java.lang.String)
+	 */
 	public long getId(String str, String type) {  //获得用户ID
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
 		String sql = null;
-		int userid = 0;
+		Long userid;
 		if(type.equals("email")){
 			try {
 				sql = "select userid from user where email=?";
@@ -240,13 +246,13 @@ public class UserDaoImp implements UserDao {
 				pstmt.setString(1, str);
 				res = pstmt.executeQuery();
 				if(res.next()){
-					userid = res.getInt("userid");
+					userid = res.getLong("userid");
+					return userid;
 				}
 				else {
 					System.out.println("无该用户！");
-					return 0;
 				}
-				return userid;
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -260,13 +266,13 @@ public class UserDaoImp implements UserDao {
 				pstmt.setString(1, str);
 				res = pstmt.executeQuery();
 				if(res.next()){
-					userid = res.getInt("userid");
+					userid = res.getLong("userid");
+					return userid;
 				}
 				else {
 					System.out.println("无该用户！");
-					return 0;
 				}
-				return userid;
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -280,26 +286,31 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public boolean confUser(Long userid, String password) {
+	public boolean confUser(long userid, String password) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		User user = null;
-		if(!isUser(userid)){
-			System.out.println("无该用户！");
-			return false;
-		}
-		String sql = "select password from user where userid=?";
+		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
 			if(!res.next()){
-				if(password.equals(res.getString("password")) ){
-					return true;
-				}
-				else{
+				System.out.println("不存在该用户！");
+				return false;
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		sql = "select password from user where userid=?";
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, userid);
+			res = pstmt.executeQuery();
+			if(res.next()){
+				if(!password.equals(res.getString("password")) ){
 					System.out.println("密码匹配错误！");
 					return false;
 				}
@@ -310,9 +321,8 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			System.out.println("failed to Config User by userid!");
 		}
-			
-			DataBase.freeStatement(con, pstmt);
-		return false;
+		DataBase.freeStatement(con, pstmt);
+		return true;
 		
 	}
 
@@ -322,10 +332,10 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		User user = null;
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				System.out.println("不存在该用户！");
@@ -341,10 +351,7 @@ public class UserDaoImp implements UserDao {
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
 			if(!res.next()){
-				if(password.equals(res.getString("password")) ){
-					return true;
-				}
-				else{
+				if(!password.equals(res.getString("password")) ){
 					System.out.println("密码匹配错误！");
 					return false;
 				}
@@ -355,24 +362,108 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			System.out.println("failed to Config User by email!");
 		}
-			
-			DataBase.freeStatement(con, pstmt);
-		return false;
+		DataBase.freeStatement(con, pstmt);
+		return true;
 		
 	}
 
 	@Override
-	public ArrayList<Object> getAllSendMeg(Long userid) {
+	public ArrayList<Message> getAllSendMeg(long userid) {
 		// TODO Auto-generated method stub
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		ArrayList<Message> m = null;
+		Message msg = new Message();
+		Long groupid = findGroup(userid);
+		String sql = "select * from message where groupid=?";
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, groupid);
+			res = pstmt.executeQuery();
+			while(res.next()){
+				 msg.setMessageid(res.getLong("messageid"));
+				 msg.setMessagetitle(res.getString("messagetitle"));
+				 msg.setContentid(res.getLong("contentid"));
+				 msg.setCreatetime(res.getDate("createtime"));
+				 msg.setDeletetime(res.getDate("deletetime"));
+				 msg.setGroupid(groupid);
+				 msg.setIscomment(res.getBoolean("iscomment"));
+				 msg.setIsremind(res.getBoolean("isremind"));
+				 msg.setRemindtime(res.getDate("remindtime"));
+				 msg.setIsvalue(res.getBoolean("isvalue"));
+				 m.add(msg);
+			}
+			return m;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
-	
 	@Override
-	public ArrayList<Object> getAllVote(Long voteid) {
+	public long findGroup(long userid) {
+		// TODO Auto-generated method stub
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		String sql = "select groupid from fork where userid=";
+	    try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, userid);
+			if(res.next()){
+				return res.getLong("groupid");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	@Override
+	public ArrayList<Vote> getAllVote(long voteid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	@Override
+	public ArrayList<User> getHaveRelation(long userid) {
+		// TODO Auto-generated method stub
+		ArrayList<User> u = new ArrayList();
+		ArrayList<Long> userList = null;
+		ArrayList<ArrayList<Long>> up = null;
+		ArrayList<ArrayList<Long>> down = null;
+		ArrayList<Long> temp = new ArrayList<Long>();
+		RelationDaoImp r = new RelationDaoImp();
+		down = r.findDown(userid);
+		int count1 = down.size();
+		int count2 = 0;
+		for( int i = 0; i < count1; i++){
+			 temp = down.get(i);
+			 count2 = temp.size();
+			for(int j = 0; j < count2; j++){
+				 userList.add(temp.get(j));
+			}
+		}
+		count1 = count2 = 0;
+		count1 = up.size();
+		for(int i = 0; i< count1; i++){
+			temp = down.get(i);
+			 count2 = temp.size();
+			for(int j = 0; j < count2; j++){
+				 userList.add(temp.get(j));
+			}
+		}
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		Iterator<Long> it = userList.iterator();
+		long uid = 0;
+		while(){
+			
+		}
+		//u.add();
+		return null;
+	}
 	@SuppressWarnings({ "null", "unused" })
 	public void updateIcon(User user) { 			 //更新用户头像
 		// TODO Auto-generated method stub
@@ -397,7 +488,6 @@ public class UserDaoImp implements UserDao {
 	}
 	public static void main(String[] args){
 		//User u = new User();
-		Long l = new Long(2);
 		UserDaoImp udi = new UserDaoImp();
 		/*User user = udi.getUser(l);
 		System.out.println(user.getUserid());  //getUser----test
@@ -413,13 +503,13 @@ public class UserDaoImp implements UserDao {
 		System.out.println(user2.getEmail());
 		System.out.println(user2.getRegistertime());
 		System.out.println(user2.getBirthday());*/
-		User u = new User();		
+		/*User u = new User();		
 		u.setEmail("yolen_zz@outlook.com");
 		baseTools bt = new baseTools();
 		u.setUsername("fuguo");
 		u.setBirthday(bt.str2Date("1994-08-06"));
 		u.setPassword("6666663");
-		u.setTel("13027711597");
+		u.setTel("13027711597");*/
 		//udi.updateUser(u); ----UpdateUser()test
 		/*Date rt = bt.getNowTosql();
 		u.setRegistertime(rt);
@@ -429,15 +519,21 @@ public class UserDaoImp implements UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		/*if(udi.isUser(l)){  ------isUser() test
+		if(udi.isUser(1)){  //------isUser() test
 			System.out.println("1存在！");
 	}
 		if(udi.isUser("yolenstark@outlook.com")){
 			System.out.println("2存在！");
 		}
 		else System.out.println("2bucunzai !");
-		*/
 	}
-}
+		//System.out.println(udi.getId("13027711597", "tel"));
+		//if(udi.confUser(l, "6666663")) System.out.println("yes");
+	}
+
+
+
+	
+
 
 

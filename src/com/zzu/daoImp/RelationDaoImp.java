@@ -33,7 +33,6 @@ public class RelationDaoImp implements RelationDao {
 	public ArrayList<ArrayList<Long>> findDown(long groupid) {
 		// TODO Auto-generated method stub
 		Connection con = new DataBase().getConnection();
-		
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
 		Queue<Long> que = null;
 		try {
@@ -234,7 +233,7 @@ public class RelationDaoImp implements RelationDao {
 	public ArrayList<ArrayList<Long>> findUp(long groupid) {
 		// TODO Auto-generated method stub
 		Connection con = new DataBase().getConnection();
-
+		
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
 		Queue<Long> que = null;
 		try {

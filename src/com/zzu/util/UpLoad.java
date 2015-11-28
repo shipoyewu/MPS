@@ -29,7 +29,7 @@ public class UpLoad {
 	public UpLoad() {
 		// TODO Auto-generated constructor stub
 	}
-	public boolean UpLoadFile(Long userid, Long messageid, HttpServletRequest request){
+	public boolean UpLoadFile(long userid, long messageid, HttpServletRequest request){
 		try{
 			String pp = null;
 			String upto = null;
@@ -56,7 +56,7 @@ public class UpLoad {
 			String fileName = fis.getName();
 			sc = request.getServletContext();
 			//System.out.println("request.getRealPath()=="+sc.getRealPath("/"));
-			String uploadPath = sc.getRealPath("/")+"userdata"+"\\"+userid.toString();//选定上传的目录,此处为当前目录 MPS\
+			String uploadPath = sc.getRealPath("/")+"userdata"+"\\"+userid;//选定上传的目录,此处为当前目录 MPS\
 			if(!new File(uploadPath).isDirectory())//选定上传的目录,此处为当前目录，没有则创建
 			    new File(uploadPath).mkdirs();
 			

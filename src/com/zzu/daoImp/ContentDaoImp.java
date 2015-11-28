@@ -9,33 +9,36 @@ import com.zzu.modle.Content;
 
 import databaseconnection.DataBase;
 
-
+/**
+ * 
+ * @author xingjiali
+ *
+ */
 public class ContentDaoImp implements ContentDao {
 
 
 	@Override
 	public Content getContent(long contentid) {
 		// TODO Auto-generated method stub
-	
+		
 		Connection con = new DataBase().getConnection();
 		String sql = "select *from content where contentid=?";
 		Content  c=new Content();
 		PreparedStatement pre = null;
-		ResultSet res = null;
-	
+		ResultSet res = null;	
 		try{
 			pre=con.prepareStatement(sql);
 			pre.setLong(1, contentid);
 			res=pre.executeQuery();
 			while(res.next())
 			{
-				String u=res.getString(1);
-				String t=res.getString(2);
-				String i=res.getString(3);
-				String f=res.getString(4);
-				c.setContentid(contentid);
+				long u=res.getLong("contentid");
+				String t=res.getString("text");
+				String i=res.getString("image");
+				String f=res.getString("file");
+				c.setContentid(u);
 				c.setFile(t);
-				 c.setImage(t);
+				c.setImage(i);
 				c.setText(f);
 			}
 			
