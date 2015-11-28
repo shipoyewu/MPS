@@ -139,7 +139,11 @@ public class DataBase {
 //				}
 //			}
 //		}
+<<<<<<< HEAD
 	    public static void free(ResultSet rs, Connection conn, java.sql.PreparedStatement pre) {
+=======
+	    public static void free(ResultSet rs, Connection conn, java.sql.PreparedStatement pstmt) {
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 	        try {
 	            if (rs != null) {
 	                rs.close();

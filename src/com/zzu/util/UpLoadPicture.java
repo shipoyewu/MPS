@@ -26,10 +26,18 @@ public class UpLoadPicture extends UpLoad{
 	public UpLoadPicture() {
 		// TODO Auto-generated constructor stub
 	}
+<<<<<<< HEAD
 	public boolean UpLoadIcon(long userid, HttpServletRequest request){
 	try{
 		String pp = null;
 		String upto = null;
+=======
+	public boolean UpLoadIcon(Long userid, HttpServletRequest request){
+	try{
+		String pp = null;
+		String upto = null;
+			
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		if(ServletFileUpload.isMultipartContent(request)){
 			DiskFileItemFactory dff = new DiskFileItemFactory();//创建该对象
 			dff.setRepository(tmpDir);//指定上传文件的临时目录
@@ -51,7 +59,11 @@ public class UpLoadPicture extends UpLoad{
 					String fileName = fis.getName();
 					sc = request.getServletContext();
 					//System.out.println("request.getRealPath()=="+sc.getRealPath("/"));
+<<<<<<< HEAD
 					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid;//选定上传的目录,此处为当前目录 MPS\
+=======
+					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid.toString();//选定上传的目录,此处为当前目录 MPS\
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 					if(!new File(uploadPath).isDirectory())//选定上传的目录,此处为当前目录，没有则创建
 						new File(uploadPath).mkdirs();
 					
@@ -87,7 +99,11 @@ public class UpLoadPicture extends UpLoad{
 			}
 		return true;
 	}
+<<<<<<< HEAD
 	public boolean UpLoadMsgPic(long userid, long messageid, HttpServletRequest request){
+=======
+	public boolean UpLoadMsgPic(Long userid, Long messageid, HttpServletRequest request){
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 	try{
 		String pp = null;
 		String upto = null;
@@ -114,7 +130,11 @@ public class UpLoadPicture extends UpLoad{
 					String fileName = fis.getName();
 					sc = request.getServletContext();
 					//System.out.println("request.getRealPath()=="+sc.getRealPath("/"));
+<<<<<<< HEAD
 					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid;//选定上传的目录,此处为当前目录 MPS\
+=======
+					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid.toString();//选定上传的目录,此处为当前目录 MPS\
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 					if(!new File(uploadPath).isDirectory())//选定上传的目录,此处为当前目录，没有则创建
 						new File(uploadPath).mkdirs();
 		
@@ -136,8 +156,11 @@ public class UpLoadPicture extends UpLoad{
 				}
 
 		}
+<<<<<<< HEAD
 		
 			
+=======
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		/*//定义解压字符串，用于解压上传的rar文件，注意此处需要一个winrar.exe文件
 		String jieya=request.getRealPath("/")+ "WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
 		//String jieya="D:\\Tomcat 5.5\\webapps\\fileupload\\WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";

@@ -16,27 +16,41 @@ import java.util.Iterator;
 import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.Connection;
+<<<<<<< HEAD
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+=======
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 import com.zzu.dao.UserDao;
 import com.zzu.modle.Message;
 import com.zzu.modle.Relation;
 import com.zzu.modle.User;
 import com.zzu.modle.View;
+<<<<<<< HEAD
 import com.zzu.modle.Vote;
 import com.zzu.util.baseTools;
+=======
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 
 import databaseconnection.DataBase;
 
 public class UserDaoImp implements UserDao {
 
 	
+<<<<<<< HEAD
 	public User getUser(long userid) {
+=======
+	public User getUser(Long userid) {
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
+<<<<<<< HEAD
 		User user = new User();
 		user.setUserid(userid);
+=======
+		User user = null;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -46,6 +60,7 @@ public class UserDaoImp implements UserDao {
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setEmail(res.getString("email"));
+<<<<<<< HEAD
 				user.setPassword(res.getString("password"));
 				user.setRegistertime(res.getDate("registertime"));
 				user.setTel(res.getString("tel"));
@@ -57,6 +72,14 @@ public class UserDaoImp implements UserDao {
 				DataBase.free(res, con, pstmt);
 			}
 				
+=======
+				user.setRegistertime(res.getString("registertime"));
+				user.setTel(res.getString("tel"));
+				PictureDao pic = new PictureDao();
+				user.setPicture(pic.getUserIcon(userid));	//可能会有问题
+			}
+				return user;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,13 +95,18 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
+<<<<<<< HEAD
 		User user = new User();
 		user.setEmail(email);
+=======
+		User user = null;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
+<<<<<<< HEAD
 			if(res.next()){
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
@@ -93,6 +121,18 @@ public class UserDaoImp implements UserDao {
 					System.out.println("该用户不存在！");
 					DataBase.free(res, con, pstmt);
 			}
+=======
+			while(res.next()){
+				user.setUsername( res.getString("username"));
+				user.setBirthday(res.getDate("birthday"));
+				user.setUserid(res.getLong("userid"));
+				user.setRegistertime(res.getString("registertime"));
+				user.setTel(res.getString("tel"));
+				//PictureDao pic = new PictureDao();
+				//user.setPicture(pic.getUserIcon(userid).getImage());	//可能会有问题
+			}
+				return user;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,6 +144,7 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public boolean updateUser(User user) {  				//更改用户信息，不包括头像,密码 ,需要填写的信息有：
 		// TODO Auto-generated method stub					//username,birthday，email，tel都不能为空
 		Connection con = (Connection) DataBase.getConnection();
@@ -143,6 +184,30 @@ public class UserDaoImp implements UserDao {
 			DataBase.freeStatement(con, pstmt);
 			System.out.println("Update success!");
 			return true; 
+=======
+	public void updateUser(User user) {  				//更改用户信息，不包括头像
+		// TODO Auto-generated method stub
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		String sql = "update user set username=?,birthday=?,email=?,registertime=?,tel=?,picture=? where userid=?";
+		
+		try {
+			pstmt.setString(1, user.getUsername());
+			pstmt.setDate(2, (Date) user.getBirthday());
+			pstmt.setString(3, user.getEmail());
+			pstmt.setString(4, user.getRegistertime());
+			pstmt.setString(5, user.getTel());
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("failed to update user!");
+		}
+			
+			DataBase.freeStatement(con, pstmt);
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 	}
 
 	@Override
@@ -154,6 +219,7 @@ public class UserDaoImp implements UserDao {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
+<<<<<<< HEAD
 		String sql = "insert into user(username,birthday,email,registertime,tel,password) "
 				+ "values(?,?,?,?,?,?)";
 		try {
@@ -167,27 +233,65 @@ public class UserDaoImp implements UserDao {
 			pstmt.executeUpdate();
 			DataBase.freeStatement(con, pstmt);
 			System.out.println("add user success.");
+=======
+		String sql = "insert into user (username,birthday,email,registertime,tel) "
+				+ "values('username'=?,'birthday'=?,'email'=?,'registertime'=?,'tel'=?)";
+		
+		try {
+			pstmt.setString(1, user.getUsername());
+			pstmt.setDate(2, (Date) user.getBirthday());
+			pstmt.setString(3, user.getEmail());
+			pstmt.setString(4, user.getRegistertime());
+			pstmt.setString(5, user.getTel());
+			File image = new File(user.getPicture().getImageFile());
+			FileInputStream fis;
+			try {
+				fis = new FileInputStream(image);
+				pstmt.setBinaryStream(6, fis, (int) image.length());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+	
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("failed to update user!");
+<<<<<<< HEAD
 			System.out.println("UNIQUE属性的列插入了相同值");
 		}
 		
+=======
+		}
+			
+		DataBase.freeStatement(con, pstmt);
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 	}
 	
 
 	@Override
+<<<<<<< HEAD
 	public boolean isUser(String email) {  //是否存在该用户			
+=======
+	public boolean isUser(String email) {  //是否存在该用户
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
+<<<<<<< HEAD
+=======
+		User user = null;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
+<<<<<<< HEAD
 			if(!res.next()){
 				System.out.println("不存在该用户!");
 				return false;
@@ -203,15 +307,36 @@ public class UserDaoImp implements UserDao {
 
 	@Override
 	public boolean isUser(long userid) {  //是否存在该用户
+=======
+			while(!res.next())
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("failed to find User by userid!");
+		}
+			
+			DataBase.free(res, con, pstmt);
+		return false;
+	}
+
+	@Override
+	public boolean isUser(Long userid) {  //是否存在该用户
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
+<<<<<<< HEAD
+=======
+		User user = null;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
+<<<<<<< HEAD
 		
 			if(!res.next()){
 				System.out.println("不存在该用户!");
@@ -224,21 +349,42 @@ public class UserDaoImp implements UserDao {
 			return false;
 		}	
 		return true;
+=======
+			while(!res.next())
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("failed to find User by userid!");
+		}
+			
+			DataBase.free(res, con, pstmt);
+			System.out.println("不存在该用户!");
+		return false;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 	}
 		
 
 	@Override
+<<<<<<< HEAD
 	/*
 	 * 第二个参数为"email"或"tel",第一个为具体值
 	 * @see com.zzu.dao.UserDao#getId(java.lang.String, java.lang.String)
 	 */
 	public long getId(String str, String type) {  //获得用户ID
+=======
+	public int getId(String str, String type) {  //获得用户ID
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
 		String sql = null;
+<<<<<<< HEAD
 		Long userid;
+=======
+		int userid = 0;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		if(type.equals("email")){
 			try {
 				sql = "select userid from user where email=?";
@@ -246,6 +392,7 @@ public class UserDaoImp implements UserDao {
 				pstmt.setString(1, str);
 				res = pstmt.executeQuery();
 				if(res.next()){
+<<<<<<< HEAD
 					userid = res.getLong("userid");
 					return userid;
 				}
@@ -253,6 +400,15 @@ public class UserDaoImp implements UserDao {
 					System.out.println("无该用户！");
 				}
 				
+=======
+					userid = res.getInt("userid");
+				}
+				else {
+					System.out.println("无该用户！");
+					return 0;
+				}
+				return userid;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -266,6 +422,7 @@ public class UserDaoImp implements UserDao {
 				pstmt.setString(1, str);
 				res = pstmt.executeQuery();
 				if(res.next()){
+<<<<<<< HEAD
 					userid = res.getLong("userid");
 					return userid;
 				}
@@ -273,6 +430,15 @@ public class UserDaoImp implements UserDao {
 					System.out.println("无该用户！");
 				}
 				
+=======
+					userid = res.getInt("userid");
+				}
+				else {
+					System.out.println("无该用户！");
+					return 0;
+				}
+				return userid;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -286,11 +452,12 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@Override
-	public boolean confUser(long userid, String password) {
+	public boolean confUser(Long userid, String password) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
+<<<<<<< HEAD
 		String sql = "select * from user where userid=?";
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -305,12 +472,28 @@ public class UserDaoImp implements UserDao {
 			e1.printStackTrace();
 		}
 		sql = "select password from user where userid=?";
+=======
+		User user = null;
+		if(!isUser(userid)){
+			System.out.println("无该用户！");
+			return false;
+		}
+		String sql = "select password from user where userid=?";
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, userid);
 			res = pstmt.executeQuery();
+<<<<<<< HEAD
 			if(res.next()){
 				if(!password.equals(res.getString("password")) ){
+=======
+			if(!res.next()){
+				if(password.equals(res.getString("password")) ){
+					return true;
+				}
+				else{
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 					System.out.println("密码匹配错误！");
 					return false;
 				}
@@ -321,8 +504,14 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			System.out.println("failed to Config User by userid!");
 		}
+<<<<<<< HEAD
 		DataBase.freeStatement(con, pstmt);
 		return true;
+=======
+			
+			DataBase.freeStatement(con, pstmt);
+		return false;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		
 	}
 
@@ -332,10 +521,17 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
+<<<<<<< HEAD
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
+=======
+		User user = null;
+		String sql = "select * from user where email=?";
+		try {
+			pstmt = con.prepareStatement(sql);
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				System.out.println("不存在该用户！");
@@ -351,7 +547,14 @@ public class UserDaoImp implements UserDao {
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
 			if(!res.next()){
+<<<<<<< HEAD
 				if(!password.equals(res.getString("password")) ){
+=======
+				if(password.equals(res.getString("password")) ){
+					return true;
+				}
+				else{
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 					System.out.println("密码匹配错误！");
 					return false;
 				}
@@ -362,13 +565,23 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			System.out.println("failed to Config User by email!");
 		}
+<<<<<<< HEAD
 		DataBase.freeStatement(con, pstmt);
 		return true;
+=======
+			
+			DataBase.freeStatement(con, pstmt);
+		return false;
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		
 	}
 
 	@Override
+<<<<<<< HEAD
 	public ArrayList<Message> getAllSendMeg(long userid) {
+=======
+	public ArrayList<Object> getAllSendMeg(Long userid) {
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
@@ -402,6 +615,7 @@ public class UserDaoImp implements UserDao {
 		return null;
 	}
 	@Override
+<<<<<<< HEAD
 	public long findGroup(long userid) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
@@ -464,6 +678,13 @@ public class UserDaoImp implements UserDao {
 		//u.add();
 		return null;
 	}
+=======
+	public ArrayList<Object> getAllVote(Long voteid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 	@SuppressWarnings({ "null", "unused" })
 	public void updateIcon(User user) { 			 //更新用户头像
 		// TODO Auto-generated method stub
@@ -487,6 +708,7 @@ public class UserDaoImp implements UserDao {
 		}
 	}
 	public static void main(String[] args){
+<<<<<<< HEAD
 		//User u = new User();
 		UserDaoImp udi = new UserDaoImp();
 		/*User user = udi.getUser(l);
@@ -536,6 +758,12 @@ public class UserDaoImp implements UserDao {
 	}
 
 
+=======
+		
+	}
+	
+}
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 
 
 	

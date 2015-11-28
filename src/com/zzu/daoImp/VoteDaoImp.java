@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.zzu.daoImp;
 
 
@@ -175,3 +176,35 @@ public class VoteDaoImp implements VoteDao {
 
 	
 }
+=======
+package com.zzu.daoImp;
+
+import com.zzu.dao.VoteDao;
+import com.zzu.modle.Vote;
+
+public class VoteDaoImp implements VoteDao {
+
+	public VoteDaoImp() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void addVote(Vote vote) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isvalid(long voteid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Vote getVote(Vote vote) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5

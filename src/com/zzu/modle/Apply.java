@@ -7,7 +7,7 @@ public class Apply {
 	private long groupdown;
 	private Date applytime;
 	private String applycontent;
-	private boolean type;
+	private boolean isvalid;
 	
 	public long getGroupup() {
 		return groupup;
@@ -41,12 +41,12 @@ public class Apply {
 		this.applycontent = applycontent;
 	}
 
-	public boolean isType() {
-		return type;
+	public boolean isIsValid() {
+		return isvalid;
 	}
 
-	public void setType(boolean type) {
-		this.type = type;
+	public void setValid(boolean type) {
+		this.isvalid = type;
 	}
 
 	public static void main(String[] args) {

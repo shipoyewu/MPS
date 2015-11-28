@@ -1,5 +1,6 @@
 package com.zzu.daoImp;
 
+<<<<<<< HEAD
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,10 +13,17 @@ import databaseconnection.DataBase;
 
 public class ApplyDaoImp implements ApplyDao {
 	Connection con = new DataBase().getConnection();
+=======
+import com.zzu.dao.ApplyDao;
+import com.zzu.modle.Apply;
+
+public class ApplyDaoImp implements ApplyDao{
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 
 	@Override
 	public void addApply(Apply apply) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
 		String sql="insert into Apply(groupup,groupdown,applytime,applycontent,type) values(?,?,?,?,?) ";
 		PreparedStatement pre = null;
 		try{
@@ -38,12 +46,15 @@ public class ApplyDaoImp implements ApplyDao {
 		}
 	
 		
+=======
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 		
 	}
 
 	@Override
 	public void deleteApply(Apply apply) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
 		String sql="update Apply set isValid = '0' where groupup= ?  and groupdown = ?  ";
 		PreparedStatement pre = null;
 		try{
@@ -63,4 +74,10 @@ public class ApplyDaoImp implements ApplyDao {
 	}
 	
 
+=======
+		
+	}
+
+	
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
 }

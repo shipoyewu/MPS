@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.zzu.daoImp;
 
 import java.sql.Connection;
@@ -39,3 +40,23 @@ public class ChoiceDaoImp implements ChoiceDao {
 	}
 
 }
+=======
+package com.zzu.daoImp;
+
+import com.zzu.dao.ChoiceDao;
+import com.zzu.modle.Choice;
+
+public class ChoiceDaoImp implements ChoiceDao{
+
+	public ChoiceDaoImp() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void addChoice(Choice choice) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+>>>>>>> ea1b245b4e07eee18c10579f12e521f716630af5
