@@ -458,9 +458,9 @@ public class UserDaoImp implements UserDao {
 		ResultSet res = null;
 		Iterator<Long> it = userList.iterator();
 		long uid = 0;
-		while(){
+		/*while(){
 			
-		}
+		}*/
 		//u.add();
 		return null;
 	}
