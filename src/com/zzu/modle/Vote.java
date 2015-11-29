@@ -72,14 +72,14 @@ public class Vote {
 
 	}
 
-	public void setIsanonymous(boolean b) {
-		// TODO Auto-generated method stub
-		
+	public boolean isIsanonymous() {
+		return isanonymous;
 	}
 
-	public boolean isIsnonymous() {
-		// TODO Auto-generated method stub
-		return false;
+	public void setIsanonymous(boolean isanonymous) {
+		this.isanonymous = isanonymous;
 	}
+
+	
 
 }

@@ -1,11 +1,40 @@
-function messa() {
+/**
+ * 
+ */
+function qwer() {
     var a = $.blinkTitle.show();
     setTimeout(function() {
         $.blinkTitle.clear(a)
     },
     8e3)
+    alert("asdasdasd");
 }
-
+function getMessage(){
+	$.ajax({
+		type: "POST",
+		url: "servlet/jsa",
+		data: {"shi":$("#shi").value},
+		   success: function(data){
+			   if(data.msg!=null){
+				   function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h());
+			        }
+				   var c = "asdasd";
+				   var d = "asdasda";
+				   var f = data.time;
+				   var g = data.msg;
+				   h();
+				   var i = "<div class='message clearfix'>" + "<div class='user-logo'>" + "<img src='" + 
+		            c + 
+		            "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>" +
+		            d + "</h5>" + "<div>" + 
+		            g + 
+		            "的回复内容</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + 
+		            f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>";
+			        ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val(""), message());
+			   }
+		   }
+	});
+}
 $(document).ready(function() {
 	//a为当前的的index，b为sender头像，c为receiver头像，d为receiver的姓名，w为sender的id,uname为名字,u为receiver的id
 	
@@ -15,8 +44,10 @@ $(document).ready(function() {
     d = "",
     w = $("#master").attr("name"),
     uname=$("#user").text(),
-    u = null,
+    u,
     first=true;
+	
+	
 	
 	function e() {
         function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h());
@@ -44,11 +75,13 @@ $(document).ready(function() {
             "</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + 
             f + 
             "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>"; 
-        null != g && "" != g ? ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val("")) : alert("\u8bf7\u8f93\u5165\u804a\u5929\u5185\u5bb9!");
+        null != g && "" != g ? ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val(""), message()) : alert("\u8bf7\u8f93\u5165\u804a\u5929\u5185\u5bb9!")
     }
 	
 	
+	//alert("b:"+b+"c:"+c+"w:"+w+"uname:"+uname);
     $(".close_btn").click(function() {
+        $(".chatBox").hide()
     }),
     $(".chat03_content li").mouseover(function() {
         $(this).addClass("hover").siblings().removeClass("hover")
@@ -60,35 +93,27 @@ $(document).ready(function() {
     	if(first==true){
     		first=false;
     		setInterval(function getMessage(){
-    			
     			$.ajax({
     				type: "POST",
-    				url: "GetLetter",
-    				data: {"sender":u,"recevier":w},
-    				success: function(data){
-    					var g;
-    					var jsonList=eval("("+data+")");
-    					
-    					function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h());
-				        }
-    					if(jsonList.length!=0){
-    						messa();
-    					}
-    					for(var j = 0;j < jsonList.length;j++){
-    						var f = jsonList[j].time;
-    						g = jsonList[j].content;
-    						h();
-    						var i = "<div class='message clearfix'>" + "<div class='user-logo'>" + "<img src='" + 
-				            c + 
-				            "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>" +
-				            d + "</h5>" + "<div>" + 
-				            g + 
-				            "</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + 
-				            f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>";
-    						($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()));
-					        
-    					}
-				   }
+    				url: "servlet/jsa",
+    				data: {"sender":w,"recevier":u},
+    				   success: function(data){
+    					   if(data.msg!=null){
+    						   function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h());
+    					        }
+    						   var f = "asdasd";
+    						   var g = "asdasdasd";
+    						   h();
+    						   var i = "<div class='message clearfix'>" + "<div class='user-logo'>" + "<img src='" + 
+    				            c + 
+    				            "'/>" + "</div>" + "<div class='wrap-text'>" + "<h5 class='clearfix'>" +
+    				            d + "</h5>" + "<div>" + 
+    				            g + 
+    				            "的回复内容</div>" + "</div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix'><span>" + 
+    				            f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>";
+    					        ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), message());
+    					   }
+    				   }
     			});
     		},
     	    5000);
@@ -96,7 +121,7 @@ $(document).ready(function() {
     	var b = this.id;
         u = b;
     	a = $(this).index() + 1,
-        c = "userdata/" + b + ".jpg",
+        c = "img/head/" + b + ".jpg",
         d = $(this).find(".chat03_name").text(),
         $(".chat01_content").scrollTop(0),
         $(this).addClass("choosed").siblings().removeClass("choosed"),
@@ -124,18 +149,7 @@ $(document).ready(function() {
         $(".wl_faces_box").hide()
     }),
     $(".chat02_bar img").click(function() {
-    	
-    	if(u!=null)
-            $.ajax({
-    			type: "POST",
-    			url: "SendLetter",
-    			data: {"sender":w,"recevier":u,"content":$("#textarea").val()},
-    			success: function(data){
-    			}
-    	});
-        e();
-        
-        
+        e()
     }),
     document.onkeydown = function(a) {
         var b = document.all ? window.event: a;
@@ -160,7 +174,6 @@ $(document).ready(function() {
     }
 }),
 function(a) {
-	
     a.extend({
         blinkTitle: {
             show: function() {

@@ -47,7 +47,9 @@ public class RelationDaoImp implements RelationDao {
 		que.offer(groupid);
 		HashMap<Long,Integer> ma = new HashMap<Long, Integer>();
 		ma.put(groupid,0);
-		
+		ArrayList<Long> root = new ArrayList<Long>();
+		root.add(groupid);
+		tree.add(root);
 		String sql = "select down from relation where up=?";
 		
 		while(!que.isEmpty()){
@@ -62,8 +64,8 @@ public class RelationDaoImp implements RelationDao {
 					Long v = res.getLong(1);
 					int cen = ma.get(u)+1;
 					ma.put(v, cen);
-					
-					if(tree.size() < cen){
+					System.out.println(tree.size()+" "+cen);
+					if(tree.size() <= cen){
 						tree.add(new ArrayList<Long>());
 					}
 					tree.get(cen).add(v);
@@ -266,7 +268,9 @@ public class RelationDaoImp implements RelationDao {
 		que.offer(groupid);
 		HashMap<Long,Integer> ma = new HashMap<Long, Integer>();
 		ma.put(groupid,0);
-		
+		ArrayList<Long> root = new ArrayList<Long>();
+		root.add(groupid);
+		tree.add(root);
 		String sql = "select up from relation where down=?";
 		
 		while(!que.isEmpty()){
@@ -305,14 +309,14 @@ public class RelationDaoImp implements RelationDao {
 	@Override
 	public void delRelation(long up, long down) {
 		// TODO Auto-generated method stub
-		String del="delete from relation where up="+"\'"+up+"\'"+"and down="+"\'"+down+"\';";
+		String del="delete from relation where up="+"\'"+up+"\'"+" and down="+"\'"+down+"\';";
 		DBtools.RowDel(del);
 	}
 	@Override
 	public void delRelation(long forkid) {
 		// TODO Auto-generated method stub
-		String delup ="delete from relation where down="+"\'"+forkid+"'\";";
-		String deldown = "delete from relation where up="+"\'"+forkid+"'\";";
+		String delup ="delete from relation where down="+"\'"+forkid+"\';";
+		String deldown = "delete from relation where up="+"\'"+forkid+"\';";
 		DBtools.RowDel(delup);
 		DBtools.RowDel(deldown);
 	}

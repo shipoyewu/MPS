@@ -39,7 +39,7 @@ public class VoteDaoImp implements VoteDao {
         	pre.setLong(5,vote.getMessageid());
         	pre.setBoolean(6, vote.isIsmul());
         	pre.setBoolean(7, vote.isIsvalue());
-        	pre.setBoolean(8,vote.isIsnonymous());
+        	pre.setBoolean(8,vote.isIsanonymous());
         	pre.execute();
             id=vote.getVoteid();
         	

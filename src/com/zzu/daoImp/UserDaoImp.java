@@ -11,13 +11,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.zzu.dao.UserDao;
+import com.zzu.modle.Group;
 import com.zzu.modle.Message;
 import com.zzu.modle.Relation;
 import com.zzu.modle.User;
@@ -29,7 +32,62 @@ import databaseconnection.DataBase;
 
 public class UserDaoImp implements UserDao {
 
-	
+	public static void main(String[] args){
+		//User u = new User();
+		UserDaoImp udi = new UserDaoImp();
+		udi.getUser(1l);
+		ArrayList<User> a = udi.getHaveRelation(1l);
+		if(a.size() == 0){
+			System.out.println("A");
+		}else{
+			System.out.println(a.size());
+			for(int i =0;i < a.size();i++){
+				System.out.println(a.get(i).getUsername());
+			}
+		}
+		
+		/*User user = udi.getUser(l);
+		System.out.println(user.getUserid());  //getUser----test
+		System.out.println(user.getEmail());
+		System.out.println(user.getPassword());
+		System.out.println(user.getRegistertime());
+		System.out.println(user.getTel());
+		System.out.println(user.getBirthday());
+		System.out.println(user.getUsername());
+		System.out.println("getUser(userid)----test");
+		User user2 = udi.getUser("yolen_@163.com");
+		System.out.println(user2.getUsername());
+		System.out.println(user2.getEmail());
+		System.out.println(user2.getRegistertime());
+		System.out.println(user2.getBirthday());*/
+		/*User u = new User();		
+		u.setEmail("yolen_zz@outlook.com");
+		baseTools bt = new baseTools();
+		u.setUsername("fuguo");
+		u.setBirthday(bt.str2Date("1994-08-06"));
+		u.setPassword("6666663");
+		u.setTel("13027711597");*/
+		//udi.updateUser(u); ----UpdateUser()test
+		/*Date rt = bt.getNowTosql();
+		u.setRegistertime(rt);
+		try {
+			udi.addUser(u);
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		if(udi.isUser(1)){  //------isUser() test
+			System.out.println("1存在！");
+		}
+		if(udi.isUser("yolenstark@outlook.com")){
+			System.out.println("2存在！");
+		}
+		else System.out.println("2bucunzai !");
+		//System.out.println(udi.getId("13027711597", "tel"));
+		//if(udi.confUser(l, "6666663")) System.out.println("yes");
+	}
+		
+
 	public User getUser(long userid) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
@@ -428,41 +486,43 @@ public class UserDaoImp implements UserDao {
 	@Override
 	public ArrayList<User> getHaveRelation(long userid) {
 		// TODO Auto-generated method stub
-		ArrayList<User> u = new ArrayList();
-		ArrayList<Long> userList = null;
-		ArrayList<ArrayList<Long>> up = null;
-		ArrayList<ArrayList<Long>> down = null;
-		ArrayList<Long> temp = new ArrayList<Long>();
-		RelationDaoImp r = new RelationDaoImp();
-		down = r.findDown(userid);
-		int count1 = down.size();
-		int count2 = 0;
-		for( int i = 0; i < count1; i++){
-			 temp = down.get(i);
-			 count2 = temp.size();
-			for(int j = 0; j < count2; j++){
-				 userList.add(temp.get(j));
+		GroupDaoImp GD = new GroupDaoImp();
+		RelationDaoImp RD = new RelationDaoImp();
+		ArrayList<Group> glist = GD.findAllGroup(userid);
+		HashSet<Long> set = new HashSet<Long>(); 
+		
+		for(int i = 0;i < glist.size();i++){
+			Group g = glist.get(i);
+			ArrayList<ArrayList<Long>> up = RD.findUp(g.getGroupid());
+			if(up.size() == 0){
+				System.out.println("B");
+			}
+			ArrayList<ArrayList<Long>> down = RD.findDown(g.getGroupid());
+			if(down.size() == 0){
+				System.out.println("B");
+			}
+			for(int j = 0;j < up.size();j++){
+				for(int k = 0;k < up.get(j).size();k ++){
+					set.add(GD.getUserid(up.get(j).get(k)));
+				}
+			}
+			for(int j = 0;j < down.size();j++){
+				for(int k = 0;k < down.get(j).size();k ++){
+					set.add(GD.getUserid(down.get(j).get(k)));
+				}
 			}
 		}
-		count1 = count2 = 0;
-		count1 = up.size();
-		for(int i = 0; i< count1; i++){
-			temp = down.get(i);
-			 count2 = temp.size();
-			for(int j = 0; j < count2; j++){
-				 userList.add(temp.get(j));
-			}
+		
+		Iterator<Long> ite = set.iterator();
+		ArrayList<User> ans = new ArrayList<User>();
+		UserDaoImp UD = new UserDaoImp();
+		while(ite.hasNext()){
+			Long a = ite.next();
+			if(a.longValue()!=userid)
+				ans.add(UD.getUser(a.longValue()));
 		}
-		Connection con = (Connection) DataBase.getConnection();
-		PreparedStatement pstmt = null;
-		ResultSet res = null;
-		Iterator<Long> it = userList.iterator();
-		long uid = 0;
-		/*while(){
-			
-		}*/
-		//u.add();
-		return null;
+		
+		return ans;
 	}
 	@SuppressWarnings({ "null", "unused" })
 	public void updateIcon(User user) { 			 //更新用户头像
@@ -486,50 +546,7 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 		}
 	}
-	public static void main(String[] args){
-		//User u = new User();
-		UserDaoImp udi = new UserDaoImp();
-		/*User user = udi.getUser(l);
-		System.out.println(user.getUserid());  //getUser----test
-		System.out.println(user.getEmail());
-		System.out.println(user.getPassword());
-		System.out.println(user.getRegistertime());
-		System.out.println(user.getTel());
-		System.out.println(user.getBirthday());
-		System.out.println(user.getUsername());
-		System.out.println("getUser(userid)----test");
-		User user2 = udi.getUser("yolen_@163.com");
-		System.out.println(user2.getUsername());
-		System.out.println(user2.getEmail());
-		System.out.println(user2.getRegistertime());
-		System.out.println(user2.getBirthday());*/
-		/*User u = new User();		
-		u.setEmail("yolen_zz@outlook.com");
-		baseTools bt = new baseTools();
-		u.setUsername("fuguo");
-		u.setBirthday(bt.str2Date("1994-08-06"));
-		u.setPassword("6666663");
-		u.setTel("13027711597");*/
-		//udi.updateUser(u); ----UpdateUser()test
-		/*Date rt = bt.getNowTosql();
-		u.setRegistertime(rt);
-		try {
-			udi.addUser(u);
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		if(udi.isUser(1)){  //------isUser() test
-			System.out.println("1存在！");
-	}
-		if(udi.isUser("yolenstark@outlook.com")){
-			System.out.println("2存在！");
-		}
-		else System.out.println("2bucunzai !");
-	}
-		//System.out.println(udi.getId("13027711597", "tel"));
-		//if(udi.confUser(l, "6666663")) System.out.println("yes");
-	}
+}
 
 
 

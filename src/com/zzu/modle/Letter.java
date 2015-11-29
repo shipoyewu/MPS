@@ -1,6 +1,6 @@
 package com.zzu.modle;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Letter {
 	private long letterid;

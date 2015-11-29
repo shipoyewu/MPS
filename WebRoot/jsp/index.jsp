@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>多级消息发布系统</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -22,6 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<link rel="stylesheet" type="text/css" href="css/chat.css" />
+	<link rel="stylesheet" type="text/css" href="css/panel.css" />
+	
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/chat.js"></script>
 	
@@ -34,20 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	EvPNG.fix('body, div, ul, img, li, input, a, span ,label'); 
 	</script>
 	<![endif]-->
-	<style type="text/css">
-    body { font-family: Arial; background: #eee; }
-    h1, h2 { margin-top: 0; }
-    p { color: #ccc; line-height: 1.5; }
-    #page { width: 940px; height: 400px; padding: 20px; margin: 0 auto; background: white; }
-    .panel {
-      display: none;
-      width: 220px;
-      padding: 20px;
-      background-color: #333;
-      color: #fff;
-      box-shadow: inset 0 0 5px 5px #222;
-    }
-  	</style>
+	
   </head>
   
   <body>
@@ -70,10 +60,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <div class="content">
 	    	<%
 	    		session.setAttribute("userid", "1");
-	    		long userid = Long.parseLong((String)session.getAttribute("userid"));
+	    		//long userid = Long.parseLong((String)session.getAttribute("userid"));
+	       		long userid=1l;
 	       		UserDaoImp UD = new UserDaoImp();
 	       		LetterDaoImp LD = new LetterDaoImp();
-	       		User u = UD.getUser(userid);
+	       		User u = UD.getUser(1l);
 	      	 	ArrayList<User> Rela = UD.getHaveRelation(userid);
 	      	 	String masrc = "userdata/"+userid+"/icon.jpg";
 	       	%>
@@ -86,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    <div class="chat01_title">
 	                        <ul class="talkTo">
 	                            <li><a href="javascript:;"></a></li></ul>
-	                        <a class="close_btn" href="javascript:;"></a>
+	                        <a class="close_btn" id="close-panel-bt"></a>
 	                    </div>
 	                    <div class="chat01_content">
 	                    	<%
@@ -186,13 +177,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        </div>
 	    </div>
 	<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
-    <button id="close-panel-bt">Close</button>
+    
   </div>
-  <script src="js/jquery-1.7.2.min.js"></script>
   <script src="js/jquery.panelslider.js"></script>
   <script>
     $('#left-panel-link').panelslider();
-    $('#right-panel-link').panelslider({side: 'right', clickClose: false, duration: 200 });
+    $('#right-panel-link').panelslider({side: 'right', clickClose: true, duration: 200 });
     $('#close-panel-bt').click(function() {
       $.panelslider.close();
     });

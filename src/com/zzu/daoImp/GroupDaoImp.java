@@ -14,7 +14,22 @@ import com.zzu.util.DBtools;
 import databaseconnection.DataBase;
 
 public class GroupDaoImp implements GroupDao {
-
+	private void test() {
+		System.out.println(findAllGroup(1).size());
+		System.out.println("A");
+		findUser(100);
+		System.out.println("B");
+		deleteGroup(100);
+		System.out.println("C");
+		System.out.println(isBelong(100, 100));
+		System.out.println("D");
+		isvalid(100);
+		
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GroupDaoImp().test();
+	}
 	@Override
 	public ArrayList<ArrayList<Long>> findUser(long groupid) {
 		// TODO Auto-generated method stub
@@ -150,7 +165,7 @@ public class GroupDaoImp implements GroupDao {
 	@Override
 	public void deleteGroup(long groupid) {
 		// TODO Auto-generated method stub
-		String sql = "update group set isvalue=false where groupid=?";
+		String sql = "update fork set isvalue=false where groupid=?";
 		Connection con = new DataBase().getConnection();
 		PreparedStatement pre = null;
 		
@@ -175,21 +190,95 @@ public class GroupDaoImp implements GroupDao {
 		RelationDaoImp RD = new RelationDaoImp();
 		RD.delRelation(groupid);
 	}
-	private void test() {
-		findUser(100);
-		deleteGroup(100);
-		System.out.println(isBelong(100, 100));
-		isvalid(100);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new GroupDaoImp().test();
-	}
+	
+	
 
 	@Override
 	public Group getGroup(long groupid) {
 		// TODO Auto-generated method stub
-		return null;
+		String sql = "select * from fork where groupid=?";
+		Connection con = new DataBase().getConnection();
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		Group group = null;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, groupid);
+			res = pre.executeQuery();
+			
+			if(res.next()){
+				group = new Group();
+				group.setGroupid(groupid);
+				group.setGroupname(res.getString("groupname"));
+				group.setIsneedagree(res.getBoolean("Isneedagree"));
+				group.setCreatetime(res.getDate("Createtime"));
+				group.setIsvalue(res.getBoolean("isvalue"));
+				group.setUserid(res.getLong("userid"));
+			}
+		}catch(Exception e){
+			System.out.println("\nshihu:getGroup()");
+			e.printStackTrace();
+		}finally{
+			new DataBase().free(res, con, pre);
+		}
+		return group;
+	}
+
+	@Override
+	public ArrayList<Group> findAllGroup(long userid) {
+		// TODO Auto-generated method stub
+		String sql = "select * from fork where userid=?";
+		DataBase db = new DataBase();
+		ArrayList<Group> ans = new ArrayList<Group>();
+		Connection con = db.getConnection();
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, userid);
+			res = pre.executeQuery();
+			while(res.next()){
+				Group group = new Group();
+				group.setGroupid(res.getLong("groupid"));
+				group.setGroupname(res.getString("groupname"));
+				group.setIsneedagree(res.getBoolean("Isneedagree"));
+				group.setCreatetime(res.getDate("Createtime"));
+				group.setIsvalue(res.getBoolean("isvalue"));
+				group.setUserid(res.getLong("userid"));
+				ans.add(group);
+			}
+		}catch(Exception e){
+			System.out.println("\nshihu:findAllGroup()");
+			e.printStackTrace();;
+		}finally{
+			db.free(res, con, pre);
+		}
+		
+		return ans;
+	}
+	@Override
+	public long getUserid(long groupid) {
+		// TODO Auto-generated method stub
+		String sql = "select userid from fork where groupid=?";
+		DataBase db = new DataBase();
+		PreparedStatement pre = null;
+		Connection con = db.getConnection();
+		ResultSet res = null;
+		
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, groupid);
+			res = pre.executeQuery();
+			if(res.next()){
+				return res.getLong("userid");
+			}
+		}catch(Exception e){
+			System.out.println("\nshihu:getUserid()");
+			e.printStackTrace();
+		}finally{
+			db.free(res, con, pre);
+		}
+		return 0;
 	}
 
 }

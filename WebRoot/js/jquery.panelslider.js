@@ -58,8 +58,12 @@ www.sucaijiayuan.com
       duration: 200, // Transition duration in miliseconds
       clickClose: true // If true closes panel when clicking outside it
     };
-
-    options = $.extend({}, defaults, options);
+    var node = {
+    	side: 'right',
+    	duration: 200, // Transition duration in miliseconds
+    	clickClose: true // If true closes panel when clicking outside it
+    };
+    options = $.extend(node, defaults, options);
 
     // If another panel is opened, close it before opening the new one
     if(active.is(':visible') && active[0] != element[0]) {
