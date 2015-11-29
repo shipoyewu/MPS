@@ -6,23 +6,25 @@ import java.sql.PreparedStatement;
 
 import com.zzu.dao.ChoiceDao;
 import com.zzu.modle.Choice;
+import com.zzu.util.DBtools;
 
 import databaseconnection.DataBase;
 
 public class ChoiceDaoImp implements ChoiceDao {
 
 	@Override
-	public void addChoice(Choice choice) {
+	public long addChoice(Choice choice) {
 		// TODO Auto-generated method stub
 		Connection con = new DataBase().getConnection();
-		String sql =" insert into choice (choiceId ,chocontent, voteid ) values (?,?,?)";
+		String sql =" insert into choice (chocontent, voteid ) values (?,?)";
 		PreparedStatement pre = null;
+		long id  =  -1;
 		try{
 			pre=con.prepareStatement(sql);
-			pre.setLong(1, choice.getChoiceid());
-			pre.setString(2, choice.getChocontent());
-			pre.setLong(3, choice.getVoteid());
+			pre.setString(1, choice.getChocontent());
+			pre.setLong(2, choice.getVoteid());
 			pre.execute();
+			id = DBtools.GetLastID(con);
 		}catch(Exception e){
 			System.out.println("添加失败!");
 			e.printStackTrace();
@@ -34,7 +36,7 @@ public class ChoiceDaoImp implements ChoiceDao {
 			e.printStackTrace();
 		}
 	
-		
+		return id;
 		
 	}
 

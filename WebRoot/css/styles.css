@@ -7,5 +7,15 @@
 .voteoption{
 	width:280px;
 }
+.index_div_left{
+	float: left;
+	margin: 20px 0px 0px 40px;
+}
+.index_div_right{
+	float: right;
+	margin: 20px 40px 0 20px
+	
+}
+
 
 

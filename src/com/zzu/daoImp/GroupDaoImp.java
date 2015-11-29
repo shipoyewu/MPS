@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import com.zzu.dao.GroupDao;
@@ -14,7 +15,53 @@ import com.zzu.util.DBtools;
 import databaseconnection.DataBase;
 
 public class GroupDaoImp implements GroupDao {
+	@Override
+	public long addGroup(Group group) {
+		// TODO Auto-generated method stub
+		String sql = "insert into fork(userid,isvalue,isneedagree,groupname) values(?,?,?,?)";
+		Connection con = new DataBase().getConnection();
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		long id = -1;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, group.getUserid());
+			pre.setBoolean(2, group.isIsvalue());
+			pre.setBoolean(3,group.isIsneedagree());
+			pre.setString(4, group.getGroupname());
+			pre.execute();
+			id = DBtools.GetLastID(con);
+		}catch(Exception e){
+			System.out.println("\nshihu:addGroup\n");
+			e.printStackTrace();
+		}finally{
+			try{
+				if(pre!=null){
+					pre.close();
+				}
+			}
+			catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			try{
+				con.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return id;
+	}
+
 	private void test() {
+		Group g = new Group();
+		g.setCreatetime(new java.util.Date());
+		
+		g.setGroupname("asdasd");
+		g.setUserid(1l);
+		g.setIsneedagree(true);
+		g.setIsvalue(true);
+		long id = addGroup(g);
+		System.out.println("sadasds"+getGroup(id).getCreatetime());
 		System.out.println(findAllGroup(1).size());
 		System.out.println("A");
 		findUser(100);
@@ -36,41 +83,7 @@ public class GroupDaoImp implements GroupDao {
 		return new RelationDaoImp().findDown(groupid);
 	}
 
-	@Override
-	public void addGroup(Group group) {
-		// TODO Auto-generated method stub
-		String sql = "insert into fork(groupid,createtime,userid,isvalue,isneedagree,groupname) values(?,?,?,?,?,?)";
-		Connection con = new DataBase().getConnection();
-		PreparedStatement pre = null;
-		try{
-			pre = con.prepareStatement(sql);
-			pre.setLong(1, group.getGroupid());
-			pre.setDate(2, (Date) group.getCreatetime());
-			pre.setLong(3, group.getUserid());
-			pre.setBoolean(4, group.isIsvalue());
-			pre.setBoolean(5,group.isIsneedagree());
-			pre.setString(6, group.getGroupname());
-			pre.execute();
-		}catch(Exception e){
-			System.out.println("\nshihu:addGroup\n");
-			e.printStackTrace();
-		}finally{
-			try{
-				if(pre!=null){
-					pre.close();
-				}
-			}
-			catch (Exception e2) {
-				e2.printStackTrace();
-			}
-			try{
-				con.close();
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-	}
-
+	
 	@Override
 	public void updateGroup(Group group) {
 		// TODO Auto-generated method stub
@@ -86,7 +99,7 @@ public class GroupDaoImp implements GroupDao {
 			res = pre.executeQuery();
 			if(res.next()){
 				oldgroup.setGroupid(res.getLong("groupid"));
-				oldgroup.setCreatetime(res.getDate("createtime"));
+				oldgroup.setCreatetime(res.getTimestamp("createtime"));
 				oldgroup.setGroupname(res.getString("groupname"));
 				oldgroup.setIsneedagree(res.getBoolean("isneedagree"));
 				oldgroup.setIsvalue(res.getBoolean("isvalue"));
@@ -211,7 +224,7 @@ public class GroupDaoImp implements GroupDao {
 				group.setGroupid(groupid);
 				group.setGroupname(res.getString("groupname"));
 				group.setIsneedagree(res.getBoolean("Isneedagree"));
-				group.setCreatetime(res.getDate("Createtime"));
+				group.setCreatetime(res.getTimestamp("Createtime"));
 				group.setIsvalue(res.getBoolean("isvalue"));
 				group.setUserid(res.getLong("userid"));
 			}
@@ -242,7 +255,7 @@ public class GroupDaoImp implements GroupDao {
 				group.setGroupid(res.getLong("groupid"));
 				group.setGroupname(res.getString("groupname"));
 				group.setIsneedagree(res.getBoolean("Isneedagree"));
-				group.setCreatetime(res.getDate("Createtime"));
+				group.setCreatetime(res.getTimestamp("Createtime"));
 				group.setIsvalue(res.getBoolean("isvalue"));
 				group.setUserid(res.getLong("userid"));
 				ans.add(group);

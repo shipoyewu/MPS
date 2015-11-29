@@ -12,6 +12,8 @@ import com.zzu.modle.Letter;
 
 
 
+import com.zzu.util.DBtools;
+
 import databaseconnection.DataBase;
 
 public class LetterDaoImp implements LetterDao {
@@ -33,19 +35,21 @@ public class LetterDaoImp implements LetterDao {
 		
 	}
 	//添加私信
-	public void addLetter(Letter letter) {
+	public long addLetter(Letter letter) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
-		String sql = "insert into letter(lettercontent,senderuserid,receiveuserid,status,createtime) values(?,?,?,?,?)";
+		String sql = "insert into letter(lettercontent,senderuserid,receiveuserid,status,createtime) values(?,?,?,?)";
+		long id = -1;
 		try {
 			ptmt = conn.prepareStatement(sql);
 			ptmt.setString(1, letter.getLettercontent());
 			ptmt.setLong(2, letter.getSenderuserid());
 			ptmt.setLong(3, letter.getReceiveuserid());	
 			ptmt.setBoolean(4,letter.isStatus());
-			ptmt.setDate(5, new java.sql.Date(letter.getCreatetime().getTime()));
 			System.out.println(ptmt);
 			int result = ptmt.executeUpdate();
+			id = DBtools.GetLastID(conn);
+			
 			if (result != 0) {
 				System.out.println("添加私信成功!");
 			} else {
@@ -56,6 +60,7 @@ public class LetterDaoImp implements LetterDao {
 		} finally {
 			DataBase.freeStatement(conn, ptmt);
 		}
+		return id;
 	}
 
 	//返回sender和receiver之间的最新30条消息

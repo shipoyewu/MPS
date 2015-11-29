@@ -18,6 +18,27 @@ public class DBtools {
 	/*
 	 * 这个工具是对数据库中的某一个元组进行查询，看是否存在这个元组
 	 */
+	public static long GetLastID(Connection con){
+		String sql = "select @@IDENTITY";
+		
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		long id = -1;
+		try{
+			pre = con.prepareStatement(sql);
+			res =pre.executeQuery();
+			if(res.next()){
+				id = res.getLong(1);
+			}
+		
+		}catch(Exception e){
+			System.out.println("\nshihu:GetLastID");
+			e.printStackTrace();
+		}finally{
+			DataBase.free(res, con, pre);
+		}
+		return id;
+	}
 	public static boolean RowConf(String sql){
 		Connection con = new DataBase().getConnection();
 		if(sql.charAt(sql.length()-1)!=';'){

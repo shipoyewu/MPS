@@ -26,6 +26,7 @@ import com.zzu.modle.Relation;
 import com.zzu.modle.User;
 import com.zzu.modle.View;
 import com.zzu.modle.Vote;
+import com.zzu.util.DBtools;
 import com.zzu.util.baseTools;
 
 import databaseconnection.DataBase;
@@ -208,21 +209,22 @@ public class UserDaoImp implements UserDao {
 	 * 需要完整的信息，username，birthday，email，registertime，tel，password
 	 * 当插入的email或tel和已有的用户重复时，抛出MySQLIntegrityConstraintViolationException异常
 	 */
-	public void addUser(User user) throws MySQLIntegrityConstraintViolationException {
+	public long addUser(User user) throws MySQLIntegrityConstraintViolationException {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
-		String sql = "insert into user(username,birthday,email,registertime,tel,password) "
-				+ "values(?,?,?,?,?,?)";
+		String sql = "insert into user(username,birthday,email,tel,password) "
+				+ "values(?,?,?,?,?)";
+		long id = -1;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user.getUsername());
 			pstmt.setDate(2, (Date) user.getBirthday());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setDate(4, (Date) user.getRegistertime());
-			pstmt.setString(5, user.getTel());
-			pstmt.setString(6, user.getPassword());
+			pstmt.setString(4, user.getTel());
+			pstmt.setString(5, user.getPassword());
 			pstmt.executeUpdate();
+			id = DBtools.GetLastID(con);
 			DataBase.freeStatement(con, pstmt);
 			System.out.println("add user success.");
 		} catch (SQLException e) {
@@ -231,7 +233,7 @@ public class UserDaoImp implements UserDao {
 			System.out.println("failed to update user!");
 			System.out.println("UNIQUE属性的列插入了相同值");
 		}
-		
+		return id;
 	}
 	
 

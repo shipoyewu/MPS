@@ -3,6 +3,7 @@ package com.zzu.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -49,16 +50,15 @@ public class addVote extends HttpServlet {
 		v.setIsvalue(true);
 		
 		String endStr =(String) request.getAttribute("enddate");
-		Date endtime = new baseTools().getNowTosql();
+		java.sql.Timestamp endtime = baseTools.getTimePrecise(endStr);
 		v.setEndtime(endtime);
 		v.setMessageid(messageid);
 		
-		v.setStarttime(new Date(new java.util.Date().getTime()));
+		v.setStarttime(baseTools.getTimePrecise());
 		
 		VoteDaoImp VD = new VoteDaoImp();
-		long vid = 0;
 		
-		//long vid = VD.addVote(v);
+		long vid = VD.addVote(v);
 		
 		
 		String[] cho = request.getParameterValues("option");

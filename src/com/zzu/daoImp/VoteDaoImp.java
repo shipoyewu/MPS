@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Vector;
 
 import com.zzu.dao.VoteDao;
@@ -13,6 +14,8 @@ import com.zzu.modle.Group;
 import com.zzu.modle.Message;
 import com.zzu.modle.User;
 import com.zzu.modle.Vote;
+import com.zzu.util.DBtools;
+import com.zzu.util.baseTools;
 
 import databaseconnection.DataBase;
 /**
@@ -26,23 +29,20 @@ public class VoteDaoImp implements VoteDao {
 	public long addVote(Vote vote) {		
 		// TODO Auto-generated method stub
 		Connection con=  new DataBase().getConnection();
-		String sql= "insert into vote(voteid,votecontent,starttime,endtime,messageid,ismul,isvalue,isanonymous) value(?,?,?,?,?,?,?,?)";
+		String sql= "insert into vote(votecontent,endtime,messageid,ismul,isvalue,isanonymous) value(?,?,?,?,?,?)";
         long id = 0;
         PreparedStatement pre=null; 
         try
         {
         	pre=con.prepareStatement(sql);
-        	pre.setLong(1,vote.getVoteid() );
-        	pre.setString(2,vote.getVotecontent());
-        	pre.setDate(3,(Date) vote.getStarttime());
-        	pre.setDate(4, (Date) vote.getEndtime());
-        	pre.setLong(5,vote.getMessageid());
-        	pre.setBoolean(6, vote.isIsmul());
-        	pre.setBoolean(7, vote.isIsvalue());
-        	pre.setBoolean(8,vote.isIsanonymous());
+        	pre.setString(1,vote.getVotecontent());
+        	pre.setTimestamp(2, baseTools.getTimePrecise(vote.getEndtime()));
+        	pre.setLong(3,vote.getMessageid());
+        	pre.setBoolean(4, vote.isIsmul());
+        	pre.setBoolean(5, vote.isIsvalue());
+        	pre.setBoolean(6,vote.isIsanonymous());
         	pre.execute();
-            id=vote.getVoteid();
-        	
+            id=DBtools.GetLastID(con);
         }catch(Exception e){
         	System.out.println("\nxingjiali:votedaoimp:addvote\n");
 			e.printStackTrace();
@@ -73,12 +73,12 @@ public class VoteDaoImp implements VoteDao {
 			if(res.next())
 			{
 			b=res.getBoolean("isvalue");
-			System.out.print("isvalid");
+			//System.out.print("isvalid");
 			}
 			if(b==true)
-				System.out.print("投票有效");
+				System.out.print("投票有效\n");
 			else
-				System.out .print("投票无效");
+				System.out .print("投票无效\n");
 			return b;
 		}catch(Exception e){
 			System.out.println("\nxingjiali:getcontent:isvalid\n");
@@ -111,8 +111,8 @@ public class VoteDaoImp implements VoteDao {
 				long vi=res.getLong("voteid");
 				String vc=res.getString("votecontent");
 				long mid=res.getLong("messageid");
-				Date s=res.getDate("starttime");
-				Date e=res.getDate("endtime");
+				Timestamp s=res.getTimestamp("starttime");
+				Timestamp e=res.getTimestamp("endtime");
 				boolean im=res.getBoolean("ismul");
 				boolean iv=res.getBoolean("isvalue");
 				boolean ia=res.getBoolean("isanonymous");
@@ -124,7 +124,7 @@ public class VoteDaoImp implements VoteDao {
 				v.setIsmul(im);
 				v.setIsvalue(iv);
 				v.setIsanonymous(ia);
-				System.out.print("getvote");
+				//System.out.print("getvote");
 			}
 			
 		}catch(Exception e){
@@ -147,31 +147,26 @@ public class VoteDaoImp implements VoteDao {
 		
 				
 		Vote v = new Vote();
-		Date d =new Date(2013-10-12);
-		Date dd=new Date(2013-10-23);
+		Date d = new Date(2013-10-12);
 		
 		v.setVotecontent("abcdc");
 		v.setMessageid(1);
-		v.setStarttime(d);
+		v.setStarttime(new java.util.Date());
 		v.setIsmul(true);
 		v.setIsvalue(true);
-		v.setEndtime(dd);
+		v.setEndtime(new java.util.Date());
 		v.setIsanonymous(true);
 			
 		
 		VoteDaoImp vdi=new VoteDaoImp();
-		//long vid=123;
 			long vvid;
 			boolean bool;
 			Vote vote= new Vote();
 			vvid = vdi.addVote(v);
-			System.out.println("A");
-			bool = vdi.isvalid(3);
-			System.out.println("B");
-			vote=vdi.getVote(3);
-		    System.out.println("C");
-	
+			System.out.println(vvid);
+			bool = vdi.isvalid(120);
+			System.out.println(bool);
+			vote=vdi.getVote(120);
+		    System.out.println(vote.getMessageid());
 	}
-
-	
 }

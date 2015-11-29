@@ -16,16 +16,14 @@ public class ApplyDaoImp implements ApplyDao {
 	@Override
 	public void addApply(Apply apply) {
 		// TODO Auto-generated method stub
-		String sql="insert into Apply(groupup,groupdown,applytime,applycontent,type) values(?,?,?,?,?) ";
+		String sql="insert into Apply(groupup,groupdown,applycontent,type) values(?,?,?,?) ";
 		PreparedStatement pre = null;
 		try{
 			pre=con.prepareStatement(sql);
 			pre.setLong(1, apply.getGroupup());
 			pre.setLong(2, apply.getGroupdown());
-			Date time = new Date(System.currentTimeMillis());
-			pre.setDate(3,time);
-			pre.setString(4, apply.getApplycontent());
-			pre.setBoolean(5, apply.isType());
+			pre.setString(3, apply.getApplycontent());
+			pre.setBoolean(4, apply.isType());
 			pre.execute();
 		}catch(Exception e){
 			System.out.println("添加失败！");

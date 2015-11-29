@@ -61,7 +61,7 @@ public class CommentDaoImp implements CommentDao {
 	public void addComment(Comment comment) {
 		Connection conn = DataBase.getConnection();// 得到数据库的连接
 		PreparedStatement pstmt = null;
-		String sql = "insert into comment values(?,?,?,?,?,?)";
+		String sql = "insert into comment values(?,?,?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, comment.getCommentid());

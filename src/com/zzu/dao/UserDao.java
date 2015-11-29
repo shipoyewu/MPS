@@ -21,7 +21,7 @@ public interface UserDao
 		public User getUser(long userid);//通过userid查找用户，返回User
 		public User getUser(String email);//通过email查找用户，返回User
 		public boolean updateUser(User user);//更新用户信息,不包含头像
-		public void addUser(User user) throws MySQLIntegrityConstraintViolationException;//增加用户
+		public long addUser(User user) throws MySQLIntegrityConstraintViolationException;//增加用户
 		public void updateIcon(User user);//该方法不用，图片不存数据库//设置该用户的头像 
 		
 		public boolean isUser(String email);//通过email判断该用户是否存在

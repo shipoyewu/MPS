@@ -222,15 +222,13 @@ public class RelationDaoImp implements RelationDao {
 		}
 		
 		
-		String sql = "insert into relation(up,down,jointime,isvalid) values(?,?,?,?)";
+		String sql = "insert into relation(up,down,isvalid) values(?,?,?)";
 		PreparedStatement pre = null;
 		try{
 			con.prepareStatement(sql);
 			pre.setLong(1, relation.getUp());
 			pre.setLong(2, relation.getDown());
-			Date time = new Date(System.currentTimeMillis());
-			pre.setDate(3,time);
-			pre.setBoolean(4, true);
+			pre.setBoolean(3, true);
 			pre.execute();
 		}catch(Exception e){
 			System.out.println("\nshihu:addRelation\n");

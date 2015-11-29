@@ -6,7 +6,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
+  <head>   
     <base href="<%=basePath%>">
     
     <title>创建投票</title>
@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</script>				
 				</td>
 			</tr>	
-			<tr>
+			<tr>   
 				<td>
 					投票隐私：
 				</td>

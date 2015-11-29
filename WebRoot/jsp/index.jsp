@@ -1,3 +1,11 @@
+<%@page import="com.zzu.daoImp.ContentDaoImp"%>
+<%@page import="com.zzu.modle.Content"%>
+<%@page import="com.zzu.service.manger"%>
+<%@page import="com.zzu.daoImp.GroupDaoImp"%>
+<%@page import="com.zzu.modle.Group"%>
+<%@page import="com.zzu.daoImp.ReceiveDaoImp"%>
+<%@page import="com.zzu.modle.Message"%>
+<%@page import="com.zzu.daoImp.MessageDaoImp"%>
 <%@page import="com.zzu.modle.User"%>
 <%@page import="com.zzu.daoImp.LetterDaoImp"%>
 <%@page import="com.zzu.daoImp.UserDaoImp"%>
@@ -19,9 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<link rel="stylesheet" type="text/css" href="css/chat.css" />
 	<link rel="stylesheet" type="text/css" href="css/panel.css" />
 	
@@ -41,13 +47,123 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    <!-- Centered page -->
-  <div id="page" style="text-align:center">
-    <h1>Panel slider example</h1>
-    <a id="left-panel-link" href="#left-panel">打开左面板</a> |
-    <a id="right-panel-link" href="#right-panel">打开右面板</a>    
-  </div>
+    <!-- Centered page --> 
+   <%
+    		session.setAttribute("userid", "1");
+    		//long userid = Long.parseLong((String)session.getAttribute("userid"));
+       		long userid=1l;
+       		UserDaoImp UD = new UserDaoImp();
+       		LetterDaoImp LD = new LetterDaoImp();
+       		User u = UD.getUser(1l);
+      	 	ArrayList<User> Rela = UD.getHaveRelation(userid);
+      	 	String masrc = "userdata/"+userid+"/icon.jpg";
+   %>
+   	
+	<div style="margin-top: 30px; margin-left: 15px;">
+		<div>
+			<div>
+				<img src="<%= masrc %>"> <b> <%= u.getUsername() %></b>
+			</div>
+			<div style="margin-left: 275px; color: blue;">
+				<a href="" style="color: blue;">发布消息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a id="right-panel-link" href="#right-panel">发送私信</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="" style="color: blue;">个人信息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
+				<a href="<%=request.getContextPath()%>/jsp/login.jsp"
+					style="color: blue;">注销</a>
+				<%
+					for (int i = 0; i < 49; i++) {
+				%>
+				&nbsp;
+				<%
+					}
+				%>
 
+				<a href="" style="color: blue;">下一页</a>
+			</div>
+		</div>
+	</div>
+	
+	
+   	<div id="showMessage" class="index_div_left" >
+			<!-- 消息显示 -->
+			<%
+				GroupDaoImp GD = new GroupDaoImp();
+				ArrayList<Group> glist = GD.findAllGroup(userid);
+				ContentDaoImp CD = new ContentDaoImp();
+				ReceiveDaoImp RD = new ReceiveDaoImp();
+				for(int i = 0 ;i < glist.size();i++){
+					String gname = glist.get(i).getGroupname();
+					ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
+					%>
+					<b><%= gname %></b> <br>
+					<%
+					for(int j = 0;j < mlist.size();j++){
+						String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
+					 	Content content = CD.getContent(mlist.get(j).getContentid());
+					 	Date q = mlist.get(j).getCreatetime();
+					 	String t = q.getYear()+"-"+q.getMonth() + "-" + q.getDay() + " " + q.getHours()+":"+q.getMinutes();
+ 					 %>
+						<div> <img src="<%= sendimg %>"> <b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b></div>
+						<p>
+							<b style="font-size: 16px;"><%= mlist.get(i).getMessagetitle() %></b>
+						</p>
+						<p>
+							<label>消息主题:<%= content.getText()%> </label><br>
+							<label>消息图片:</label>
+								<%
+								String imgsrc = content.getImage();
+								
+								if(!(imgsrc == null || imgsrc.equals(""))){
+									String[] sub = imgsrc.split("\\,");
+									for(int k = 0;k < sub.length;k++){
+										%>
+											<img src="<%= sub[k] %>"> <br>
+										<%}%>
+									
+								<%}%>
+							<label>消息文件:</label> 
+								<%
+								String filesrc = content.getFile();
+								if(filesrc == null || filesrc.equals("")){
+									String[] sub = filesrc.split("\\,");
+									for(int k = 0;k < sub.length;i++){
+									%>
+										<a href="http://<%= sub[k]%>"> 点击下载附件<%= k%></a> <br>
+									<%
+									}
+								}
+								%>
+								<p style="color: gray; text-align: right;">
+									<a href="javascript:setflag();">将改消息标记为已读<a>
+								
+									<label><%= t %></label>
+								</p>
+ 						</p>
+					<%}%>					
+				<%}%>
+   		</div>
+	   	<div id ="showletter" class="index_div_right">
+	   			<div style="background: #F3F3F3; height: 560px; width: 290px;">
+					<div
+						style="text-align: center; background: #BCBCBC; height: 36px; width:auto; color: white;">
+					<h1>私信</h1>
+					</div>
+					<p>张老师：</p>
+					<p>
+						&nbsp;&nbsp;&nbsp;&nbsp; <a href=""><img
+							src="<%=request.getContextPath()%>/images/person1.jpg"
+							width="50px" height="30px" border="1"></a>
+						资助管理系统已经审核完成，通知励志和助学金的同学，今天开始申请励志和助学金，
+						填写理由和完善信息，明天晚上前完成,请同学们及时完成。
+					</p>
+					<p style="color: gray; text-align: right;">
+						<a href="" style="color: blue;">回复</a> <br> 辅导员
+						发表于2015-12-25 11:30
+					</p>
+					<hr>
+				</div>
+	   	</div>
   <!-- Left panel -->
   <div id="left-panel" class="panel">
     <h2>Left panel</h2>
@@ -58,18 +174,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div id="right-panel" class="panel">
     <h2>Right panel</h2>
 	    <div class="content">
-	    	<%
-	    		session.setAttribute("userid", "1");
-	    		//long userid = Long.parseLong((String)session.getAttribute("userid"));
-	       		long userid=1l;
-	       		UserDaoImp UD = new UserDaoImp();
-	       		LetterDaoImp LD = new LetterDaoImp();
-	       		User u = UD.getUser(1l);
-	      	 	ArrayList<User> Rela = UD.getHaveRelation(userid);
-	      	 	String masrc = "userdata/"+userid+"/icon.jpg";
-	       	%>
+	    	
 	        <div>
-				<a id="user"><img src="<%=masrc%>" id="master" name="<%=userid%>"/> <%=u.getUsername() %> </a>
+				<a id="user"><img src="<%= masrc %>" id="master" name="<%= userid %>"> <%=u.getUsername() %> </a>
 			</div>
 	        <div class="chatBox">
 	            <div class="chatLeft">
@@ -160,10 +267,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                       		}
 	                       	%>
 	                       		<li id="<%=v.getUserid()%>">
-	                                <label class="<%=cla%>">
-	                                </label>
-	                                <a href="javascript:;">
-	                                    <img src="<%=src%>"></a><a href="javascript:;" class="chat03_name"><%=v.getUsername()%></a>
+	                                <label class="<%=cla%>"></label>
+	                                <a href="javascript:;"> <img src="<%= src %>"></a><a href="javascript:;" class="chat03_name"><%= v.getUsername()%> </a>
 	                            </li>
 	                       		 
 	                       	<%}%>
