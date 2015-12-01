@@ -1,13 +1,15 @@
-package com.zzu.daoImp;
+	package com.zzu.daoImp;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.zzu.dao.ReceiveDao;
 import com.zzu.modle.Message;
+import com.zzu.modle.Receive;
 
 import databaseconnection.DataBase;
 /**
@@ -16,43 +18,63 @@ import databaseconnection.DataBase;
  *
  */
 public class ReceiveDaoImp implements ReceiveDao {
+	public void addReceive(Receive receive)
+	{
+		Connection con=new DataBase().getConnection();
+		String sql="insert into receive(messageid,groupid,status) value(?,?,?)";
+		PreparedStatement pre=null;
+		try
+		{
+			pre=con.prepareStatement(sql);
+			pre.setLong(1, receive.getMessageid());
+			pre.setLong(2, receive.getGroupid());
+			pre.setBoolean(3, receive.isStatus());
+			pre.executeUpdate();
+			
+		}catch(Exception e){
+			System.out.println("\nxingjiali:receivedaoimp:addreceive\n");
+			e.printStackTrace();
+		}
+		try
+		{
+			con.close();
+			pre.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 
 	@Override
 	public ArrayList<Message> getAllReceiveMeg(long groupid) {
 		// TODO Auto-generated method stub
 		Connection con=new DataBase().getConnection();
-		String sql1="select messageid from receive where groupid=?";
+		String sql="select messageid,messagetitle,contentid,message.groupid as forkid,isvalue,createtime,isremind,iscomment,remindtime,deletetime from receive inner join message using(messageid) where receive.groupid=? order by status desc,createtime desc ";
 		PreparedStatement pre=null;
-		ResultSet res=null;		
-		long mid=0;	
+		ResultSet res=null;	
 		Message message=new Message();
 		ArrayList<Message> receive=new ArrayList<Message>();
 		try
 		{
-			pre = con.prepareStatement(sql1);
+			pre = con.prepareStatement(sql);
 			pre.setLong(1, groupid);
+			System.out.println(pre);
 			res = pre.executeQuery();
 			while(res.next()){
-				mid=res.getLong("messageid");
-				String sql="select * from message where messageid=?";
-				PreparedStatement pre2=null;
-				ResultSet res2=null;
-				try
-				{
-					pre = con.prepareStatement(sql);
-					pre.setLong(1, groupid);
-					res = pre.executeQuery();
-					while(res.next()){
 					long m=res.getLong("messageid");
 					String mt=res.getString("messagetitle");
 					long cid=res.getLong("contentid");
-					long gid=res.getLong("groupid");
+					long gid=res.getLong("forkid");
 					boolean isv=res.getBoolean("isvalue");
-					Date ct=res.getDate("createtime");
+					Timestamp ct=res.getTimestamp("createtime");
 					boolean isr=res.getBoolean("isremind");
 					boolean isc=res.getBoolean("iscomment");
-					Date rt=res.getDate("remindtime");
-					Date dt=res.getDate("deletetime");
+					Timestamp rt= null;
+					if(isr)
+						rt=res.getTimestamp("remindtime");
+					Timestamp dt = null;
+					if(!isv)
+						 dt =res.getTimestamp("deletetime");
 					message.setMessageid(m);
 					message.setMessagetitle(mt);
 					message.setContentid(cid);
@@ -61,15 +83,13 @@ public class ReceiveDaoImp implements ReceiveDao {
 					message.setCreatetime(ct);
 					message.setIsremind(isr);
 					message.setIscomment(isc);
-					message.setRemindtime(rt);
-					message.setDeletetime(dt);
+					if(isr)
+						message.setRemindtime(rt);
+					if(!isv)
+						message.setDeletetime(dt);
+					System.out.print(message.getMessageid());
 					receive.add(message);
-					  }
-				 }catch(Exception e){
-						System.out.println("\nxingjiali:receivedaoimp:getallreceivemegin\n");
-						e.printStackTrace();
-				        }
-			  }
+					}
 		}catch(Exception e){
 			System.out.println("\nxingjiali:receivedaoimp:getallreceivemeg\n");
 			e.printStackTrace();
@@ -89,38 +109,29 @@ public class ReceiveDaoImp implements ReceiveDao {
 	public ArrayList<Message> getAllUnReadMeg(long groupid) {
 		// TODO Auto-generated method stub
 		Connection con=new DataBase().getConnection();
-		String sql1="select messageid from receive where groupid=? and status=false";
+		String sql="select messageid,messagetitle,contentid,message.groupid as forkid,isvalue,createtime,isremind,iscomment,remindtime,deletetime from receive inner join message using(messageid)  where receive.groupid=? and status=true order by status desc,createtime desc ";
 		PreparedStatement pre=null;
-		ResultSet res=null;		
-		long mid=0;	
+		ResultSet res=null;	
 		Message message=new Message();
 		ArrayList<Message> receive=new ArrayList<Message>();
 		try
 		{
-			pre = con.prepareStatement(sql1);
+			pre = con.prepareStatement(sql);
 			pre.setLong(1, groupid);
+			System.out.println(pre);
 			res = pre.executeQuery();
 			while(res.next()){
-				mid=res.getLong("messageid");
-				String sql="select * from message where messageid=?";
-				PreparedStatement pre2=null;
-				ResultSet res2=null;
-				try
-				{
-					pre = con.prepareStatement(sql);
-					pre.setLong(1, groupid);
-					res = pre.executeQuery();
-					while(res.next()){
+				
 					long m=res.getLong("messageid");
 					String mt=res.getString("messagetitle");
 					long cid=res.getLong("contentid");
-					long gid=res.getLong("groupid");
+					long gid=res.getLong("forkid");
 					boolean isv=res.getBoolean("isvalue");
-					Date ct=res.getDate("createtime");
+					Timestamp ct=res.getTimestamp("createtime");
 					boolean isr=res.getBoolean("isremind");
 					boolean isc=res.getBoolean("iscomment");
-					Date rt=res.getDate("remindtime");
-					Date dt=res.getDate("deletetime");
+					Timestamp rt=res.getTimestamp("remindtime");
+					Timestamp  dt=res.getTimestamp("deletetime");
 					message.setMessageid(m);
 					message.setMessagetitle(mt);
 					message.setContentid(cid);
@@ -133,13 +144,9 @@ public class ReceiveDaoImp implements ReceiveDao {
 					message.setDeletetime(dt);
 					receive.add(message);
 					  }
-				 }catch(Exception e){
-						System.out.println("\nxingjiali:receivedaoimp:getallreceivemegin\n");
-						e.printStackTrace();
-				        }
-			  }
+				
 		}catch(Exception e){
-			System.out.println("\nxingjiali:receivedaoimp:getallreceivemeg\n");
+			System.out.println("\nxingjiali:receivedaoimp:getallunreceivemeg\n");
 			e.printStackTrace();
 		}
 		try
@@ -155,13 +162,18 @@ public class ReceiveDaoImp implements ReceiveDao {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-     /*   ReceiveDaoImp rdi=new ReceiveDaoImp();
-        long gid=0;
-        if(rdi.getAllReceiveMeg(gid)!=null)
-        	System.out.printf("查看全部信息");
-        if(rdi.getAllUnReadMeg(gid)!=null)
-        	System.out.printf("查看未读信息");
-        	*/
+		 long gid=1;
+        ReceiveDaoImp rdi=new ReceiveDaoImp();
+      /*  Receive r=new Receive();
+        r.setGroupid(1);
+        r.setMessageid(7);
+        r.setStatus(false);
+        rdi.addReceive(r);*/
+        ArrayList<Message> array=rdi.getAllReceiveMeg(gid);
+        ArrayList<Message> array2=rdi.getAllUnReadMeg(gid);
+        System.out.println("asdasdad");
+        System.out.println(array.size());  
+    	System.out.println(array2.size());        
 	}
 
 }

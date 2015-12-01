@@ -106,7 +106,7 @@ public class UserDaoImp implements UserDao {
 				user.setBirthday(res.getDate("birthday"));
 				user.setEmail(res.getString("email"));
 				user.setPassword(res.getString("password"));
-				user.setRegistertime(res.getDate("registertime"));
+				user.setRegistertime(res.getTimestamp("registertime"));
 				user.setTel(res.getString("tel"));
 				System.out.println("get user by userid");
 				return user;
@@ -142,7 +142,7 @@ public class UserDaoImp implements UserDao {
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
 				user.setUserid(res.getLong("userid"));
-				user.setRegistertime(res.getDate("registertime"));
+				user.setRegistertime(res.getTimestamp("registertime"));
 				user.setTel(res.getString("tel"));
 				user.setPassword(res.getString("password"));
 				System.out.println("get user by email.");
@@ -445,12 +445,12 @@ public class UserDaoImp implements UserDao {
 				 msg.setMessageid(res.getLong("messageid"));
 				 msg.setMessagetitle(res.getString("messagetitle"));
 				 msg.setContentid(res.getLong("contentid"));
-				 msg.setCreatetime(res.getDate("createtime"));
-				 msg.setDeletetime(res.getDate("deletetime"));
+				 msg.setCreatetime(res.getTimestamp("createtime"));
+				 msg.setDeletetime(res.getTimestamp("deletetime"));
 				 msg.setGroupid(groupid);
 				 msg.setIscomment(res.getBoolean("iscomment"));
 				 msg.setIsremind(res.getBoolean("isremind"));
-				 msg.setRemindtime(res.getDate("remindtime"));
+				 msg.setRemindtime(res.getTimestamp("remindtime"));
 				 msg.setIsvalue(res.getBoolean("isvalue"));
 				 m.add(msg);
 			}

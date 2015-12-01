@@ -10,6 +10,7 @@ import com.zzu.dao.MessageDao;
 import com.zzu.modle.Message;
 
 import databaseconnection.DataBase;
+import com.zzu.util.baseTools;;
 
 /**
  * 
@@ -41,32 +42,31 @@ public class MessageDaoImp implements MessageDao {
 		return null;
 	}
 
-	// 添加消息
+	// 添加消息,返回自增主键
 	public long addMessage(Message msg) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
-		long id=0;//返回0则添加失败
-		String sql = "insert into message values(?,?,?,?,?,?,?,?,?,?)";
+		long id = 0;// 返回0则添加失败
+		String sql = "insert into message(messagetitle,groupid,isvalue,createtime,isremind,iscomment,remindtime,deletetime,contentid) values(?,?,?,?,?,?,?,?,?)";
 		try {
-			ptmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
-			ptmt.setLong(1, msg.getMessageid());
-			ptmt.setString(2, msg.getMessagetitle());
-			ptmt.setLong(3, msg.getContentid());
-			ptmt.setLong(4, msg.getGroupid());
-			ptmt.setBoolean(5, msg.isIsvalue());
-			ptmt.setDate(6, new java.sql.Date(msg.getCreatetime().getTime()));
-			ptmt.setBoolean(7, msg.isIsremind());
-			ptmt.setBoolean(8, msg.isIscomment());
-			ptmt.setDate(9, new java.sql.Date(msg.getRemindtime().getTime()));
-			ptmt.setDate(10, new java.sql.Date(msg.getDeletetime().getTime()));
-			int result = ptmt.executeUpdate(sql);
-            //检索由于执行此 Statement 对象而创建的所有自动生成的键
-            ResultSet rs = ptmt.getGeneratedKeys();
-            if (rs.next()) {
-                    //知其仅有一列，故获取第一列
-                   	id = rs.getLong(1);
-                    System.out.println("-----预定义SQL模式-----id = " + id);
-            } 
+			ptmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ptmt.setString(1, msg.getMessagetitle());
+			ptmt.setLong(2, msg.getGroupid());
+			ptmt.setBoolean(3, msg.isIsvalue());
+			ptmt.setTimestamp(4, baseTools.getTimePrecise(msg.getCreatetime()));
+			ptmt.setBoolean(5, msg.isIsremind());
+			ptmt.setBoolean(6, msg.isIscomment());
+			ptmt.setTimestamp(7, baseTools.getTimePrecise(msg.getRemindtime()));
+			ptmt.setTimestamp(8, baseTools.getTimePrecise(msg.getDeletetime()));
+			ptmt.setLong(9, msg.getContentid());
+			int result = ptmt.executeUpdate();
+			// 检索由于执行此 Statement 对象而创建的所有自动生成的键
+			ResultSet rs = ptmt.getGeneratedKeys();
+			if (rs.next()) {
+				// 知其仅有一列，故获取第一列
+				id = rs.getLong(1);
+				System.out.println("-----预定义SQL模式-----id = " + id);
+			}
 			if (result != 0) {
 				System.out.println("添加消息成功!");
 			} else {
@@ -113,12 +113,13 @@ public class MessageDaoImp implements MessageDao {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
 		ResultSet rs = null;
-		//boolean isValue = false;
-		String sql = "update message set isvalue=false where messageid=?";
+		String sql = "update message set isvalue=?,deletetime=? where messageid=?";
 		try {
 			ptmt = conn.prepareStatement(sql);
-			ptmt.setLong(1, messageid);
-			int result = ptmt.executeUpdate(sql);
+			ptmt.setBoolean(1,false);
+			ptmt.setTimestamp(2, baseTools.getTimePrecise());
+			ptmt.setLong(3, messageid);
+			int result = ptmt.executeUpdate();
 			if (result != 0) {
 				System.out.println("删除消息成功!");
 			} else {

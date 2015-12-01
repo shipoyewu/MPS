@@ -102,6 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
 					 	Content content = CD.getContent(mlist.get(j).getContentid());
 					 	Date q = mlist.get(j).getCreatetime();
+					 	System.out.println(q);
 					 	String t = q.getYear()+"-"+q.getMonth() + "-" + q.getDay() + " " + q.getHours()+":"+q.getMinutes();
  					 %>
 						<div> <img src="<%= sendimg %>"> <b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b></div>

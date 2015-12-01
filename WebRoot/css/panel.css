@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-body { font-family: Arial; background: #eee; }
+body { font-family: Arial; background: #000; }
    h1, h2 { margin-top: 0; }
    p { color: #ccc; line-height: 1.5; }
    #page { width: 940px; height: 400px; padding: 20px; margin: 0 auto; background: white; }
