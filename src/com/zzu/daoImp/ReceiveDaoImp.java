@@ -101,7 +101,11 @@ public class ReceiveDaoImp implements ReceiveDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+		for(int i = 0;i < receive.size();i++){
+			Date q = receive.get(i).getCreatetime();
+			System.out.println(q);
+			System.out.println(""+q.getYear()+"-"+q.getMonth() + "-" + q.getDay() + " " + q.getHours()+":"+q.getMinutes());
+		}
 		return receive;
 	}
 
@@ -156,7 +160,6 @@ public class ReceiveDaoImp implements ReceiveDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
 		return receive;
 	}
 

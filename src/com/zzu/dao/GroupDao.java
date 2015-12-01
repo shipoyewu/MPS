@@ -20,4 +20,6 @@ public interface GroupDao {
 	public void deleteGroup(long groupid);//删除群组,isvalid置为false
 	public Group getGroup(long groupid);
 	public ArrayList<Group> findAllGroup(long userid); 
+	public String getUserName(long groupid);
+	
 }

@@ -53,25 +53,25 @@ public class GroupDaoImp implements GroupDao {
 	}
 
 	private void test() {
-		Group g = new Group();
-		g.setCreatetime(new java.util.Date());
-		
-		g.setGroupname("asdasd");
-		g.setUserid(1l);
-		g.setIsneedagree(true);
-		g.setIsvalue(true);
-		long id = addGroup(g);
-		System.out.println("sadasds"+getGroup(id).getCreatetime());
-		System.out.println(findAllGroup(1).size());
-		System.out.println("A");
-		findUser(100);
-		System.out.println("B");
-		deleteGroup(100);
-		System.out.println("C");
-		System.out.println(isBelong(100, 100));
-		System.out.println("D");
-		isvalid(100);
-		
+		System.out.println(getUserName(1l));
+//		Group g = new Group();
+//		g.setCreatetime(new java.util.Date());
+//		g.setGroupname("asdasd");
+//		g.setUserid(1l);
+//		g.setIsneedagree(true);
+//		g.setIsvalue(true);
+//		long id = addGroup(g);
+//		System.out.println("sadasds"+getGroup(id).getCreatetime());
+//		System.out.println(findAllGroup(1).size());
+//		System.out.println("A");
+//		findUser(100);
+//		System.out.println("B");
+//		deleteGroup(100);
+//		System.out.println("C");
+//		System.out.println(isBelong(100, 100));
+//		System.out.println("D");
+//		isvalid(100);
+//		
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -292,6 +292,31 @@ public class GroupDaoImp implements GroupDao {
 			db.free(res, con, pre);
 		}
 		return 0;
+	}
+
+	@Override
+	public String getUserName(long groupid) {
+		// TODO Auto-generated method stub
+		String sql = "select username from user inner join fork using( userid) where groupid=?";
+		Connection con = DataBase.getConnection();
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		String ans = null;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, groupid);
+			res = pre.executeQuery();
+			if(res.next()){
+				ans = res.getString("username");
+			}
+		}catch(Exception e){
+			System.out.println("\nshihu:getUserName()");
+			e.printStackTrace();
+		}finally{
+			DataBase.free(res, con, pre);
+		}
+		
+		return ans;
 	}
 
 }

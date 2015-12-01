@@ -68,7 +68,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<a href="" style="color: blue;">发布消息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a id="right-panel-link" href="#right-panel">发送私信</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="" style="color: blue;">个人信息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				
 				<a href="<%=request.getContextPath()%>/jsp/login.jsp"
 					style="color: blue;">注销</a>
 				<%
@@ -78,7 +77,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<%
 					}
 				%>
-
 				<a href="" style="color: blue;">下一页</a>
 			</div>
 		</div>
@@ -102,19 +100,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
 					 	Content content = CD.getContent(mlist.get(j).getContentid());
 					 	Date q = mlist.get(j).getCreatetime();
-					 	System.out.println(q);
-					 	String t = q.getYear()+"-"+q.getMonth() + "-" + q.getDay() + " " + q.getHours()+":"+q.getMinutes();
+					 	String t = q.toLocaleString();
  					 %>
 						<div> <img src="<%= sendimg %>"> <b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b></div>
 						<p>
-							<b style="font-size: 16px;"><%= mlist.get(i).getMessagetitle() %></b>
+							<label>消息主题： </label><b style="font-size: 16px;"><%= mlist.get(i).getMessagetitle() %></b>
 						</p>
 						<p>
-							<label>消息主题:<%= content.getText()%> </label><br>
+							<label>消息内容:<%= content.getText()%> </label><br>
 							<label>消息图片:</label>
 								<%
 								String imgsrc = content.getImage();
-								
 								if(!(imgsrc == null || imgsrc.equals(""))){
 									String[] sub = imgsrc.split("\\,");
 									for(int k = 0;k < sub.length;k++){
@@ -126,8 +122,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<label>消息文件:</label> 
 								<%
 								String filesrc = content.getFile();
-								if(filesrc == null || filesrc.equals("")){
+								if(!(filesrc == null || filesrc.equals(""))){
 									String[] sub = filesrc.split("\\,");
+									out.println(sub);
 									for(int k = 0;k < sub.length;i++){
 									%>
 										<a href="http://<%= sub[k]%>"> 点击下载附件<%= k%></a> <br>
@@ -137,7 +134,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								%>
 								<p style="color: gray; text-align: right;">
 									<a href="javascript:setflag();">将改消息标记为已读<a>
-								
 									<label><%= t %></label>
 								</p>
  						</p>
