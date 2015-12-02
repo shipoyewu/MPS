@@ -1,7 +1,6 @@
 package com.zzu.daoImp;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,16 +9,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.zzu.dao.RelationDao;
 import com.zzu.modle.Group;
 import com.zzu.modle.Relation;
-import com.zzu.modle.User;
 import com.zzu.util.DBtools;
+import com.zzu.util.JsonRelation;
 
 import databaseconnection.DataBase;
 
@@ -33,7 +30,7 @@ public class RelationDaoImp implements RelationDao {
 	@Override
 	public ArrayList<ArrayList<Long>> findDown(long groupid) {
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
 		Queue<Long> que = null;
@@ -94,7 +91,7 @@ public class RelationDaoImp implements RelationDao {
 	@Override
 	public ArrayList<Long> findSameRank(long groupid) {
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		ArrayList<Long> sameRank = new ArrayList<Long>();
@@ -163,7 +160,7 @@ public class RelationDaoImp implements RelationDao {
 	@Override
 	public ArrayList<Long> findAllGroup(long userid) {
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		ResultSet res = null;
 		PreparedStatement pre = null;
 		ArrayList<Long> group = new ArrayList<Long>();
@@ -284,7 +281,7 @@ public class RelationDaoImp implements RelationDao {
 					Long v = res.getLong(1);
 					int cen = ma.get(u)+1;
 					ma.put(v,cen);
-					if(tree.size() < cen){
+					if(tree.size() <= cen){
 						tree.add(new ArrayList<Long>());
 					}
 					tree.get(cen).add(v);
@@ -319,6 +316,7 @@ public class RelationDaoImp implements RelationDao {
 		DBtools.RowDel(deldown);
 	}
 	
+	
 	/**
 	 * 2015/11/2,23:05 添加了findUp findDwon findSameRank findAllGroup的无数据测试
 	 */
@@ -329,9 +327,11 @@ public class RelationDaoImp implements RelationDao {
 			System.out.println(b.get(i));
 		}
 		
-		ArrayList<ArrayList<Long>> c = this.findUp(groupid);
+		ArrayList<ArrayList<Long>> c = this.findUp(5);
 		ArrayList<ArrayList<Long>> d = this.findDown(groupid);
-		System.out.println("asdad");
+		System.out.println(c.get(0).get(0));
+		System.out.println(c.get(1).get(0));
+		/*System.out.println("asdad");
 		if(d == null){
 			System.out.println("sdad");
 		}
@@ -354,19 +354,93 @@ public class RelationDaoImp implements RelationDao {
 		
 		for(int j = 0;j < e.size();j++){
 			System.out.println(e.get(j));
-		}
+		}*/
 	
 	}
-	
-	
-	
-	
+	@Override
+	public ArrayList<Group> getDownOne(long groupid){
+		String sql = "select groupid,groupname from relatioin,fork where up=? and fork.groupid=down";
+		Connection con = DataBase.getConnection();
+		PreparedStatement pre = null;
+		ResultSet res= null;
+		ArrayList<Group> ans = new ArrayList<Group>();
+		
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1,groupid);
+			res = pre.executeQuery();
+			
+			while(res.next()){
+				Group group = new Group();
+				group.setGroupid(res.getLong("groupid"));
+				group.setGroupname(res.getString("groupname"));
+				ans.add(group);
+				
+			}
+		}catch(Exception e){
+			System.out.println("\nshihu:GetDownOne()");
+			e.printStackTrace();
+		}finally{
+			DataBase.free(res, con, pre);
+		}
+		return ans;
+	}
+	@Override
+	public ArrayList<JsonRelation> getJsonRela(long groupid){//给一个groupid，返回适合json格式的上下级关系list
+		ArrayList<JsonRelation> jrList = new ArrayList<JsonRelation>();
+		String name = getUserName(groupid);
+		jrList.add(new JsonRelation(groupid, 0, name));//该用户的group作为根节点
+		Queue<Long> que = null;
+		try {
+			que =(Queue<Long>) new LinkedList<Long>();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		que.add(groupid);
+		Set<Long> vis = new HashSet<Long>();
+		vis.add(groupid);
+		while(!que.isEmpty()){
+			long u = que.poll();
+			ArrayList<Group> next = new ArrayList<Group>();
+			next = getDownOne(u);
+			for(int i = 0;i < next.size();i++){
+				long v = next.get(i).getGroupid();
+				if(!vis.contains(new Long(v))){
+					jrList.add(new JsonRelation(v,u,getUserName(next.get(i).getGroupid())));
+					que.add(v);
+					vis.add(v);
+				}
+			}
+		}
+		return jrList;
+	} 	
 	public static void main(String args[]){
 		new RelationDaoImp().test();
 	}
 
-	
-	
-
+	@Override
+	public String getUserName(long groupid){
+		// TODO Auto-generated method stub
+		String sql = "select username from user inner join fork using( userid) where groupid=?";
+		Connection con = DataBase.getConnection();
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		String ans = null;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, groupid);
+			res = pre.executeQuery();
+			if(res.next()){
+				ans = res.getString("username");
+			}
+		}catch(Exception e){
+			System.out.println("\nshihu:getUserName()");
+			e.printStackTrace();
+		}finally{
+			DataBase.free(res, con, pre);
+		}
+		return ans;
+	}
 }
-///shihu

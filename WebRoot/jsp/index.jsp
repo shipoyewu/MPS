@@ -1,3 +1,4 @@
+<%@page import="com.zzu.modle.Letter"%>
 <%@page import="com.zzu.daoImp.ContentDaoImp"%>
 <%@page import="com.zzu.modle.Content"%>
 <%@page import="com.zzu.service.manger"%>
@@ -19,20 +20,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    
     <title>多级消息发布系统</title>
-    
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	
 	<link rel="stylesheet" type="text/css" href="css/chat.css" />
 	<link rel="stylesheet" type="text/css" href="css/panel.css" />
-	
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/chat.js"></script>
+	<script type="text/javascript" src="js/menuswitch.js"> </script>
 	
 	<!--[if lt IE 7]>
 	<script src="js/IE7.js" type="text/javascript"></script>
@@ -47,131 +47,149 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+  <div class="main" >
     <!-- Centered page --> 
-   <%
-    		session.setAttribute("userid", "1");
-    		//long userid = Long.parseLong((String)session.getAttribute("userid"));
-       		long userid=1l;
-       		UserDaoImp UD = new UserDaoImp();
-       		LetterDaoImp LD = new LetterDaoImp();
-       		User u = UD.getUser(1l);
-      	 	ArrayList<User> Rela = UD.getHaveRelation(userid);
-      	 	String masrc = "userdata/"+userid+"/icon.jpg";
-   %>
-   	
-	<div style="margin-top: 30px; margin-left: 15px;">
-		<div>
-			<div>
-				<img src="<%= masrc %>"> <b> <%= u.getUsername() %></b>
-			</div>
-			<div style="margin-left: 275px; color: blue;">
-				<a href="" style="color: blue;">发布消息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id="right-panel-link" href="#right-panel">发送私信</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="" style="color: blue;">个人信息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="<%=request.getContextPath()%>/jsp/login.jsp"
-					style="color: blue;">注销</a>
-				<%
-					for (int i = 0; i < 49; i++) {
-				%>
-				&nbsp;
-				<%
-					}
-				%>
-				<a href="" style="color: blue;">下一页</a>
+   	<%
+   		session.setAttribute("userid", "1");
+   		//long userid = Long.parseLong((String)session.getAttribute("userid"));
+   		long userid=1l;
+   		UserDaoImp UD = new UserDaoImp();
+   		LetterDaoImp LD = new LetterDaoImp();
+   		User u = UD.getUser(1l);
+  	 	ArrayList<User> Rela = UD.getHaveRelation(userid);
+  	 	String masrc = "userdata/"+userid+"/icon.jpg";
+   	%>
+	  <div class="header">
+	    <div class="header_resize">
+	      <div class="logo"><h1><a href="jsp/index.jsp">MPS</a></h1></div>
+	      <div class="clr">
+	      	<img src="<%= masrc %>"><p><b><%= u.getUsername() %> </b></p>
+	      </div>
+	      <div class="menu_nav">
+	        <ul>
+	          <li><a href="">发布消息</a></li>
+	          <li><a id="right-panel-link" href="#right-panel">发布私信</a></li>
+	          <li><a href="">个人信息</a></li>
+	          <li><a href="<%=request.getContextPath()%>/jsp/login.jsp">注销</a></li>
+	          <li><a href="">下一页</a></li>
+	        </ul>
+	      </div>
+	      <div class="clr"></div>
+	    </div>
+	  </div>
+<table>
+	<tr>
+	<td valign="top">
+		<div class="contentleft">
+			<div class="contentleft_resize">
 			</div>
 		</div>
-	</div>
-	
-	
-   	<div id="showMessage" class="index_div_left" >
-			<!-- 消息显示 -->
-			<%
-				GroupDaoImp GD = new GroupDaoImp();
-				ArrayList<Group> glist = GD.findAllGroup(userid);
-				ContentDaoImp CD = new ContentDaoImp();
-				ReceiveDaoImp RD = new ReceiveDaoImp();
-				for(int i = 0 ;i < glist.size();i++){
-					String gname = glist.get(i).getGroupname();
-					ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
-					%>
-					<b><%= gname %></b> <br>
-					<%
-					for(int j = 0;j < mlist.size();j++){
-						String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
-					 	Content content = CD.getContent(mlist.get(j).getContentid());
-					 	Date q = mlist.get(j).getCreatetime();
-					 	String t = q.toLocaleString();
- 					 %>
-						<div> <img src="<%= sendimg %>"> <b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b></div>
-						<p>
-							<label>消息主题： </label><b style="font-size: 16px;"><%= mlist.get(i).getMessagetitle() %></b>
-						</p>
-						<p>
-							<label>消息内容:<%= content.getText()%> </label><br>
-							<label>消息图片:</label>
-								<%
-								String imgsrc = content.getImage();
-								if(!(imgsrc == null || imgsrc.equals(""))){
-									String[] sub = imgsrc.split("\\,");
-									for(int k = 0;k < sub.length;k++){
-										%>
-											<img src="<%= sub[k] %>"> <br>
-										<%}%>
-									
-								<%}%>
-							<label>消息文件:</label> 
-								<%
-								String filesrc = content.getFile();
-								if(!(filesrc == null || filesrc.equals(""))){
-									String[] sub = filesrc.split("\\,");
-									out.println(sub);
-									for(int k = 0;k < sub.length;i++){
-									%>
-										<a href="http://<%= sub[k]%>"> 点击下载附件<%= k%></a> <br>
-									<%
-									}
-								}
-								%>
-								<p style="color: gray; text-align: right;">
-									<a href="javascript:setflag();">将改消息标记为已读<a>
-									<label><%= t %></label>
-								</p>
- 						</p>
-					<%}%>					
+	</td>
+	<td valign="top">  
+		  <div id="allcontainer">
+				<div class="content">
+				  	<div class="content_resize">
+				  		<%
+						GroupDaoImp GD = new GroupDaoImp();
+						ArrayList<Group> glist = GD.findAllGroup(userid);
+						ContentDaoImp CD = new ContentDaoImp();
+						ReceiveDaoImp RD = new ReceiveDaoImp();
+						for(int i = 0 ;i < glist.size();i++){
+							String gname = glist.get(i).getGroupname();
+							ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
+							if(mlist.size()!=0){
+						%>	
+						  	<div class="menuDiv">
+						  		<h3><b><%= gname%> </b></h3>
+						  		<%
+						  		for(int j = 0;j < mlist.size();j++){
+									String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
+								 	Content content = CD.getContent(mlist.get(j).getContentid());
+								 	Date q = mlist.get(j).getCreatetime();
+								 	String t = q.toLocaleString();
+							 	%>
+							 	
+						  		<ul>
+						  			<li><img src="<%= sendimg %>"><b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b><li>
+						  			<li>消息主题：<b><%= mlist.get(i).getMessagetitle() %> </b></li>
+						  			<li>消息内容：<%= content.getText()%></li>
+						  			<li>消息图片：
+											<%
+											String imgsrc = content.getImage();
+											if(!(imgsrc == null || imgsrc.equals(""))){
+												String[] sub = imgsrc.split("\\,");
+												for(int k = 0;k < sub.length;k++){
+													%>
+														<img src="<%= sub[k] %>" width="58" height="58" alt="pix"> <br>
+													<%}%>	
+											<%}%>		  			
+						  			</li>
+						  			<li>消息文件：
+						  				<%
+											String filesrc = content.getFile();
+											if(!(filesrc == null || filesrc.equals(""))){
+												String[] sub = filesrc.split("\\,");
+												out.println(sub);
+												for(int k = 0;k < sub.length;i++){
+												%>
+													<a href="http://<%= sub[k]%>">点击下载附件<%= k%></a> <br>
+												<%}%>
+											<%}%>
+						  			</li>
+						  			<li>
+						  				<a href="javascript: setflag();" style="text-align: right;">将改消息标记为已读</a>
+										<p class="ptime"><%=t%></p>
+						  			</li>
+						  		</ul>
+						  		<%}%>
+						  	</div>
+						  	<%}%>
+					  <%}%>
+				  	</div>
+			  	</div>
+		  </div>
+	  </td>
+	  <td valign="top">
+	  	<div class="contentright">
+			<div class="contentright_resize">
+				<h2 align="center">私信</h2>
+				<%
+					ArrayList<Letter> li = LD.getUnRead(userid);
+					if(li!=null)
+					for(int i = 0;i < li.size();i++){
+						String text = UD.getUser(li.get(i).getSenderuserid()).getUsername()+" : "+li.get(i).getLettercontent();
+						String t = li.get(i).getCreatetime().toLocaleString();						
+				 %>
+					 <div style="margin-top: 10px">
+					 	<p><%=text%></p>
+					 	<p class="ptime"><%=t %></p>
+					 	</div>
+					 </div>
 				<%}%>
-   		</div>
-	   	<div id ="showletter" class="index_div_right">
-	   			<div style="background: #F3F3F3; height: 560px; width: 290px;">
-					<div
-						style="text-align: center; background: #BCBCBC; height: 36px; width:auto; color: white;">
-					<h1>私信</h1>
-					</div>
-					<p>张老师：</p>
-					<p>
-						&nbsp;&nbsp;&nbsp;&nbsp; <a href=""><img
-							src="<%=request.getContextPath()%>/images/person1.jpg"
-							width="50px" height="30px" border="1"></a>
-						资助管理系统已经审核完成，通知励志和助学金的同学，今天开始申请励志和助学金，
-						填写理由和完善信息，明天晚上前完成,请同学们及时完成。
-					</p>
-					<p style="color: gray; text-align: right;">
-						<a href="" style="color: blue;">回复</a> <br> 辅导员
-						发表于2015-12-25 11:30
-					</p>
-					<hr>
-				</div>
-	   	</div>
+			</div>
+		</div>
+	  </td>
+  </tr>
+  </table>
+  <jsp:include page="footer.jsp"></jsp:include>
+  <script type="text/javascript">
+	var mSwitch = new MenuSwitch("menuDiv");
+	mSwitch.setDefault(0);
+	mSwitch.setPrevious(false);
+	mSwitch.init();
+  </script>
+	
+  </div>
   <!-- Left panel -->
   <div id="left-panel" class="panel">
     <h2>Left panel</h2>
     <p></p>
   </div>
-
+	
   <!-- Right panel -->
   <div id="right-panel" class="panel">
     <h2>Right panel</h2>
 	    <div class="content">
-	    	
 	        <div>
 				<a id="user"><img src="<%= masrc %>" id="master" name="<%= userid %>"> <%=u.getUsername() %> </a>
 			</div>
@@ -278,16 +296,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            </div>
 	        </div>
 	    </div>
-	<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
-    
-  </div>
-  <script src="js/jquery.panelslider.js"></script>
-  <script>
-    $('#left-panel-link').panelslider();
-    $('#right-panel-link').panelslider({side: 'right', clickClose: true, duration: 200 });
-    $('#close-panel-bt').click(function() {
-      $.panelslider.close();
-    });
-  </script>
+	</div>
+	<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+	  <script src="js/jquery.panelslider.js"></script>
+	  <script>
+	    $('#left-panel-link').panelslider();
+	    $('#right-panel-link').panelslider({side: 'right', clickClose: true, duration: 200 });
+	    $('#close-panel-bt').click(function() {
+	      $.panelslider.close();
+	    });
+	  </script>
   </body>
 </html>

@@ -16,4 +16,6 @@ public interface LetterDao {
 	public ArrayList<Letter> getUnRead(long sender,long receiver); //返回用户sender和用户receiver之间receiver没有读过的消息
 	public boolean ifUnRead(long sender,long receiver);//返回用户sender和receiver之间是否有未读的消息
 	public void setAlreadyRead();//设置私信为已读 
+	public ArrayList<Letter> getUnRead(long receiver);
+	
 }

@@ -297,7 +297,7 @@ public class GroupDaoImp implements GroupDao {
 	@Override
 	public String getUserName(long groupid) {
 		// TODO Auto-generated method stub
-		String sql = "select username from user inner join fork using( userid) where groupid=?";
+		String sql = "select username from user inner join fork using(userid) where groupid=?";
 		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;

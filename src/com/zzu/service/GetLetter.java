@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.zzu.daoImp.LetterDaoImp;
 import com.zzu.modle.Letter;
 
-@WebServlet(name="GetLetter",urlPatterns="/GetLetter")
+@WebServlet(name="GetLetter",loadOnStartup=1, urlPatterns="/GetLetter")
 public class GetLetter extends HttpServlet {
 
 	/**

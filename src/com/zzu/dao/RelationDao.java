@@ -2,7 +2,9 @@ package com.zzu.dao;
 
 import java.util.ArrayList;
 
+import com.zzu.modle.Group;
 import com.zzu.modle.Relation;
+import com.zzu.util.JsonRelation;
 /**
  * 
  * @author shihu
@@ -16,6 +18,9 @@ public interface RelationDao {
 	public boolean addRelation(Relation relation);//增加relation
 	public void delRelation(long up,long down);
 	public void delRelation(long forkid);
+	ArrayList<Group> getDownOne(long groupid);
+	ArrayList<JsonRelation> getJsonRela(long groupid);
+	String getUserName(long groupid);
 	
 }
 	

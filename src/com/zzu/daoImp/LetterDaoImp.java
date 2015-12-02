@@ -191,4 +191,32 @@ public class LetterDaoImp implements LetterDao {
 			DataBase.freeStatement(conn, ptmt);
 		}
 	}
+
+	@Override
+	public ArrayList<Letter> getUnRead(long receiver) {
+		// TODO Auto-generated method stub
+		ArrayList<Letter> ans = new ArrayList<Letter>();
+		String sql = "select * from letter where receiveuserid=? and status=true";
+		Connection con = DataBase.getConnection();
+		PreparedStatement pre = null;
+		ResultSet res = null;
+		try{
+			pre = con.prepareStatement(sql);
+			pre.setLong(1, receiver);
+			res = pre.executeQuery();
+			while(res.next()){
+				Letter l = new Letter();
+				l.setCreatetime(res.getTimestamp("createtime"));
+				l.setLettercontent(res.getString("lettercontent"));
+				l.setLetterid(res.getLong("letterid"));
+				l.setSenderuserid(res.getLong("senderuserid"));
+				l.setStatus(res.getBoolean("status"));
+				ans.add(l);
+			}
+		}catch(Exception e){
+			System.out.println("\nxufuguo:shihu:getUnRead()");
+			e.printStackTrace();
+		}
+		return ans;
+	}
 }

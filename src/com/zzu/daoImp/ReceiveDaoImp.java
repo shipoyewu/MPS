@@ -122,7 +122,6 @@ public class ReceiveDaoImp implements ReceiveDao {
 		{
 			pre = con.prepareStatement(sql);
 			pre.setLong(1, groupid);
-			System.out.println(pre);
 			res = pre.executeQuery();
 			while(res.next()){
 				

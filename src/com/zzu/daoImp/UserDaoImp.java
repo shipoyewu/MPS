@@ -108,6 +108,7 @@ public class UserDaoImp implements UserDao {
 				user.setPassword(res.getString("password"));
 				user.setRegistertime(res.getTimestamp("registertime"));
 				user.setTel(res.getString("tel"));
+				DataBase.free(res, con, pstmt);
 				System.out.println("get user by userid");
 				return user;
 			}
@@ -146,6 +147,7 @@ public class UserDaoImp implements UserDao {
 				user.setTel(res.getString("tel"));
 				user.setPassword(res.getString("password"));
 				System.out.println("get user by email.");
+				DataBase.free(res, con, pstmt);
 				return user;
 			}
 			else{
@@ -275,6 +277,7 @@ public class UserDaoImp implements UserDao {
 		
 			if(!res.next()){
 				System.out.println("不存在该用户!");
+				DataBase.free(res, con, pstmt);
 				return false;
 			}
 			DataBase.free(res, con, pstmt);
@@ -307,6 +310,7 @@ public class UserDaoImp implements UserDao {
 				res = pstmt.executeQuery();
 				if(res.next()){
 					userid = res.getLong("userid");
+					DataBase.free(res, con, pstmt);
 					return userid;
 				}
 				else {
@@ -358,6 +362,7 @@ public class UserDaoImp implements UserDao {
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				System.out.println("不存在该用户！");
+				DataBase.free(res, con, pstmt);
 				return false;
 			}
 		} catch (SQLException e1) {
@@ -372,6 +377,7 @@ public class UserDaoImp implements UserDao {
 			if(res.next()){
 				if(!password.equals(res.getString("password")) ){
 					System.out.println("密码匹配错误！");
+					DataBase.free(res, con, pstmt);
 					return false;
 				}
 			}
@@ -399,6 +405,7 @@ public class UserDaoImp implements UserDao {
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				System.out.println("不存在该用户！");
+				DataBase.free(res, con, pstmt);
 				return false;
 			}
 		} catch (SQLException e1) {
@@ -413,6 +420,7 @@ public class UserDaoImp implements UserDao {
 			if(!res.next()){
 				if(!password.equals(res.getString("password")) ){
 					System.out.println("密码匹配错误！");
+					DataBase.free(res, con, pstmt);
 					return false;
 				}
 			}
@@ -454,6 +462,7 @@ public class UserDaoImp implements UserDao {
 				 msg.setIsvalue(res.getBoolean("isvalue"));
 				 m.add(msg);
 			}
+			DataBase.free(res, con, pstmt);
 			return m;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -472,6 +481,7 @@ public class UserDaoImp implements UserDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, userid);
 			if(res.next()){
+				DataBase.free(res, con, pstmt);
 				return res.getLong("groupid");
 			}
 		} catch (SQLException e) {
@@ -547,6 +557,7 @@ public class UserDaoImp implements UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		DataBase.freeStatement(con, pstmt);
 	}
 }
 
