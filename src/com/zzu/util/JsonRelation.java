@@ -13,6 +13,7 @@ public class JsonRelation {
 	private long pId;
 	private String name;
 	private String open;
+	private String showIcon;
 	public JsonRelation(){
 		
 	}
@@ -22,12 +23,20 @@ public class JsonRelation {
 		this.pId = pId;
 		this.name = name;
 	}
-	public JsonRelation(long id, long pId, String name, String open) {
+	public JsonRelation(long id, long pId, String name, String open,String showIcon) {
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.pId = pId;
 		this.name = name;
 		this.open = open;
+		this.showIcon = showIcon;
+	}
+	public JsonRelation(long id, long pId, String name,String showIcon) {
+		// TODO Auto-generated constructor stub
+		this.id = id;
+		this.pId = pId;
+		this.name = name;
+		this.showIcon = showIcon;
 	}
 	public long getId(){
 		return this.id;
@@ -45,10 +54,13 @@ public class JsonRelation {
 		return this.open;
 	}
 	public static void main(String[] args){
-//		ArrayList<JsonRelation> jr = new JsonRelation().getJsonRela(5);
-//		System.out.println("id:"+jr.get(0).id);
-//		System.out.println("pid:"+jr.get(0).pId);
-//		System.out.println("name:"+jr.get(0).name);
+
+	}
+	public String getShowIcon() {
+		return showIcon;
+	}
+	public void setShowIcon(String showIcon) {
+		this.showIcon = showIcon;
 	}
 	
 }

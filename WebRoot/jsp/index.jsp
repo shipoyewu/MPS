@@ -33,6 +33,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/chat.js"></script>
 	<script type="text/javascript" src="js/menuswitch.js"> </script>
+	<link rel="stylesheet" href="css/metroStyle/metroStyle.css" type="text/css">
+	<!-- <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>	 -->
+	<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
+	<script type="text/javascript" src="js/jquery.ztree.excheck-3.5.js"></script>
+	<script type="text/javascript" src="js/usertree.js"></script> 
 	
 	<!--[if lt IE 7]>
 	<script src="js/IE7.js" type="text/javascript"></script>
@@ -61,9 +66,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	%>
 	  <div class="header">
 	    <div class="header_resize">
-	      <div class="logo"><h1 class="htitle"><a href="jsp/index.jsp">MPS</a></h1></div>
+	      <div class="logo"><h1><a href="jsp/index.jsp">mps</a></h1></div>
 	      <div class="clr">
-	      	<img src="<%= masrc %>"><p><b><%= u.getUsername() %> </b></p>
+	      	<img src="<%= masrc %>"><p><b style="color: #000"><%= u.getUsername() %> </b></p>
 	      </div>
 	      <div class="menu_nav">
 	        <ul>
@@ -82,6 +87,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<td valign="top">
 		<div class="contentleft">
 			<div class="contentleft_resize">
+				<div class="content_wrap">
+				<div class="zTreeDemoBackground left">
+				<ul id="treeDemo" class="ztree"></ul>
+				</div>
+				<div class="right">
+				<ul class="info">
+					<div id="show" ></div>
+				</ul>
+		</div>
+	</div>
 			</div>
 		</div>
 	</td>
@@ -120,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												String[] sub = imgsrc.split("\\,");
 												for(int k = 0;k < sub.length;k++){
 													%>
-														<img src="<%= sub[k] %>" width="58" height="58" alt="pix"> <br>
+														<img src="<%= sub[k] %>"> <br>
 													<%}%>	
 											<%}%>		  			
 						  			</li>
@@ -129,10 +144,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											String filesrc = content.getFile();
 											if(!(filesrc == null || filesrc.equals(""))){
 												String[] sub = filesrc.split("\\,");
-												out.println(sub);
-												for(int k = 0;k < sub.length;i++){
+												out.println(sub.length);
+												for(int k = 0;k < sub.length;k++){
 												%>
-													<a href="http://<%= sub[k]%>">点击下载附件<%= k%></a> <br>
+													<a download="" href="<%= sub[k]%>">点击下载附件<%= k%></a> <br>
 												<%}%>
 											<%}%>
 						  			</li>
@@ -152,7 +167,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  <td valign="top">
 	  	<div class="contentright">
 			<div class="contentright_resize">
-				<h2 align="center">私信</h2>
+				<h2 class="article">私信</h2>
 				<%
 					ArrayList<Letter> li = LD.getUnRead(userid);
 					if(li!=null)
@@ -182,13 +197,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   <!-- Left panel -->
   <div id="left-panel" class="panel">
-    <h2>Left panel</h2>
-    <p></p>
+   
   </div>
 	
   <!-- Right panel -->
   <div id="right-panel" class="panel">
-    <h2>Right panel</h2>
 	    <div class="content">
 	        <div>
 				<a id="user"><img src="<%= masrc %>" id="master" name="<%= userid %>"> <%=u.getUsername() %> </a>
@@ -220,7 +233,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                data="upload.swf" wmode="transparent" bgcolor="" allowscriptaccess="always" allowfullscreen="true"
 	                                scale="noScale" menu="false" type="application/x-shockwave-flash" src="http://service.weibo.com/staticjs/tools/upload.swf?v=36c9997f1313d1c4"
 	                                id="swf_3140">
-	                        </a>
 	                        <label class="chat02_title_t">
 	                            <a href="chat.htm" target="_blank">聊天记录</a></label>
 	                        <div class="wl_faces_box">

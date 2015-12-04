@@ -11,7 +11,7 @@
 	<form action="LoginServlet" method="post" id="form1"
 		style="text-align: center">
 		<div style="text-align: left;">			
-				<label for="" style="color: #000000">您好,请登录...</label>
+				<label for="" style="color: #000000"><br><br></label>
 		</div>
 		<table align="center">
 
@@ -64,7 +64,7 @@
 		</div>
 		<br>
 		<p>
-			&nbsp;&nbsp;&nbsp;<a href="#">立即注册</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">立即注册</a>
 			<a href="forgetPassword.jsp" target="_blank">忘记密码？</a>
 		</p>
 		<button type="submit" value="submit" form="form1"
