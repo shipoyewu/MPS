@@ -26,7 +26,7 @@ public interface UserDao
 		
 		public boolean isUser(String email);//通过email判断该用户是否存在
 		public boolean isUser(long userid);//通过userid判断该用户是否存在
-		public long findGroup(long userid);//返回所在群组号
+		public ArrayList<Long> findGroup(long userid);//返回所在群组号
 		public long getId(String str,String type); //通过设置type=="tel" || "email"，都可获得用户ID;
 		public boolean confUser(long userid,String password);//校验用户信息
 		public boolean confUser(String email,String password);//校验用户信息

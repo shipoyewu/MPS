@@ -14,7 +14,7 @@ import com.zzu.daoImp.LetterDaoImp;
 import com.zzu.modle.Letter;
 
 
-@WebServlet(name="SendLetter",urlPatterns={"/SendLetter"})
+@WebServlet(name="SendLetter",loadOnStartup=1,urlPatterns={"/SendLetter"})
 public class SendLetter extends HttpServlet {
 
 	/**
@@ -55,9 +55,9 @@ public class SendLetter extends HttpServlet {
 		
 		LetterDaoImp LD = new LetterDaoImp();
 		LD.addLetter(let);
+		System.out.println("sendletter");
 		response.setContentType("application/json; charset=utf-8");
 		out.print("{\"success\":true,\"msg\":false}");
-		
 	}
 
 }

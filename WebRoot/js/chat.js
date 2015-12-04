@@ -8,7 +8,6 @@ function messa() {
 
 $(document).ready(function() {
 	//a为当前的的index，b为sender头像，c为receiver头像，d为receiver的姓名，w为sender的id,uname为名字,u为receiver的id
-	
 	var a = 3,
     b = $("#master").attr("src"),
     c = "",
@@ -57,10 +56,10 @@ $(document).ready(function() {
     }),
     
     $(".chat03_content li").dblclick(function() {
+    	
     	if(first==true){
     		first=false;
     		setInterval(function getMessage(){
-    			
     			$.ajax({
     				type: "POST",
     				url: "GetLetter",
@@ -124,7 +123,6 @@ $(document).ready(function() {
         $(".wl_faces_box").hide()
     }),
     $(".chat02_bar img").click(function() {
-    	
     	if(u!=null)
             $.ajax({
     			type: "POST",

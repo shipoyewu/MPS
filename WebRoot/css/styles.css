@@ -17,7 +17,7 @@ p.spec { }
 p.infopost { line-height:30px;}
 a.rm { }
 a.com { margin:0 8px 0 0; padding:0 12px; line-height:26px; float:left; text-decoration:none; color:#fff; background-color:#6ec1f3;}
-
+.htitle{margin:0; padding:12px 0 20px 40px; float:left; color:#fff; font:normal 48px/1.2em Arial, Helvetica, sans-serif; text-transform:uppercase;}
 .header, .content, .menu_nav, .fbg, .footer, form, ol, ol li, ul, .content .mainbar, .content .sidebar { margin:0; padding:0;}
 
 /* header */

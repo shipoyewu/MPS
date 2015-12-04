@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	
-	<link rel="stylesheet" type="text/css" href="css/chat.css" />
+	<link rel="stylesheet" type="text/css" href="css/chat.css" /> 
 	<link rel="stylesheet" type="text/css" href="css/panel.css" />
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	%>
 	  <div class="header">
 	    <div class="header_resize">
-	      <div class="logo"><h1><a href="jsp/index.jsp">MPS</a></h1></div>
+	      <div class="logo"><h1 class="htitle"><a href="jsp/index.jsp">MPS</a></h1></div>
 	      <div class="clr">
 	      	<img src="<%= masrc %>"><p><b><%= u.getUsername() %> </b></p>
 	      </div>

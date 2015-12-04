@@ -16,9 +16,8 @@ import com.google.gson.Gson;
 import com.zzu.daoImp.LetterDaoImp;
 import com.zzu.modle.Letter;
 
-@WebServlet(name="GetLetter",loadOnStartup=1, urlPatterns="/GetLetter")
+@WebServlet(name="GetLetter",loadOnStartup=1,urlPatterns="/GetLetter")
 public class GetLetter extends HttpServlet {
-
 	/**
 	 * 
 	 */
@@ -52,6 +51,7 @@ public class GetLetter extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
+		System.out.println("Getletter");
 		PrintWriter out = response.getWriter();
 		LetterDaoImp LD = new LetterDaoImp();
 		ArrayList<Map<String, String>> list = new ArrayList<Map<String,String>>();
@@ -65,9 +65,7 @@ public class GetLetter extends HttpServlet {
 		}
 		Gson gson = new Gson();
 		String str = gson.toJson(list);
-		System.out.println(str);
 		out.print(str);
-		
 	}
 
 }

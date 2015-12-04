@@ -5,8 +5,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="js/a.js"></script>
 <html>
   <head>
     <base href="<%=basePath%>">
@@ -23,9 +21,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	
   </head>
-  
   <body>
-  <a href="javascript:qwer;">asdadsasda </a>
-  	
+	<form action="SendLetter">
+		<input type="submit"/>
+	</form>  	
   </body>
 </html>
