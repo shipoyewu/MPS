@@ -18,8 +18,7 @@ public class EmailUtil {
 	public static boolean sendEmail(String eamil){
 		String qm = "zhou0110..."; // 您的QQ密码
 		String tu = "qq.com"; // 你邮箱的后缀域名uv
-		//String tto = "209152096@qq.com"; // 接收邮件的邮箱
-		String tto=eamil;//赋值给要发送的邮箱地址
+		String tto="mail";//赋值给要发送的邮箱地址
 		String ttitle = "您好,"+eamil+ "先生";
 		String tcontent = "如果不是您本人操作说明您的密码已经泄漏,请立即和我们联系!请点击后面的链接重置密码:http://localhost:8080/MPS/jsp/resetPassword.jsp?email="+eamil;
 		Properties props = new Properties();
@@ -54,5 +53,8 @@ public class EmailUtil {
 			return false;
 		}
 		return true;
+	}
+	public static void main(String args[]){
+		EmailUtil.sendEmail("871650575@qq.com");
 	}
 }

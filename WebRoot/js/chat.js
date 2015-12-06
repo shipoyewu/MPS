@@ -90,7 +90,7 @@ $(document).ready(function() {
 				   }
     			});
     		},
-    	    5000);
+    	    50);
     	}
     	var b = this.id;
         u = b;

@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<B>分级消息发布系统</B>
 		</DIV>
 	
-		<iframe src="jsp/loginFrame.jsp" width="300px" height="350px" align="right"
+		<iframe src="jsp/loginFrame.jsp" width="300px" height="350px" align="right" name="loginframe"
 			style="border-style: solid; margin-top: 70px; margin-right:120px; border-color: #B4B3FF; background-color: #EAFFFF;">
 		</iframe>
 		<DIV
