@@ -8,11 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
+import com.google.gson.Gson;
 import com.zzu.daoImp.UserDaoImp;
-
-@WebServlet(name="checkMail",urlPatterns="/checkMail")
-public class checkMail extends HttpServlet {
+@WebServlet(name="LoginCheck",urlPatterns="/LoginCheck")
+public class LoginCheck extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -26,7 +27,20 @@ public class checkMail extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doPost(request, response);
+
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+		out.println("<HTML>");
+		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <BODY>");
+		out.print("    This is ");
+		out.print(this.getClass());
+		out.println(", using the GET method");
+		out.println("  </BODY>");
+		out.println("</HTML>");
+		out.flush();
+		out.close();
 	}
 
 	/**
@@ -44,13 +58,33 @@ public class checkMail extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		String info =request.getParameter("info");
+		String pword = request.getParameter("pword");
+		boolean cc = true; 
+		System.out.println(info+pword);
+		for(int i = 0;i < info.length();i++){
+			if(!(info.charAt(i) >= '0' &&  info.charAt(i) <= '9')){
+				cc = false;
+				break;
+			}
+		}
 		UserDaoImp UD = new UserDaoImp();
-		String mail = request.getParameter("mail");
-		boolean bool = UD.isUser(mail);
-		String json = "{\"msg\":"+bool+"}";
+		
+		int loc = info.lastIndexOf("@");
+		boolean flag = false;
+		if(loc == -1){
+			if(cc)
+				flag = UD.confUser(Long.parseLong(info),pword);
+		}
+		else{
+			flag = UD.confUser(info,pword);
+		}
+		System.out.println("asdasd");
+		String json = "{\"msg\":"+flag+"}";
+		System.out.println("shihu:"+json);
 		out.write(json);
 		out.flush();
-		out.close();
+		out.close();  
 	}
 
 }

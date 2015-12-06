@@ -53,7 +53,7 @@ public class UserDaoImp implements UserDao {
 				user.setRegistertime(res.getTimestamp("registertime"));
 				user.setTel(res.getString("tel"));
 				System.out.println("get user by userid");
-				DataBase.free(res, con, pstmt);
+				
 			}
 			else{
 				System.out.println("该用户不存在！");
@@ -63,6 +63,8 @@ public class UserDaoImp implements UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("failed to find User by userid!");
+		}finally{
+			DataBase.free(res, con, pstmt);
 		}
 	 return user;
 	}
@@ -80,7 +82,6 @@ public class UserDaoImp implements UserDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
 			res = pstmt.executeQuery();
-			DataBase.free(res, con, pstmt);
 			if(res.next()){
 				user.setUsername( res.getString("username"));
 				user.setBirthday(res.getDate("birthday"));
@@ -97,9 +98,10 @@ public class UserDaoImp implements UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("failed to find User by email!");
+		}finally{
+			DataBase.free(res, con, pstmt);
 		}
 			
-		
 		return user;
 	}
 
@@ -128,7 +130,7 @@ public class UserDaoImp implements UserDao {
 					pstmt.setString(4, user.getTel());
 					pstmt.setLong(5, user.getUserid());
 					pstmt.executeUpdate();
-					DataBase.freeStatement(con, pstmt);
+					
 			}
 			else{
 				System.out.println("该用户不存在,无法更新!");
@@ -137,6 +139,8 @@ public class UserDaoImp implements UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}finally{
+			DataBase.freeStatement(con, pstmt);
 		}
 			System.out.println("Update success!");
 			return true; 
@@ -164,11 +168,13 @@ public class UserDaoImp implements UserDao {
 			pstmt.executeUpdate();
 			id = DBtools.GetLastID(con);
 			System.out.println("add user success.");
-			DataBase.freeStatement(con, pstmt);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("\nzong failed to add user!:UNIQUE属性的列插入了相同值");
+		}finally{
+			DataBase.freeStatement(con, pstmt);
 		}
 		return id;
 	}
@@ -195,7 +201,8 @@ public class UserDaoImp implements UserDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+		}finally{
+			DataBase.freeStatement(con, pstmt);
 		}
 			return true;		
 	}
@@ -213,13 +220,14 @@ public class UserDaoImp implements UserDao {
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				System.out.println("不存在该用户!");
+				DataBase.freeStatement(con, pstmt);
 				return false;
 			}
 			DataBase.free(res, con, pstmt);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+			DataBase.freeStatement(con, pstmt);
 		}	
 		return true;
 	}
@@ -312,7 +320,6 @@ public class UserDaoImp implements UserDao {
 			res = pstmt.executeQuery();
 			if(res.next()){
 				if(!password.equals(res.getString("password")) ){
-					System.out.println("密码匹配错误！");
 					DataBase.free(res, con, pstmt);
 					return false;
 				}
@@ -334,7 +341,6 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		boolean flag = true;
 		String sql = "select * from user where email=?";
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -342,9 +348,8 @@ public class UserDaoImp implements UserDao {
 			res = pstmt.executeQuery();
 			if(!res.next()){
 				System.out.println("不存在该用户！");
-				flag = false;
-				DataBase.freeStatement(con, pstmt);
-				return flag;
+				DataBase.free(res, con, pstmt);
+				return false;
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -357,7 +362,8 @@ public class UserDaoImp implements UserDao {
 			res = pstmt.executeQuery();
 			if(res.next()){
 				if(!password.equals(res.getString("password")) ){
-					flag = false;
+					DataBase.free(res, con, pstmt);
+					return false;
 				}
 			}
 			
@@ -366,9 +372,8 @@ public class UserDaoImp implements UserDao {
 			e.printStackTrace();
 			System.out.println("failed to Config User by email!");
 		}
-		DataBase.freeStatement(con, pstmt);
-		return flag;
-		
+		DataBase.free(res, con, pstmt);
+		return true;
 	}
 
 	@Override
@@ -508,11 +513,11 @@ public class UserDaoImp implements UserDao {
 		while(item.hasNext()){
 			System.out.println(item.next());
 		}*/
-		ArrayList<Message> m = udi.getAllSendMeg(1);//--test  getAllSendMessage()
+		/*ArrayList<Message> m = udi.getAllSendMeg(1);//--test  getAllSendMessage()
 		Iterator<Message> ite = m.iterator();
 		while(ite.hasNext()){
 			System.out.println("title:"+ite.next().getCreatetime().toString());
-		}
+		}*/
 		/*System.out.println(udi.confUser("yolenstark@outlook.com","4666"));*/
 		//User u[] = new User[100];
 		/*for(int i = 1;i<=30; i++){ 						//插入用户
@@ -534,7 +539,7 @@ public class UserDaoImp implements UserDao {
 			
 		}*/
 		
-		/*User user = udi.getUser(l);
+		/*User user = udi.getUser(1);
 		System.out.println(user.getUserid());  //getUser----test
 		System.out.println(user.getEmail());
 		System.out.println(user.getPassword());
@@ -567,7 +572,7 @@ public class UserDaoImp implements UserDao {
 		/*if(udi.isUser(1)){  //------isUser() test
 			System.out.println("1存在！");
 	}
-		if(udi.isUser("yolenstark@outlook.com")){
+		if(udi.isUser("yolenstark@oweflook.com")){
 			System.out.println("2存在！");
 		}
 		else System.out.println("2bucunzai !");*/

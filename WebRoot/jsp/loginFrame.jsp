@@ -1,15 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <!--登录框架，加入到login.jsp中  -->
 <html>
 <head>
+<base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/login.js"> </script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"> </script>
 <title>登录</title>
+
 </head>
 <body>
-	<form action="LoginServlet" method="post" id="form1"
-		style="text-align: center">
+	<form action="LoginServlet" method="post" id="form1" style="text-align: center" onsubmit="return checkLoginInfo();" target="_parent">
 		<div style="text-align: left;">			
 				<label for="" style="color: #000000"><br><br></label>
 		</div>
@@ -37,7 +44,7 @@
 				}
 			%>
 			<tr>
-				<td><input type="text" name="useridoreamil"
+				<td><input type="text" name="useridoreamil" id="info"
 					oninvalid="setCustomValidity('请输入用户号或邮箱!');"
 					oninput="setCustomValidity('');" placeholder="用户号/邮箱"
 					style="width: 230px; height: 35px; border: 1px solid #888888;"
@@ -51,7 +58,7 @@
 			<tr></tr>
 			<tr></tr>
 			<tr>
-				<td><input type="password" name="password" placeholder="密码"
+				<td><input type="password" name="password" placeholder="密码" id="pword"
 					oninvalid="setCustomValidity('请输入密码!');"
 					oninput="setCustomValidity('');"
 					style="width: 230px; height: 35px; border: 1px solid #888888;"
@@ -64,8 +71,8 @@
 		</div>
 		<br>
 		<p>
-			<a href="#">立即注册</a>
-			<a href="forgetPassword.jsp" target="_blank">忘记密码？</a>
+			<a href="jsp/regist.jsp" target="_parent">立即注册</a>
+			<a href="jsp/forgetPassword.jsp" target="_parent">忘记密码？</a>
 		</p>
 		<button type="submit" value="submit" form="form1"
 			style="width: 230px; height: 45px; background-color: #5858F2; color: white;">登录</button>

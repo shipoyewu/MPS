@@ -32,12 +32,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/chat.js"></script>
-	<script type="text/javascript" src="js/menuswitch.js"> </script>
 	<link rel="stylesheet" href="css/metroStyle/metroStyle.css" type="text/css">
 	<!-- <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>	 -->
 	<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
 	<script type="text/javascript" src="js/jquery.ztree.excheck-3.5.js"></script>
 	<script type="text/javascript" src="js/usertree.js"></script> 
+	<script type="text/javascript" src="js/index.js"> </script>
 	
 	<!--[if lt IE 7]>
 	<script src="js/IE7.js" type="text/javascript"></script>
@@ -55,9 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div class="main" >
     <!-- Centered page --> 
    	<%
-   		session.setAttribute("userid", "1");
-   		//long userid = Long.parseLong((String)session.getAttribute("userid"));
-   		long userid=1l;
+   		long userid = Long.parseLong((String)session.getAttribute("userid"));
    		UserDaoImp UD = new UserDaoImp();
    		LetterDaoImp LD = new LetterDaoImp();
    		User u = UD.getUser(1l);
@@ -74,8 +72,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        <ul>
 	          <li><a href="">发布消息</a></li>
 	          <li><a id="right-panel-link" href="#right-panel">发布私信</a></li>
-	          <li><a href="">个人信息</a></li>
-	          <li><a href="<%=request.getContextPath()%>/jsp/login.jsp">注销</a></li>
+	          <li><a href="javascript:showPersonInfo()">个人信息</a></li>
+	          <li><a href="jsp/login.jsp">注销</a></li>
 	          <li><a href="">下一页</a></li>
 	        </ul>
 	      </div>
@@ -100,9 +98,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</td>
-	<td valign="top">  
+	<td valign="top">
 		  <div id="allcontainer">
-				<div class="content">
+		  <iframe width="970px" height="500px" src="jsp/UnReadMessage.jsp" id="allframe">
+				<%-- <div class="content">
 				  	<div class="content_resize">
 				  		<%
 						GroupDaoImp GD = new GroupDaoImp();
@@ -162,6 +161,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  <%}%>
 				  	</div>
 			  	</div>
+			  	 --%>
+		  </iframe>
 		  </div>
 	  </td>
 	  <td valign="top">
@@ -187,12 +188,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </tr>
   </table>
   <jsp:include page="footer.jsp"></jsp:include>
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
 	var mSwitch = new MenuSwitch("menuDiv");
 	mSwitch.setDefault(0);
 	mSwitch.setPrevious(false);
 	mSwitch.init();
-  </script>
+  </script> -->
 	
   </div>
   <!-- Left panel -->

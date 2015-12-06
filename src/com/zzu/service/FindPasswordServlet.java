@@ -15,7 +15,7 @@ import com.zzu.util.EmailUtil;
 /**
  * 找回密码,给注册邮箱发送密码
  */
-@WebServlet(name = "/FindPasswordServlet", urlPatterns = "/jsp/FindPasswordServlet")
+@WebServlet(name = "FindPasswordServlet", urlPatterns = "/FindPasswordServlet")
 public class FindPasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,16 +27,13 @@ public class FindPasswordServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-		String email = request.getParameter("findPassword");// 需要找回密码的邮箱
-		UserDao userDao = new UserDaoImp();
-		User user = userDao.getUser(email);// 通过eamil返回user信息
-		if (user == null) {
-			// EmailUtil.sendEmail(email);//测试用的
-			request.getRequestDispatcher("/jsp/forgetPasswordAgain.jsp")
-					.forward(request, response);
-		} else {
+		String email =(String) request.getParameter("findPassword");// 需要找回密码的邮箱
+		try{
 			EmailUtil.sendEmail(email);
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+		response.sendRedirect("jsp/login.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request,

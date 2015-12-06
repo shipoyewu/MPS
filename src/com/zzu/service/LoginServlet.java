@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.zzu.dao.UserDao;
 import com.zzu.daoImp.UserDaoImp;
 
-@WebServlet(name = "/LoginServlet", urlPatterns = "/jsp/LoginServlet")
+@WebServlet(name = "LoginServlet", urlPatterns = "/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
 	/**
@@ -68,27 +68,8 @@ public class LoginServlet extends HttpServlet {
 			}
 			HttpSession sess=request.getSession();
 			sess.setAttribute("userid",userid);
-			request.getRequestDispatcher("/jsp/personHome.jsp").forward(
-					request, response);
-		} else {// 用户和密码输入不正确
-			request.getRequestDispatcher("/jsp/loginFrameAgain.jsp").forward(
-					request, response);
-			PrintWriter out = response.getWriter();
-			out.println("<script type=\"text/javascript\">alert(\"ssss!\");</script>");
-
-			/*
-			 * out.println("<html>"); out.println("<header>"); out.println(
-			 * "<script type=\"text/javascript\" src=\"<%=request.getContextPath() %>/js/login.js\"></script>"
-			 * ); out.println("</header>"); out.println("<body>"); out.println(
-			 * "<script type=\"text/javascript\">showbox(\"error\");</script>");
-			 * out.println("</body>"); out.println("</html>");
-			 */
-			/*
-			 * response.sendRedirect(request.getContextPath() +
-			 * "/jsp/loginFrame.jsp");
-			 */
-
-		}
+			response.sendRedirect("jsp/index.jsp");
+		} 
 	}
 
 	protected void doPost(HttpServletRequest request,
