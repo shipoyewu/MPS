@@ -36,6 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     <div class="content">
+    
     <%
    		long userid = Long.parseLong((String)session.getAttribute("userid"));
    		UserDaoImp UD = new UserDaoImp();
@@ -45,17 +46,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	 	String masrc = "userdata/"+userid+"/icon.jpg";
    	%>
 	  	<div class="content_resize">
+	  	<div style="margin-left: 20px">
+	  	<a href="javascript:;" id="pageChangeTop">下一页</a>
+		<a href="javascript:;" id="pageChangeButtom" style="display:none;">上一页</a>
+	  	</div>
 	  		<%
 			GroupDaoImp GD = new GroupDaoImp();
 			ArrayList<Group> glist = GD.findAllGroup(userid);
 			ContentDaoImp CD = new ContentDaoImp();
 			ReceiveDaoImp RD = new ReceiveDaoImp();
+			int wh = 1;
 			for(int i = 0 ;i < glist.size();i++){
+				
 				String gname = glist.get(i).getGroupname();
 				ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
 				if(mlist.size()!=0){
+					String dip = "";
+					if((wh-1)/5==0){
+						dip = "disply: block";
+					}
+					else{
+						dip = "disply: none";
+					}
 			%>	
-			  	<div class="menuDiv">
+			  	<div class="menuDiv" id="page<%=wh++%>" style="<%=dip %>">
 			  		<h3><b><%= gname%> </b></h3>
 			  		<%
 			  		for(int j = 0;j < mlist.size();j++){

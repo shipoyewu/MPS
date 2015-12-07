@@ -2,8 +2,6 @@
  * 
  */
 
-function showPersonInfo(){
-	alert("shihu");
-	document.getElementById("allframe").src="jsp/mySystem.jsp?sess="+1;
-	alert(shihu);
+function showPersonInfo(src){
+	document.getElementById("allframe").src=src;
 }

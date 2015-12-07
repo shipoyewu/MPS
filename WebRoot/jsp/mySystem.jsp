@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <h1 align="center"> <b><big>个人信息</big></b></h1>
         <div>
              <% 
-              long  userid = (Long) session.getAttribute("userid");
+              long  userid = Long.parseLong((String)session.getAttribute("userid"));
               if(userid == '0'  )  System.out.print("\n未能查找到该用户的个人信息");
               User user=new UserDaoImp().getUser(userid);
               

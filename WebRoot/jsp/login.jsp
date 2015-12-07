@@ -31,10 +31,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</DIV>
 	
 		<iframe src="jsp/loginFrame.jsp" width="300px" height="350px" align="right" name="loginframe"
-			style="border-style: solid; margin-top: 70px; margin-right:120px; border-color: #B4B3FF; background-color: #EAFFFF;">
+			style="border-style: solid; margin-top: 70px; margin-right:90px; border-color: #B4B3FF; background-color: #EAFFFF;">
 		</iframe>
 		<DIV
-			style="DISPLAY: block; FONT-SIZE: 30pt; FILTER: glow(color = white, strength = 10); COLOR: white; HEIGHT: 1px; FONT-FAMILY: 华文行楷;margin-left: 15px;padding-top: 560px;padding-left: 100px">
+			style="DISPLAY: block; FONT-SIZE: 30pt; FILTER: glow(color = white, strength = 10); COLOR: white; HEIGHT: 1px; FONT-FAMILY: 华文行楷;margin-left: 15px;padding-top: 520px;padding-left: 100px">
 			<B>——— You cannot escape the responsibility of tomorrow by evading it today.</B>
 		</DIV>
 </body>

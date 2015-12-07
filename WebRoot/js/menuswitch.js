@@ -1,3 +1,42 @@
+$(document).ready(function(){
+	var cc = "page";
+	var maxw = 1;
+	while(document.getElementById(cc+maxw) != null){
+		maxw++;
+	}
+	var q=1;
+	if(maxw <=2 ){
+		$("#pageChangeTop").hide();
+	}
+	$("#pageChangeTop").click(function(){
+	      var uk1="#page"+q;
+		  q++;
+		  var uk2="#page"+q;
+		  $(uk1).hide(); 
+		  $(uk2).show();  
+		  $("#pageChangeButtom").show();
+		  if($("#page"+maxw).is(":hidden")){	  
+		  }else{
+			  $("#pageChangeTop").hide(); 
+		  }
+		 
+	  });
+	$("#pageChangeButtom").click(function(){
+		 var uk1="#page"+q;
+		  q--;
+		  var uk2="#page"+q;
+		  $(uk1).hide(); 
+		  $(uk2).show();  
+ 		if($("#page1").is(":hidden")){	  
+		  }else{
+			  $("#pageChangeButtom").hide(); 
+		  }
+	  }); 
+	 $("#button").click(function(){
+    	$(this).attr('disabled',"true");
+    	//$(this).removeAttr("disabled");
+  });
+});
 
 	function MenuSwitch(className){		
 		this._elements = [];
