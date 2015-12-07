@@ -52,7 +52,7 @@ public class ReceiveDaoImp implements ReceiveDao {
 		String sql="select messageid,messagetitle,contentid,message.groupid as forkid,isvalue,createtime,isremind,iscomment,remindtime,deletetime from receive inner join message using(messageid) where receive.groupid=? order by status desc,createtime desc ";
 		PreparedStatement pre=null;
 		ResultSet res=null;	
-		Message message=new Message();
+		Message message=null;
 		ArrayList<Message> receive=new ArrayList<Message>();
 		try
 		{
@@ -61,6 +61,7 @@ public class ReceiveDaoImp implements ReceiveDao {
 			System.out.println(pre);
 			res = pre.executeQuery();
 			while(res.next()){
+					message=new Message();
 					long m=res.getLong("messageid");
 					String mt=res.getString("messagetitle");
 					long cid=res.getLong("contentid");
@@ -116,7 +117,7 @@ public class ReceiveDaoImp implements ReceiveDao {
 		String sql="select messageid,messagetitle,contentid,message.groupid as forkid,isvalue,createtime,isremind,iscomment,remindtime,deletetime from receive inner join message using(messageid)  where receive.groupid=? and status=true order by status desc,createtime desc ";
 		PreparedStatement pre=null;
 		ResultSet res=null;	
-		Message message=new Message();
+		Message message=null;
 		ArrayList<Message> receive=new ArrayList<Message>();
 		try
 		{
@@ -124,8 +125,8 @@ public class ReceiveDaoImp implements ReceiveDao {
 			pre.setLong(1, groupid);
 			res = pre.executeQuery();
 			while(res.next()){
-				
-					long m=res.getLong("messageid");
+					message = new Message();
+					long m =res.getLong("messageid");
 					String mt=res.getString("messagetitle");
 					long cid=res.getLong("contentid");
 					long gid=res.getLong("forkid");
@@ -146,7 +147,7 @@ public class ReceiveDaoImp implements ReceiveDao {
 					message.setRemindtime(rt);
 					message.setDeletetime(dt);
 					receive.add(message);
-					  }
+			}
 				
 		}catch(Exception e){
 			System.out.println("\nxingjiali:receivedaoimp:getallunreceivemeg\n");
@@ -173,6 +174,10 @@ public class ReceiveDaoImp implements ReceiveDao {
         rdi.addReceive(r);*/
         ArrayList<Message> array=rdi.getAllReceiveMeg(gid);
         ArrayList<Message> array2=rdi.getAllUnReadMeg(gid);
+        System.out.println(array2.size()+"\n");
+        for(int i = 0;i < array2.size();i++){
+        	System.out.println(array2.get(i).getMessageid());
+        }
         System.out.println("asdasdad");
         System.out.println(array.size());  
     	System.out.println(array2.size());        

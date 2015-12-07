@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
 <!DOCTYPE HTML >
-<html style="color: Green; background-color: Silver">
+<html>
   <head>
     <base href="<%=basePath%>">
     
@@ -21,30 +21,108 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+	<style>
+	.info{
+		border: 1px solid #CCCCCC;
+		background-color: #FFFFFF;
+		padding: 1px;
+		margin-top: 5px;
+		margin-right: 5px;
+		margin-left: 5px;
+		margin-bottom: 0px;
+	}
+	.info h3{
+		font-size: 14px;
+		font-weight: bold;
+		color: #FFFFFF;
+		padding-top: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px;
+		padding-left: 15px;
+		background-color: #999999;
+		margin: 0px;
+	}
+	.info ul{
+		margin: 0px;
+		padding: 0px;
+		list-style-type: none;
+	}
+	h1{
+		font-size: 25px;
+		font-weight: bold;
+		color: #FFFFFF;
+		padding-top: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px;
+		padding-left: 15px;
+		background-color: #999999;
+		margin: 0px;
+	}
+	.info ul li{
+		color: #666666;
+		background-color: #EEEEEE;
+		display: block;
+		padding: 5px 5px 5px 15px;
+		font-size: 14px;
+		margin-top: 1px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		margin-left: 0px;
+		height: auto;
+	}
+	.info ul li a{
+		color: #666666;
+		background-color: #F4F4F4;
+		display: block;
+		padding: 5px 5px 5px 15px;
+		font-size: 14px;
+		margin-top: -5px;
+		margin-right: -5px;
+		margin-bottom: -5px;
+		margin-left: -15px;
+		text-decoration: none;
+		height: 16px;
+	}
+	.info ul li a:hover{	
+		color: #FFFFFF;
+		background-color: #DDDDDD;	
+	}
+		
+	</style>
   </head>
  
   
-  <body > 
+  <body style="background-color: #ffffff"> 
         <h1 align="center"> <b><big>个人信息</big></b></h1>
         <div>
-             <% 
-              long  userid = Long.parseLong((String)session.getAttribute("userid"));
-              if(userid == '0'  )  System.out.print("\n未能查找到该用户的个人信息");
-              User user=new UserDaoImp().getUser(userid);
-              
-             // sess.setAttribute("userid", new Usr())
-             %>
-             <h1>账号：<%=user.getUserid() %> </h1> 
-             <h1>名字：<%=user.getUsername() %></h1>
-             <h1>生日：<%=user.getBirthday() %></h1> 
-             <h1>邮箱：<%=user.getEmail() %></h1>
-             <h1>电话：<%=user.getTel()%></h1>
-             <h1>头像：<%=user.getPicture() %></h1>
-             <h1>注册时间：<%=user.getRegistertime() %></h1>
-         
-        </div>
-        <h1 align="right"><a href="">修改个人信息</a>  </h1>
+	        <div style="width: 70%; float: left; display: inline;">
+		        <div class="info">
+		             <% 
+		              long  userid = Long.parseLong((String)session.getAttribute("userid"));
+		              if(userid == '0'  )  System.out.print("\n未能查找到该用户的个人信息");
+		              User user=new UserDaoImp().getUser(userid);
+		              
+		             // sess.setAttribute("userid", new Usr())
+		             %>
+		             <ul >
+		    
+		             <li><b>账号：</b><%=user.getUserid() %></li> 
+		             <li><b>名字： </b><%=user.getUsername() %></li>
+		             <li><b>生日：</b><%=user.getBirthday() %> </li> 
+		             <li><b>邮箱：</b><%=user.getEmail() %> </li>
+		             <li><b>电话：</b><%=user.getTel()%> </li>
+		             <li><b>注册时间：</b><%=user.getRegistertime() %> </li>
+		         	 <li><p align="center"><a href="jsp/manage.jsp">修改个人信息</a></p></li>	
+		         	</ul>
+		        </div>
+		    </div>
+		    <div style="width:30% right; display: inline;">
+		    	<div class="info">
+		    		<img src="userdata/<%=user.getUserid() %>/icon.jpg" width="25%" hight="100%" style="margin: 10px 10px 10px 20px">
+		    	</div>
+		    </div>
+		</div>
+	        
                              
         
         

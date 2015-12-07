@@ -35,7 +35,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    <div class="content">
     
     <%
    		long userid = Long.parseLong((String)session.getAttribute("userid"));
@@ -60,6 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 				String gname = glist.get(i).getGroupname();
 				ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
+				
 				if(mlist.size()!=0){
 					String dip = "";
 					if((wh-1)/5==0){
@@ -71,6 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			%>	
 			  	<div class="menuDiv" id="page<%=wh++%>" style="<%=dip %>">
 			  		<h3><b><%= gname%> </b></h3>
+			  		<ul>
 			  		<%
 			  		for(int j = 0;j < mlist.size();j++){
 						String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
@@ -79,9 +80,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 	String t = q.toLocaleString();
 				 	%>
 				 	
-			  		<ul>
-			  			<li><img src="<%= sendimg %>"><b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b><li>
-			  			<li>消息主题：<b><%= mlist.get(i).getMessagetitle() %> </b></li>
+			  		
+			  			<li><img src="<%= sendimg %>"><b><%= GD.getGroup(mlist.get(j).getGroupid()).getGroupname() %></b><li>
+			  			<li>消息主题：<b><%= mlist.get(j).getMessagetitle() %> </b></li>
 			  			<li>消息内容：<%= content.getText()%></li>
 			  			<li>消息图片：
 								<%
@@ -110,13 +111,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  				<a href="javascript: setflag();" style="text-align: right;">将改消息标记为已读</a>
 							<p class="ptime"><%=t%></p>
 			  			</li>
-			  		</ul>
+			  		
 			  		<%}%>
+			  		</ul>
 			  	</div>
 			  	<%}%>
 		  <%}%>
 	  	</div>
-  	</div>
   </body>
   <script type="text/javascript">
 	var mSwitch = new MenuSwitch("menuDiv");

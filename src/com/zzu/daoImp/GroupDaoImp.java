@@ -209,7 +209,8 @@ public class GroupDaoImp implements GroupDao {
 	@Override
 	public Group getGroup(long groupid) {
 		// TODO Auto-generated method stub
-		String sql = "select * from fork where groupid=?";
+		
+		String sql = "select * from fork where groupid=? and isvalue=true";
 		Connection con = new DataBase().getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
@@ -240,7 +241,7 @@ public class GroupDaoImp implements GroupDao {
 	@Override
 	public ArrayList<Group> findAllGroup(long userid) {
 		// TODO Auto-generated method stub
-		String sql = "select * from fork where userid=?";
+		String sql = "select * from fork where userid=? and isvalue=true";
 		DataBase db = new DataBase();
 		ArrayList<Group> ans = new ArrayList<Group>();
 		Connection con = db.getConnection();

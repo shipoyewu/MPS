@@ -150,6 +150,18 @@ ol li .send { margin:16px 0 0 0;}
 	color: #FFFFFF;
 	background-color: #DDDDDD;	
 }
+.lettertitile{
+		text-align: center;
+		font-size: 18px;
+		font-weight: bold;
+		color: #FFFFFF;
+		padding-top: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px;
+		padding-left: 15px;
+		background-color: #999999;
+		margin: 0px;
+}
 
 
 /*menuDiv*/

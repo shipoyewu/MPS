@@ -169,7 +169,7 @@ public class RelationDaoImp implements RelationDao {
 		PreparedStatement pre = null;
 		ArrayList<Long> group = new ArrayList<Long>();
 		
-		String sql = "select groupid from fork where userid=?";
+		String sql = "select groupid from fork where userid=? and isvalue=true";
 		try{
 			pre = con.prepareStatement(sql);
 			pre.setLong(1, userid);
@@ -214,7 +214,7 @@ public class RelationDaoImp implements RelationDao {
 			if(up.get(si-1).get(i).longValue() == relation.getDown()) return false;
 			ArrayList<ArrayList<Long>> down = findDown(up.get(si-1).get(i).longValue());
 			for(int j = 0;j < down.size();j++){
-				for(int k = 0;k < down.get(i).size();i++){
+				for(int k = 0;k < down.get(j).size();k++){
 					if(relation.getDown() == down.get(j).get(k).longValue()){
 						return false;
 					}
@@ -226,7 +226,7 @@ public class RelationDaoImp implements RelationDao {
 		String sql = "insert into relation(up,down,isvalid) values(?,?,?)";
 		PreparedStatement pre = null;
 		try{
-			con.prepareStatement(sql);
+			pre = con.prepareStatement(sql);
 			pre.setLong(1, relation.getUp());
 			pre.setLong(2, relation.getDown());
 			pre.setBoolean(3, true);
@@ -371,7 +371,7 @@ public class RelationDaoImp implements RelationDao {
 	}
 	@Override
 	public ArrayList<Group> getDownOne(long groupid){
-		String sql = "select groupid,groupname from relation,fork where up=? and fork.groupid=down";
+		String sql = "select groupid,groupname from relation,fork where up=? and fork.groupid=down and isvalue=true";
 		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res= null;
@@ -437,7 +437,7 @@ public class RelationDaoImp implements RelationDao {
 	@Override
 	public String getUserName(long groupid) {
 		// TODO Auto-generated method stub
-		String sql = "select username from user inner join fork using( userid) where groupid=?";
+		String sql = "select username from user inner join fork using( userid) where groupid=? and isvalue=true";
 		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;

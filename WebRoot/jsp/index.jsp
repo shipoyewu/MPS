@@ -100,7 +100,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</td>
 	<td valign="top">
-		  <div id="allcontainer">
+		  <div id="allcontainer" class="content">
+		 	
 		  <iframe width="970px" height="500px" src="jsp/UnReadMessage.jsp" id="allframe">
 				<%-- <div class="content">
 				  	<div class="content_resize">
@@ -169,7 +170,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  <td valign="top">
 	  	<div class="contentright">
 			<div class="contentright_resize">
-				<h2 class="article">私信</h2>
+				<h2 class="lettertitile">私信</h2>
 				<%
 					ArrayList<Letter> li = LD.getUnRead(userid);
 					if(li!=null)
