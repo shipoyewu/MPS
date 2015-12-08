@@ -93,6 +93,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  
   
   <body style="background-color: #ffffff"> 
+  <div>
         <h1 align="center"> <b><big>个人信息</big></b></h1>
         <div>
 	        <div style="width: 70%; float: left; display: inline;">
@@ -122,9 +123,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    	</div>
 		    </div>
 		</div>
-	        
-                             
-        
-        
+    </div>   
   </body>
 </html>

@@ -1,11 +1,8 @@
 package com.zzu.daoImp;
 
-import java.awt.Container;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import com.zzu.dao.GroupDao;
@@ -19,7 +16,8 @@ public class GroupDaoImp implements GroupDao {
 	public long addGroup(Group group) {
 		// TODO Auto-generated method stub
 		String sql = "insert into fork(userid,isvalue,isneedagree,groupname) values(?,?,?,?)";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		long id = -1;
@@ -88,7 +86,8 @@ public class GroupDaoImp implements GroupDao {
 	public void updateGroup(Group group) {
 		// TODO Auto-generated method stub
 		String sql = "select * from fork where groupid=?";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		Group oldgroup = new Group();
@@ -136,7 +135,8 @@ public class GroupDaoImp implements GroupDao {
 			}
 		}
 		
-		new DataBase().free(res, con, pre);
+		new DataBase();
+		DataBase.free(res, con, pre);
 		
 	}
 
@@ -145,14 +145,16 @@ public class GroupDaoImp implements GroupDao {
 		// TODO Auto-generated method stub
 		String sql = "select * from fork where groupid="+ "\'" +groupid+"\' "+"and userid="+"\'"+userid+"\'"+" and isvalue=true"+";";
 		System.out.println(sql);
-		return new DBtools().RowConf(sql);
+		new DBtools();
+		return DBtools.RowConf(sql);
 	}
 
 	@Override
 	public boolean isvalid(long groupid) {
 		// TODO Auto-generated method stub
 		String sql = "select isvalue from fork where groupid=?";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		
@@ -170,7 +172,8 @@ public class GroupDaoImp implements GroupDao {
 			System.out.println("\nshihu:isvalid");
 			e.printStackTrace();
 		}finally{
-			new DataBase().free(res, con, pre);
+			new DataBase();
+			DataBase.free(res, con, pre);
 		}
 		return false;
 	}
@@ -179,7 +182,8 @@ public class GroupDaoImp implements GroupDao {
 	public void deleteGroup(long groupid) {
 		// TODO Auto-generated method stub
 		String sql = "update fork set isvalue=false where groupid=?";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		
 		try{
@@ -211,7 +215,8 @@ public class GroupDaoImp implements GroupDao {
 		// TODO Auto-generated method stub
 		
 		String sql = "select * from fork where groupid=? and isvalue=true";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		Group group = null;
@@ -233,7 +238,8 @@ public class GroupDaoImp implements GroupDao {
 			System.out.println("\nshihu:getGroup()");
 			e.printStackTrace();
 		}finally{
-			new DataBase().free(res, con, pre);
+			new DataBase();
+			DataBase.free(res, con, pre);
 		}
 		return group;
 	}
@@ -244,7 +250,7 @@ public class GroupDaoImp implements GroupDao {
 		String sql = "select * from fork where userid=? and isvalue=true";
 		DataBase db = new DataBase();
 		ArrayList<Group> ans = new ArrayList<Group>();
-		Connection con = db.getConnection();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		try{
@@ -265,7 +271,7 @@ public class GroupDaoImp implements GroupDao {
 			System.out.println("\nshihu:findAllGroup()");
 			e.printStackTrace();;
 		}finally{
-			db.free(res, con, pre);
+			DataBase.free(res, con, pre);
 		}
 		
 		return ans;
@@ -276,7 +282,7 @@ public class GroupDaoImp implements GroupDao {
 		String sql = "select userid from fork where groupid=?";
 		DataBase db = new DataBase();
 		PreparedStatement pre = null;
-		Connection con = db.getConnection();
+		Connection con = DataBase.getConnection();
 		ResultSet res = null;
 		
 		try{
@@ -290,7 +296,7 @@ public class GroupDaoImp implements GroupDao {
 			System.out.println("\nshihu:getUserid()");
 			e.printStackTrace();
 		}finally{
-			db.free(res, con, pre);
+			DataBase.free(res, con, pre);
 		}
 		return 0;
 	}

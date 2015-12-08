@@ -1,7 +1,6 @@
 package com.zzu.daoImp;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 
 import com.zzu.dao.ChoiceDao;
@@ -14,8 +13,9 @@ public class ChoiceDaoImp implements ChoiceDao {
 
 	@Override
 	public long addChoice(Choice choice) {
+		new DataBase();
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		String sql =" insert into choice (chocontent, voteid ) values (?,?)";
 		PreparedStatement pre = null;
 		long id  =  -1;

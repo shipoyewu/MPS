@@ -1,12 +1,6 @@
 package com.zzu.service;
 
 import java.io.IOException;
-
-
-import com.zzu.modle.User;
-import com.zzu.dao.UserDao;
-import com.zzu.daoImp.UserDaoImp;
-
 import java.io.PrintWriter;
 import java.sql.Date;
 
@@ -15,7 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import com.zzu.dao.UserDao;
+import com.zzu.daoImp.UserDaoImp;
+import com.zzu.modle.User;
 
 
 public class register extends HttpServlet {
@@ -37,6 +34,7 @@ public class register extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
             processRequest(request, response);
@@ -53,6 +51,7 @@ public class register extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		    processRequest(request, response);

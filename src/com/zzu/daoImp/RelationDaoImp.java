@@ -1,7 +1,6 @@
 package com.zzu.daoImp;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,15 +9,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.zzu.dao.RelationDao;
 import com.zzu.modle.Group;
 import com.zzu.modle.Relation;
-import com.zzu.modle.User;
 import com.zzu.util.DBtools;
 import com.zzu.util.JsonRelation;
 
@@ -33,13 +29,14 @@ public class RelationDaoImp implements RelationDao {
 	 */
 	@Override
 	public ArrayList<ArrayList<Long>> findDown(long groupid) {
+		new DataBase();
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
 		Queue<Long> que = null;
 		try {
-			que =(Queue<Long>) new LinkedList<Long>();
+			que =new LinkedList<Long>();
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -94,8 +91,9 @@ public class RelationDaoImp implements RelationDao {
 	 */
 	@Override
 	public ArrayList<Long> findSameRank(long groupid) {
+		new DataBase();
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		ArrayList<Long> sameRank = new ArrayList<Long>();
@@ -149,7 +147,7 @@ public class RelationDaoImp implements RelationDao {
 		Set<Long> se = new HashSet<Long>();
 		for(Iterator ter = sameRank.iterator();ter.hasNext();){
 			Long ele = (Long)ter.next();
-			if(se.add((Long) ele)){
+			if(se.add(ele)){
 				uniqueRank.add(ele);
 			}
 		}
@@ -163,8 +161,9 @@ public class RelationDaoImp implements RelationDao {
 	 */
 	@Override
 	public ArrayList<Long> findAllGroup(long userid) {
+		new DataBase();
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		ResultSet res = null;
 		PreparedStatement pre = null;
 		ArrayList<Long> group = new ArrayList<Long>();
@@ -203,8 +202,9 @@ public class RelationDaoImp implements RelationDao {
 	 */
 	@Override
 	public boolean addRelation(Relation relation) {
+		new DataBase();
 		// TODO Auto-generated method stub
-		Connection con = new DataBase().getConnection();
+		Connection con = DataBase.getConnection();
 		
 		ArrayList<ArrayList<Long> > up = findUp(relation.getUp());
 		
@@ -258,7 +258,7 @@ public class RelationDaoImp implements RelationDao {
 		ArrayList<ArrayList<Long>> tree = new ArrayList<ArrayList<Long>>();
 		Queue<Long> que = null;
 		try {
-			que =(Queue<Long>) new LinkedList<Long>();
+			que =new LinkedList<Long>();
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -402,7 +402,7 @@ public class RelationDaoImp implements RelationDao {
 		jrList.add(new JsonRelation(groupid, 0, name));//该用户的group作为根节点
 		Queue<Long> que = null;
 		try {
-			que =(Queue<Long>) new LinkedList<Long>();
+			que =new LinkedList<Long>();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

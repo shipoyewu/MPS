@@ -3,9 +3,6 @@ package com.zzu.daoImp;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,25 +11,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import javax.swing.ImageIcon;
-
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.zzu.dao.UserDao;
 import com.zzu.modle.Group;
 import com.zzu.modle.Message;
-import com.zzu.modle.Relation;
 import com.zzu.modle.User;
-import com.zzu.modle.View;
 import com.zzu.modle.Vote;
 import com.zzu.util.DBtools;
-import com.zzu.util.baseTools;
-
 import databaseconnection.DataBase;
 
 public class UserDaoImp implements UserDao {
 
 	
+	@Override
 	public User getUser(long userid) {
 		// TODO Auto-generated method stub
 		Connection con = (Connection) DataBase.getConnection();
@@ -483,6 +475,7 @@ public class UserDaoImp implements UserDao {
 		
 		return ans;
 	}
+	@Override
 	@SuppressWarnings({ "null", "unused" })
 	public void updateIcon(User user) { 			 //更新用户头像
 		// TODO Auto-generated method stub

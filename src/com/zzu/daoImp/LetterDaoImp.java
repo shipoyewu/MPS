@@ -33,6 +33,7 @@ public class LetterDaoImp implements LetterDao {
 	}
 
 	// 添加私信
+	@Override
 	public long addLetter(Letter letter) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -62,6 +63,7 @@ public class LetterDaoImp implements LetterDao {
 	}
 
 	// 返回sender和receiver之间的最新30条消息
+	@Override
 	public ArrayList<Letter> getLetters(long sender, long receiver) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -111,6 +113,7 @@ public class LetterDaoImp implements LetterDao {
 	}
 
 	// 返回用户sender和receiver之间的未读消息
+	@Override
 	public ArrayList<Letter> getUnRead(long sender, long receiver) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -154,6 +157,7 @@ public class LetterDaoImp implements LetterDao {
 	}
 
 	// 返回用户sender和receiver之间是否有未读的消息,返回true即为有未读消息
+	@Override
 	public boolean ifUnRead(long sender, long receiver) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -178,6 +182,7 @@ public class LetterDaoImp implements LetterDao {
 	}
 
 	// 设置私信为已读,即设置status为0
+	@Override
 	public void setAlreadyRead() {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;

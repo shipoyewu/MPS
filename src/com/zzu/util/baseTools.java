@@ -3,8 +3,6 @@ package com.zzu.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.mysql.fabric.xmlrpc.base.Data;
-
 public class baseTools {
 	
 	

@@ -1,11 +1,5 @@
 package com.zzu.util;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import com.zzu.daoImp.RelationDaoImp;
-import com.zzu.daoImp.UserDaoImp;
 
 public class JsonRelation {
 

@@ -1,7 +1,6 @@
 package com.zzu.daoImp;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -23,7 +22,8 @@ public class ContentDaoImp implements ContentDao {
 	public Content getContent(long contentid) {
 		// TODO Auto-generated method stub
 		
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		String sql = "select *from content where contentid=?";
 		Content  c=new Content();
 		PreparedStatement pre = null;
@@ -61,7 +61,8 @@ public class ContentDaoImp implements ContentDao {
 
 	public long addContent(Content content)
 	{
-		Connection con=new DataBase().getConnection();
+		new DataBase();
+		Connection con=DataBase.getConnection();
 		String sql="insert into content(text,image,file)value(?,?,?)";
 		PreparedStatement pre=null;
 		long id=0;
@@ -72,7 +73,8 @@ public class ContentDaoImp implements ContentDao {
 	        	pre.setString(2, content.getImage());
 	        	pre.setString(3, content.getFile());
 	        	pre.executeUpdate();
-	            id=new DBtools().GetLastID(con);
+	            new DBtools();
+				id=DBtools.GetLastID(con);
 	    		
 	        }catch(Exception e){
 	        	System.out.println("\nxingjiali:Contentdaoimp:addcontent\n");

@@ -2,12 +2,11 @@ package com.zzu.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.security.spec.ECPrivateKeySpec;
 import java.sql.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +15,8 @@ import com.zzu.dao.UserDao;
 import com.zzu.daoImp.UserDaoImp;
 import com.zzu.modle.User;
 
+
+@WebServlet(name="manger",urlPatterns="manger")
 public class manger extends HttpServlet {
 
 	/**
@@ -35,6 +36,7 @@ public class manger extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -79,6 +81,7 @@ public class manger extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -93,6 +96,7 @@ public class manger extends HttpServlet {
 	 *
 	 * @return String information about this servlet
 	 */
+	@Override
 	public String getServletInfo() {
 		return "This is my default servlet created by Eclipse";
 	}

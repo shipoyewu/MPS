@@ -15,8 +15,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import java.sql.PreparedStatement;
-
 public class DataBase {
 	 	static String driver = null;
 	    static String url = null;
@@ -73,7 +71,7 @@ public class DataBase {
 	    public static Connection getConnection() {
 	        Connection conn = null;
 	        try {
-	            conn = (Connection) DriverManager.getConnection(url, username, password);
+	            conn = DriverManager.getConnection(url, username, password);
 	            //System.out.println("连接创建成功");
 	        } catch (SQLException e) {
 	            System.out.println("连接创建失败");
@@ -188,7 +186,7 @@ public class DataBase {
 	  public static void main(String[] args){
 		  System.out.println("\ntest\n");
 		  DataBase con = new DataBase();
-		  con.getConnection();
+		  DataBase.getConnection();
 	  }  
 	    
 }
