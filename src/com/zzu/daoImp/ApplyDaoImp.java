@@ -1,10 +1,7 @@
 package com.zzu.daoImp;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import com.zzu.dao.ApplyDao;
 import com.zzu.modle.Apply;
 

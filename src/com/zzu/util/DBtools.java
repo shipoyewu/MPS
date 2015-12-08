@@ -3,7 +3,6 @@ package com.zzu.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import databaseconnection.DataBase;
 
@@ -40,7 +39,8 @@ public class DBtools {
 		return id;
 	}
 	public static boolean RowConf(String sql){
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		if(sql.charAt(sql.length()-1)!=';'){
 			sql+=";";
 		}
@@ -71,7 +71,8 @@ public class DBtools {
 	
 	public static boolean RowDel(String del){
 		
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		boolean flag = false; 
 		if(del.charAt(del.length()-1)!=';'){

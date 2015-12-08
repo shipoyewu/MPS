@@ -31,6 +31,11 @@ a.com { margin:0 8px 0 0; padding:0 12px; line-height:26px; float:left; text-dec
 .menu_nav ul li a { display:block; margin:0; padding:9px 12px; color:#959595; text-decoration:none; font-size:12px;}
 .menu_nav ul li.active a, .menu_nav ul li a:hover { color:#6ec1f3; text-decoration:underline;}
 
+/* me*/
+.me { margin:0; padding:0 28px; height:41px; background-color:#fff;}
+.me table{width:40%;float: right; margin-top: 10px}
+
+
 /* content */
 .contentleft{padding-top:14px;}
 .contentleft_resize{ margin:0 auto; padding:16px 0 24px; width:186px; background-color:#fff;}

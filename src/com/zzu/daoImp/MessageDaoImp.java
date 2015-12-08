@@ -20,6 +20,7 @@ import com.zzu.util.baseTools;;
 public class MessageDaoImp implements MessageDao {
 
 	// 得到消息的标题
+	@Override
 	public String getTitle(long messageid) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -43,13 +44,14 @@ public class MessageDaoImp implements MessageDao {
 	}
 
 	// 添加消息,返回自增主键
+	@Override
 	public long addMessage(Message msg) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
 		long id = 0;// 返回0则添加失败
 		String sql = "insert into message(messagetitle,groupid,isvalue,createtime,isremind,iscomment,remindtime,deletetime,contentid) values(?,?,?,?,?,?,?,?,?)";
 		try {
-			ptmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ptmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
 			ptmt.setString(1, msg.getMessagetitle());
 			ptmt.setLong(2, msg.getGroupid());
 			ptmt.setBoolean(3, msg.isIsvalue());
@@ -81,6 +83,7 @@ public class MessageDaoImp implements MessageDao {
 	}
 
 	// 查看该消息是否有效，即是否被删除
+	@Override
 	public boolean isValid(long messageid) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -109,6 +112,7 @@ public class MessageDaoImp implements MessageDao {
 	}
 
 	// 删除消息，isvalue置为false(假删除)
+	@Override
 	public void deleteMsg(long messageid) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -133,6 +137,7 @@ public class MessageDaoImp implements MessageDao {
 	}
 
 	// 得到contentid
+	@Override
 	public long getContent(long messageid) {
 		Connection conn = DataBase.getConnection();
 		PreparedStatement ptmt = null;
@@ -163,4 +168,38 @@ public class MessageDaoImp implements MessageDao {
 	public static void main(String args[]) {
 		MessageDaoImp mes = new MessageDaoImp();
 	}
+
+	@Override
+	public Message getMessage(long messageid) {
+		Connection conn = DataBase.getConnection();
+		PreparedStatement ptmt = null;
+		ResultSet rs = null;
+		Message mes=null;
+		String sql = "select * from message where messageid=?";
+		try {
+			ptmt = conn.prepareStatement(sql);
+			ptmt.setLong(1, messageid);
+			rs = ptmt.executeQuery();
+			if (rs.next()) {
+				mes = new Message();
+				mes.setMessageid(rs.getLong(1));
+				mes.setMessagetitle(rs.getString(2));
+				mes.setGroupid(rs.getLong(3));
+				mes.setIsvalue(rs.getBoolean(4));
+				mes.setCreatetime(rs.getDate(5));
+				mes.setIsremind(rs.getBoolean(6));
+				mes.setIscomment(rs.getBoolean(7));
+				mes.setRemindtime(rs.getDate(8));
+				mes.setDeletetime(rs.getDate(9));
+				mes.setContentid(rs.getLong(10));				
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBase.free(rs, conn, ptmt);
+		}
+		return mes;
+	}
+
+	
 }

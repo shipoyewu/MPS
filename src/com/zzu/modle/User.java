@@ -1,6 +1,5 @@
 package com.zzu.modle;
 
-import java.awt.Image;
 import java.util.Date;
 
 public class User {

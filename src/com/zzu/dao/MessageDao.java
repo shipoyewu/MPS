@@ -12,5 +12,5 @@ public interface MessageDao {
 	public boolean isValid(long messageid);
 	public void deleteMsg(long messageid);
 	public long getContent(long messageid);
-	
+	public Message getMessage(long messageid);
 }

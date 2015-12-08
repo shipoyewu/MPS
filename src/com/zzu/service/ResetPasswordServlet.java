@@ -24,6 +24,7 @@ public class ResetPasswordServlet extends HttpServlet {
 		super();
 	}
 
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String psw1 = request.getParameter("resetPassword1");
@@ -49,6 +50,7 @@ public class ResetPasswordServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");// 密码修改成功,转到登录页面
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

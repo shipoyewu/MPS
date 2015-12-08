@@ -1,18 +1,12 @@
 package com.zzu.service;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.zzu.dao.VoteDao;
 import com.zzu.daoImp.ChoiceDaoImp;
 import com.zzu.daoImp.VoteDaoImp;
 import com.zzu.modle.Choice;
@@ -75,6 +69,7 @@ public class addVote extends HttpServlet {
 		
 	}
 
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -93,6 +88,7 @@ public class addVote extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 

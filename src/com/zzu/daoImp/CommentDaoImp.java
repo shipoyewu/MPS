@@ -24,6 +24,7 @@ public class CommentDaoImp implements CommentDao {
 	}
 
 	// 得到评论
+	@Override
 	public ArrayList<Comment> getComm(long messageid) {
 		Connection conn = DataBase.getConnection();// 得到数据库的连接
 		ResultSet rs = null;// 结果集
@@ -57,6 +58,7 @@ public class CommentDaoImp implements CommentDao {
 	}
 
 	// 添加评论
+	@Override
 	public void addComment(Comment comment) {
 		Connection conn = DataBase.getConnection();// 得到数据库的连接
 		PreparedStatement pstmt = null;
@@ -85,6 +87,7 @@ public class CommentDaoImp implements CommentDao {
 	}
 
 	// 删除评论
+	@Override
 	public void deleteComment(long commentid) {
 		Connection conn = DataBase.getConnection();// 得到数据库的连接
 		PreparedStatement pstmt = null;
@@ -107,7 +110,7 @@ public class CommentDaoImp implements CommentDao {
 
 	public static void main(String args[]) {
 		CommentDaoImp com = new CommentDaoImp();
-		long messid=(long) 1;
+		long messid=1;
 		//ArrayList<Comment> coms=com.getComm(messid);//查询
 		//System.out.println(coms);
 		com.addComment(new Comment(1,"测试实例",1,new Date(),new Date(),1));//添加

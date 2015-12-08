@@ -1,14 +1,10 @@
 package com.zzu.dao;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.zzu.modle.Message;
 import com.zzu.modle.User;
-import com.zzu.modle.View;
 import com.zzu.modle.Vote;
 //登陆使用ID或邮箱
 /**

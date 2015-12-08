@@ -1,3 +1,5 @@
+<%@page import="com.zzu.modle.Vote"%>
+<%@page import="com.zzu.daoImp.VoteDaoImp"%>
 <%@page import="com.zzu.modle.Content"%>
 <%@page import="com.zzu.modle.Message"%>
 <%@page import="com.zzu.modle.Group"%>
@@ -55,12 +57,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			ContentDaoImp CD = new ContentDaoImp();
 			ReceiveDaoImp RD = new ReceiveDaoImp();
 			int wh = 1;
+			boolean flag = false;
 			for(int i = 0 ;i < glist.size();i++){
-				
 				String gname = glist.get(i).getGroupname();
 				ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
-				
 				if(mlist.size()!=0){
+					flag = true; 
 					String dip = "";
 					if((wh-1)/5==0){
 						dip = "disply: block";
@@ -78,9 +80,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 	Content content = CD.getContent(mlist.get(j).getContentid());
 					 	Date q = mlist.get(j).getCreatetime();
 					 	String t = q.toLocaleString();
+					 	VoteDaoImp VD = new VoteDaoImp();
+					 	Vote vote = VD.getVoteByMessage(mlist.get(j).getMessageid());
 				 	%>
-				 	
-			  		
 			  			<li><img src="<%= sendimg %>"><b><%= GD.getGroup(mlist.get(j).getGroupid()).getGroupname() %></b><li>
 			  			<li>消息主题：<b><%= mlist.get(j).getMessagetitle() %> </b></li>
 			  			<li>消息内容：<%= content.getText()%></li>
@@ -100,22 +102,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								String filesrc = content.getFile();
 								if(!(filesrc == null || filesrc.equals(""))){
 									String[] sub = filesrc.split("\\,");
-									out.println(sub.length);
 									for(int k = 0;k < sub.length;k++){
 									%>
-										<a download="" href="<%= sub[k]%>">点击下载附件<%= k%></a> <br>
+										<a download="" href="<%= sub[k]%>">点击下载附件<%= k+1%></a> <br>
 									<%}%>
 								<%}%>
 			  			</li>
+			  			<%
+				  			if(vote!=null){
+				  				%>
+				  				<li> 投票： <%=vote.getVotecontent() %></li>
+				  				<%
+				  			}
+			  			%>
 			  			<li>
-			  				<a href="javascript: setflag();" style="text-align: right;">将改消息标记为已读</a>
-							<p class="ptime"><%=t%></p>
+			  				<div class="me">
+			  					<table>
+			  						<tr>
+			  							<td>
+			  								<a href="MessageInfo?messageid=<%=mlist.get(j).getMessageid() %>&receive=<%= glist.get(i).getGroupid()%>">点击查看消息详情</a>
+			  							</td>
+			  							<td>
+			  								<a href="javascript: setflag(<%=mlist.get(j).getMessageid()%>,<%=glist.get(i).getGroupid()%>);">点击将消息标记为已读</a>
+			  							</td>
+			  						</tr>
+			  					</table>
+			  				</div>
 			  			</li>
-			  		
+			  			<li>
+			  				<p class="ptime"><%=t%><p>
+			  			</li>
 			  		<%}%>
 			  		</ul>
 			  	</div>
 			  	<%}%>
+		  <%}%>
+		  <%if(!flag){%>
+		  		<div class="menuDiv" id="page<%=wh++%>" style="disply: block;">
+		  		<h3><b>这个世界终于清静了...</b></h3>
+		  		<ul>
+		  			<li><img src="images/nomessage.jpg" width="100%" height="80%"></li>
+		  		</ul>
+		  		</div>
 		  <%}%>
 	  	</div>
   </body>

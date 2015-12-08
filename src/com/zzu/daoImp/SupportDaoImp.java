@@ -1,11 +1,8 @@
 package com.zzu.daoImp;
 
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import javax.ejb.ConcurrencyManagement;
 
 import java.sql.PreparedStatement;
 
@@ -21,7 +18,8 @@ public class SupportDaoImp implements SupportDao{
 	public ArrayList<Choice> getUserChoice(long groupid, long voteid) {
 		// TODO Auto-generated method stub
 		String sql = "select A.choiceid,chocontent,voteid from (select * from choice where voteid=?) as A natural join (select * from support where groupid=?) as B";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		ArrayList<Choice> ans = new ArrayList<Choice>();
@@ -49,7 +47,8 @@ public class SupportDaoImp implements SupportDao{
 	public ArrayList<Group> getChoiceOfUser(long choiceid) {
 		// TODO Auto-generated method stub
 		String sql ="select groupid from support where choiceid=?";
-		Connection con = new DataBase().getConnection();
+		new DataBase();
+		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ArrayList<Group> ans = new ArrayList<Group>();
 		ResultSet res = null;
