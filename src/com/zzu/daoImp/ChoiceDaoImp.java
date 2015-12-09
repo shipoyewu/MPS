@@ -2,6 +2,8 @@ package com.zzu.daoImp;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.zzu.dao.ChoiceDao;
 import com.zzu.modle.Choice;
@@ -43,7 +45,26 @@ public class ChoiceDaoImp implements ChoiceDao {
 	@Override
 	public boolean ifchoice(long groupid, long choiceid) {
 		// TODO Auto-generated method stub
-		return false;
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		String sql = "select groupid from support where choiceid=?";
+		boolean flag = true;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, choiceid);
+			res = pstmt.executeQuery();
+			if(!res.next()){
+				flag = false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			DataBase.free(res, con, pstmt);
+		}
+		return flag;
 	}
+	
 
 }

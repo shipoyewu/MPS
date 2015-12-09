@@ -83,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 	VoteDaoImp VD = new VoteDaoImp();
 					 	Vote vote = VD.getVoteByMessage(mlist.get(j).getMessageid());
 				 	%>
-			  			<li><img src="<%= sendimg %>"><b><%= GD.getGroup(mlist.get(j).getGroupid()).getGroupname() %></b><li>
+			  			<li><img src="<%= sendimg %>" style="width: 58px;height: 58px;"><b><%= GD.getGroup(mlist.get(j).getGroupid()).getGroupname() %></b><li>
 			  			<li>消息主题：<b><%= mlist.get(j).getMessagetitle() %> </b></li>
 			  			<li>消息内容：<%= content.getText()%></li>
 			  			<li>消息图片：
@@ -93,7 +93,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									String[] sub = imgsrc.split("\\,");
 									for(int k = 0;k < sub.length;k++){
 										%>
-											<img src="<%= sub[k] %>"> <br>
+											<img src="<%= sub[k] %>" style="width: 68px;height: 68px;"> <br>
 										<%}%>	
 								<%}%>		  			
 			  			</li>

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.zzu.dao.ReceiveDao;
 import com.zzu.modle.Message;
 import com.zzu.modle.Receive;
@@ -18,8 +20,7 @@ import databaseconnection.DataBase;
 public class ReceiveDaoImp implements ReceiveDao {
 	public void addReceive(Receive receive)
 	{
-		new DataBase();
-		Connection con=DataBase.getConnection();
+		Connection con=new DataBase().getConnection();
 		String sql="insert into receive(messageid,groupid,status) value(?,?,?)";
 		PreparedStatement pre=null;
 		try
@@ -42,11 +43,9 @@ public class ReceiveDaoImp implements ReceiveDao {
 			e.printStackTrace();
 		}
 	}
-	@Override
 	public void Read(long messageid,long groupid)
 	{
-		new DataBase();
-		Connection con=DataBase.getConnection();
+		Connection con=new DataBase().getConnection();
 		String sql="update receive set status=false where messageid=? and groupid=?";
 		PreparedStatement pre=null;
 		try
@@ -71,10 +70,43 @@ public class ReceiveDaoImp implements ReceiveDao {
 	}
 
 	@Override
-	public ArrayList<Message> getAllReceiveMeg(long groupid) {
-		new DataBase();
+	public boolean ifReaded(long messageid, long groupid) {
 		// TODO Auto-generated method stub
-		Connection con=DataBase.getConnection();
+		
+		Connection con=new DataBase().getConnection();
+		String sql="select status from receive where messageid=? and groupid=?";
+		PreparedStatement pre=null;
+		ResultSet res=null;	
+		boolean b=true;
+		try
+		{
+			pre=con.prepareStatement(sql);
+			pre.setLong(1, messageid);
+			pre.setLong(2, groupid);			
+			res=pre.executeQuery();
+			if(res.next())
+			{
+				b=res.getBoolean("status");
+			}
+			
+		}catch(Exception e){
+			System.out.println("\nxingjiali:receivedaoimp:read\n");
+			e.printStackTrace();
+		}
+		try
+		{
+			con.close();
+			pre.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	@Override
+	public ArrayList<Message> getAllReceiveMeg(long groupid) {
+		// TODO Auto-generated method stub
+		Connection con=new DataBase().getConnection();
 		String sql="select messageid,messagetitle,contentid,message.groupid as forkid,isvalue,createtime,isremind,iscomment,remindtime,deletetime from receive inner join message using(messageid) where receive.groupid=? order by status desc,createtime desc ";
 		PreparedStatement pre=null;
 		ResultSet res=null;	
@@ -139,9 +171,8 @@ public class ReceiveDaoImp implements ReceiveDao {
 
 	@Override
 	public ArrayList<Message> getAllUnReadMeg(long groupid) {
-		new DataBase();
 		// TODO Auto-generated method stub
-		Connection con=DataBase.getConnection();
+		Connection con=new DataBase().getConnection();
 		String sql="select messageid,messagetitle,contentid,message.groupid as forkid,isvalue,createtime,isremind,iscomment,remindtime,deletetime from receive inner join message using(messageid)  where receive.groupid=? and status=true order by status desc,createtime desc ";
 		PreparedStatement pre=null;
 		ResultSet res=null;	
@@ -194,9 +225,10 @@ public class ReceiveDaoImp implements ReceiveDao {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    long gid=2;
-	    long mid=2;
+	    long gid=35;
+	    long mid=7;
         ReceiveDaoImp rdi=new ReceiveDaoImp();
+        System.out.print(rdi.ifReaded(mid, gid));
         /* Receive r=new Receive();
         r.setGroupid(1);
         r.setMessageid(7);
@@ -207,9 +239,9 @@ public class ReceiveDaoImp implements ReceiveDao {
         System.out.println("asdasdad");
         System.out.println(array.size());  
     	System.out.println(array2.size()); */  
-        ArrayList<Message> array2=rdi.getAllUnReadMeg(1);
-        System.out.println(array2.size());
-        
+        //rdi.Read(mid, gid);
+    	     
 	}
+	
 
 }

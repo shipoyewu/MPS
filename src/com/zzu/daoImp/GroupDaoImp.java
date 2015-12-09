@@ -86,12 +86,10 @@ public class GroupDaoImp implements GroupDao {
 	public void updateGroup(Group group) {
 		// TODO Auto-generated method stub
 		String sql = "select * from fork where groupid=?";
-		new DataBase();
 		Connection con = DataBase.getConnection();
 		PreparedStatement pre = null;
 		ResultSet res = null;
 		Group oldgroup = new Group();
-		
 		try{
 			pre = con.prepareStatement(sql);
 			pre.setLong(1,group.getGroupid());
@@ -123,7 +121,7 @@ public class GroupDaoImp implements GroupDao {
 			}
 		}
 		if(oldgroup.isIsvalue() != group.isIsvalue()){
-			update ="update group set isvalue=? where groupid=?";
+			update ="update fork set isvalue=? where groupid=?";
 			try{
 				pre = con.prepareStatement(update);
 				pre.setBoolean(1, group.isIsneedagree());
@@ -134,8 +132,16 @@ public class GroupDaoImp implements GroupDao {
 				e.printStackTrace();
 			}
 		}
-		
-		new DataBase();
+		update = "update fork set groupname=? where groupid=?";
+		try{
+			pre = con.prepareStatement(update);
+			pre.setString(1, group.getGroupname());
+			pre.setLong(2, group.getGroupid());
+			pre.execute();
+		}catch(Exception e){
+			System.out.println("\nshihu:updateGroup");
+			e.printStackTrace();
+		}
 		DataBase.free(res, con, pre);
 		
 	}

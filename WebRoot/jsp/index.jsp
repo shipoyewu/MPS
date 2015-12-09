@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <div class="header_resize">
 	      <div class="logo"><h1><a href="jsp/index.jsp">mps</a></h1></div>
 	      <div class="clr">
-	      	<img src="<%= masrc %>"><p><b style="color: #000"><%= u.getUsername() %> </b></p>
+	      	<img src="<%= masrc %>" style="width: 58px;height: 58px;"><p><b style="color: #000"><%= u.getUsername() %> </b></p>
 	      </div>
 	      <div class="menu_nav">
 	        <ul>
@@ -103,67 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  <div id="allcontainer" class="content">
 		 	
 		  <iframe width="970px" height="500px" src="jsp/UnReadMessage.jsp" id="allframe">
-				<%-- <div class="content">
-				  	<div class="content_resize">
-				  		<%
-						GroupDaoImp GD = new GroupDaoImp();
-						ArrayList<Group> glist = GD.findAllGroup(userid);
-						ContentDaoImp CD = new ContentDaoImp();
-						ReceiveDaoImp RD = new ReceiveDaoImp();
-						for(int i = 0 ;i < glist.size();i++){
-							String gname = glist.get(i).getGroupname();
-							ArrayList<Message> mlist = RD.getAllUnReadMeg(glist.get(i).getGroupid());
-							if(mlist.size()!=0){
-						%>	
-						  	<div class="menuDiv">
-						  		<h3><b><%= gname%> </b></h3>
-						  		<%
-						  		for(int j = 0;j < mlist.size();j++){
-									String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
-								 	Content content = CD.getContent(mlist.get(j).getContentid());
-								 	Date q = mlist.get(j).getCreatetime();
-								 	String t = q.toLocaleString();
-							 	%>
-							 	
-						  		<ul>
-						  			<li><img src="<%= sendimg %>"><b><%= GD.getGroup(mlist.get(i).getGroupid()).getGroupname() %></b><li>
-						  			<li>消息主题：<b><%= mlist.get(i).getMessagetitle() %> </b></li>
-						  			<li>消息内容：<%= content.getText()%></li>
-						  			<li>消息图片：
-											<%
-											String imgsrc = content.getImage();
-											if(!(imgsrc == null || imgsrc.equals(""))){
-												String[] sub = imgsrc.split("\\,");
-												for(int k = 0;k < sub.length;k++){
-													%>
-														<img src="<%= sub[k] %>"> <br>
-													<%}%>	
-											<%}%>		  			
-						  			</li>
-						  			<li>消息文件：
-						  				<%
-											String filesrc = content.getFile();
-											if(!(filesrc == null || filesrc.equals(""))){
-												String[] sub = filesrc.split("\\,");
-												out.println(sub.length);
-												for(int k = 0;k < sub.length;k++){
-												%>
-													<a download="" href="<%= sub[k]%>">点击下载附件<%= k%></a> <br>
-												<%}%>
-											<%}%>
-						  			</li>
-						  			<li>
-						  				<a href="javascript: setflag();" style="text-align: right;">将改消息标记为已读</a>
-										<p class="ptime"><%=t%></p>
-						  			</li>
-						  		</ul>
-						  		<%}%>
-						  	</div>
-						  	<%}%>
-					  <%}%>
-				  	</div>
-			  	</div>
-			  	 --%>
+				
 		  </iframe>
 		  </div>
 	  </td>
@@ -206,7 +146,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div id="right-panel" class="panel">
 	    <div class="content">
 	        <div>
-				<a id="user"><img src="<%= masrc %>" id="master" name="<%= userid %>"> <%=u.getUsername() %> </a>
+				<a id="user"><img src="<%= masrc %>" id="master" name="<%= userid %>" style="width: 58px;height: 58px;"> <%=u.getUsername() %> </a>
 			</div>
 	        <div class="chatBox">
 	            <div class="chatLeft">
@@ -253,7 +193,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                    		else
 	                                    			src= "img/emo_"+i+".gif";
 	                                    %>
-	                                    	<li><a href="javascript:;"> <img src="<%=src%>" /></a></li>
+	                                    	<li><a href="javascript:;"> <img src="<%=src%>"  style="width: 58px;height: 58px;" ></a></li>
 	                                    <%}%>
 	                                    </ul>
 	                                </div>
@@ -297,7 +237,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                       	%>
 	                       		<li id="<%=v.getUserid()%>">
 	                                <label class="<%=cla%>"></label>
-	                                <a href="javascript:;"> <img src="<%= src %>"></a><a href="javascript:;" class="chat03_name"><%= v.getUsername()%> </a>
+	                                <a href="javascript:;"> <img src="<%= src %>" style="width: 58px;height: 58px;"></a><a href="javascript:;" class="chat03_name"><%= v.getUsername()%> </a>
 	                            </li>
 	                       		 
 	                       	<%}%>

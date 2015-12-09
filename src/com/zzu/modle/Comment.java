@@ -32,11 +32,11 @@ public class Comment {
 		this.commentid = commentid;
 	}
 
-	public String getComcomtent() {
+	public String getComcontent() {
 		return comcontent;
 	}
 
-	public void setComcomtent(String comcontent) {
+	public void setComcontent(String comcontent) {
 		this.comcontent = comcontent;
 	}
 

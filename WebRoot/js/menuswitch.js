@@ -121,7 +121,7 @@ MenuSwitch.prototype.init = function(){
 
 function setflag(messageid,groupid) {
 	$.ajax({
-		type:"POST",
+		type: "POST",
 		url: "ReadMessage",
 		data: {"messageid":messageid,"groupid":groupid},
 		success: function(data){

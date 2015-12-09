@@ -1,3 +1,5 @@
+<%@page import="com.zzu.daoImp.ReceiveDaoImp"%>
+<%@page import="com.zzu.daoImp.MessageDaoImp"%>
 <%@page import="com.zzu.daoImp.ChoiceDaoImp"%>
 <%@page import="com.zzu.daoImp.VoteDaoImp"%>
 <%@page import="com.zzu.modle.Choice"%>
@@ -26,10 +28,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<!-- <link rel="stylesheet" type="text/css" href="css/styles.css"> -->
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/MessageInfo.js"></script>
 	<script type="text/javascript">
+	$(function() {
+	$("#tar").click(function() {	
+			$(this).css("height","60px");
+			$("#button").show();
+		});
+	});
+</script>
 	
-	</script>
 	<style>
 	.info{
 		border: 1px solid #CCCCCC;
@@ -108,6 +117,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	GroupDaoImp GD = new GroupDaoImp();
     	VoteDaoImp VD = new VoteDaoImp();
     	ChoiceDaoImp CHD = new ChoiceDaoImp();
+    	MessageDaoImp MD = new MessageDaoImp();
+    	ReceiveDaoImp RD = new ReceiveDaoImp();
+    	
+    	
     	Message me=(Message)session.getAttribute("message");
     	Vote v = (Vote)session.getAttribute("vote");
     	long  rid= Long.parseLong((String)session.getAttribute("receiveid"));
@@ -117,8 +130,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	ContentDaoImp CD = new ContentDaoImp();
     	Content con = CD.getContent(me.getContentid()); 
     	
-    	session.removeAttribute("message");
-    	session.removeAttribute("receivename");
     	String width = null;
     	
     	if(v != null){
@@ -127,16 +138,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	else{
     		width = "width: 100%;";
     	}
-    	if(v != null){
-    		session.removeAttribute("vote");
-    	}
+    	
     %>
     <div>
     	<h1 align="center"><b><big>查看消息</big></b></h1>
     	<div style="<%= width%> float: left; display: inline;">
 		        <div class="info">
 		             <ul>
-		             <li><b>发送者：</b><img src="userdata/<%=sid%>/icon.jpg"><%= sname%></li> 
+		             <li><b>发送者：</b><img src="userdata/<%=sid%>/icon.jpg" style="width: 58px;height: 58px;"><%= sname%></li> 
 		             <li><b>接收者 :</b><%=rname%></li>
 		             <li><b>消息主题:<%=me.getMessagetitle()%> </b></li> 
 		             <li><b>消息内容：</b><%=con.getText()%> </li>
@@ -148,7 +157,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									String[] sub = imgsrc.split("\\,");
 									for(int k = 0;k < sub.length;k++){
 										%>
-											<img src="<%= sub[k] %>"> <br>
+											<img src="<%= sub[k] %>" style="width: 68px;height: 68px;"> <br>
 										<%}%>	
 								<%}%>		  			
 			  		</li>
@@ -163,9 +172,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<%}%>
 							<%}%>
 		  			</li>
+		  			<li>
+		  				<form action="CommentServlet">
+		  					<input type="text" style="display: none" name="messageid" value="<%=me.getMessageid()%>"> 
+		  					<div><textarea id="tar" name="comcontent" placeholder="我也说一句" style="width:100%;height:25px;"></textarea></div>
+							<div id="but" align="right">
+								<button type="submit" name="submit" id="button"
+								style="width: 64px; height: 28px; background-color: #5858FF;display:none;"><b>发表</b></button>
+							</div>
+						</form>
+		  			</li>
 	            	 <li>
-	            	 	<%out.println(me.getMessageid()+" "+rid); %>
+	            	 	<%
+	            	 		if(RD.ifReaded(me.getMessageid(),rid)){
+	            	 	 %>
 		  				<a class="ptime" href="javascript: setflag(<%=me.getMessageid()%>,<%=rid%>);">点击将消息标记为已读</a>
+		  				<%} %>
 		  				<p class="ptime" ><%=me.getCreatetime().toLocaleString()%><p>
 		  			</li>
 		         	</ul>
@@ -176,7 +198,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		     %>
 		    <div style="width:30% right; display: inline;">
 		    	<div class="info">
-		    		<form action="participateVote" method="post">
+		    		<form action="VoteSupport" method="post">
+		    		<input type="text" style="display: none;" value="<%= rid%>" name="groupid">
 		    		<%
 		    		String type = null;
 		    		ArrayList<Choice> choice = VD.getChoices(v.getVoteid());
@@ -191,6 +214,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		 %>
 			    		<ul style="margin-left: 20px;">
 			    			<li><b>投票内容：</b> <%= v.getVotecontent()%></li>
+							
 							<li>投票选项：
 								<ul style="margin-left: 40px">
 								<%
@@ -205,12 +229,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<%}%>
 								</ul>
 							</li>
+							<li>
+								<b>截止时间：</b>
+								<%=v.getEndtime().toLocaleString() %>
+							</li>
 							<%
-							if(!ispart){
+							Date now = new Date();
+							if(!ispart || now.before(v.getEndtime())){
 							%>
 								<li>
 								<input align="right" type="reset" value="重置">
-								<input align="right" type="submit" value="确定提交"> 
+								<input align="right" type="submit" value="确定投票"> 
 								</li>
 							<%}%>
 			    		</ul>

@@ -68,4 +68,10 @@ public class SupportDaoImp implements SupportDao{
 		
 	}
 
+	@Override
+	public void addSupport(long groupid, long choiceid) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

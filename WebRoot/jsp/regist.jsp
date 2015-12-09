@@ -18,45 +18,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
-  </head>
-  
-  <body>
-          <h1 align="center"> <b>欢迎登录系统</b></h1>
-          <script type="text/javascript">
-	      function test(){
-		       var userid=document.getElementById("id").value;
+	<script type="text/javascript">
+	      function check(){
+		       var tel=document.getElementById("tel").value;
 		       var password1=document.getElementById("pw1").value;
 		       var password2=document.getElementById("pw2").value;
 		       var email=document.getElementById("email").value;
-		       if(userid==""||password1==""||password2==""||email==""){
+		       //alert(password1 +" "+password2+" ");
+		        if(tel==""||password1==""||password2==""||email==""){
 			         alert("选项不得为空！");
-			   return false;
-		      }
-		    else if(password1!=password2){
+			   		return false;
+		      	}
+		      	
+		    if(password1!=password2){
 			            alert("密码不一致！");
 			            return false;
 		    }
-		    return true;
+		    return true; 
 	      }
-          </script>
-          <form action="register" method="post"> 
-          <table  border="2" align="center" style="background-color: #FFFFCC">
-          <tr>
-              <td align=center ><strong><big>账号:</big></strong></td>  
-              <td><input type="text" name="userid" id="id" style="width: 194px; height: 23px"/></td>
-          </tr>
+          </script>	
+  </head>
+  
+  <body>
+          <base href="<%=basePath%>">
+          <h1 align="center"> <b>欢迎注册</b></h1>
+          
+          <form action="register" method="post" onsubmit="return check();"> 
+          <table  border="2" align="center" style="background-color: ">
           <tr>
               <td align=center ><strong><big>名字:</big></strong></td>   
                <td><input type="text" name="username" style="width: 194px; height: 23px"></td>
           </tr>
           <tr>
               <td align=center> <strong><big>密码:</big></strong></td>  
-              <td><input type="password" name="password" value="password1" id="pw1"style="height: 23px; width: 194px"></td>
+              <td><input type="password" name="password"  id="pw1" style="height: 23px; width: 194px"></td>
           </tr>
           <tr>
               <td align=center> <strong><big>确认密码:</big></strong></td>  
-              <td><input type="password" name="password" value="password2" id="pw2"style="height: 23px; width: 194px"></td>
+              <td><input type="password" name="password"  id="pw2" style="height: 23px; width: 194px"></td>
           </tr>
           <tr>
               <td align=center> <strong><big>生日:</big></strong></td>  
@@ -68,11 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </tr>
           <tr>
               <td align=center> <strong><big>电话:</big></strong></td>  
-              <td><input type="tel" name="tel" style="height: 23px; width: 194px"></td>
-          </tr>
-          <tr>
-              <td align=center> <strong><big>头像:</big></strong></td>  
-              <td> <input type="image" name="picture" style="height: 23px; width: 100px"></td>
+              <td><input type="tel" name="tel" id="tel" style="height: 23px; width: 194px"></td>
           </tr>
           </table>
            <p align="center"> 
@@ -80,6 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   <input type="submit" name="Submit2" value="提交" style="width: 149px; "> 
            </p> 
           </form>
+         
   </body>
 <jsp:include page="footer.jsp" ></jsp:include>
 </html>

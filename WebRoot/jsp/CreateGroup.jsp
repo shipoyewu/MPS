@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    <form action="CreateGroup" method="post"  align="center">
+    <form action="CreateGroup" method="post" align="center">
     <% 
           
           Long userid=1l;

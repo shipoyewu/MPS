@@ -7,7 +7,7 @@ public class baseTools {
 	
 	
 	//将一个“yyyy-mm-dd”格式的时间函数返回成能直接插入到数据库中的问
-	public java.sql.Date str2Date(String str){
+	public static java.sql.Date str2Date(String str){
 		Date a = null;
 		try{
 			SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");

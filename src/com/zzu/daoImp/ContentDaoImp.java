@@ -58,7 +58,7 @@ public class ContentDaoImp implements ContentDao {
 	
 	     return c;
 	}
-
+	@Override
 	public long addContent(Content content)
 	{
 		new DataBase();
@@ -90,7 +90,6 @@ public class ContentDaoImp implements ContentDao {
 	      return id;
 	
 	}
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Content  c=new Content();		

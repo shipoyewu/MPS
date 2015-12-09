@@ -15,7 +15,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 /**
  * 上传消息图片
- * 保存路径：/userdata/[用户id]/[消息id]_[i].[后缀]
+ * 保存路径：/userdata/[用户id]/[唯一标识符].[后缀]
  * 上传头像
  * 保存路径： /userdata/[用户id]/icon.[后缀]
  * @author zongzan
@@ -26,10 +26,9 @@ public class UpLoadPicture extends UpLoad{
 	public UpLoadPicture() {
 		// TODO Auto-generated constructor stub
 	}
-	public boolean UpLoadIcon(Long userid, HttpServletRequest request){
-	try{
+	public String UpLoadIcon(long userid, HttpServletRequest request){
 		String pp = null;
-		String upto = null;
+	try{
 		if(ServletFileUpload.isMultipartContent(request)){
 			DiskFileItemFactory dff = new DiskFileItemFactory();//创建该对象
 			dff.setRepository(tmpDir);//指定上传文件的临时目录
@@ -41,57 +40,32 @@ public class UpLoadPicture extends UpLoad{
 			while(fii.hasNext()){
 				FileItemStream fis = fii.next();//从集合中获得一个文件流
 				if(!fis.isFormField() && fis.getName().length()>0){//过滤掉表单中非文件域
-					/**FileItemStream.getName();
-					 * Returns the original filename in the client's filesystem, 
-						as provided by the browser (or other client software). In most cases, 
-						this will be the base file name, without path information. However, some clients,
-						such as the Opera browser, do include path information.
-					 */
-					//String fileName = fis.getName().substring(fis.getName().lastIndexOf("\\"));//获得上传文件的文件名
+				
 					String fileName = fis.getName();
 					sc = request.getServletContext();
-					//System.out.println("request.getRealPath()=="+sc.getRealPath("/"));
-					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid.toString();//选定上传的目录,此处为当前目录 MPS\
+					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid;//选定上传的目录,此处为当前目录 MPS\
 					if(!new File(uploadPath).isDirectory())//选定上传的目录,此处为当前目录，没有则创建
 						new File(uploadPath).mkdirs();
-					
 					fileName=fileName.substring(fileName.lastIndexOf("."));//获取从.之后的字符，即后缀
 					//将时间转化为字符串用于给文件或者文件夹改名，防止传上来的图片名称相同
-					Date time=new Date();
-					String dirTime=String.valueOf(time.getTime());
 					BufferedInputStream in = new BufferedInputStream(fis.openStream());//获得文件输入流
-					//BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveDir+"\\"+dirTime+fileName)));//获得文件输出流
-					BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(uploadPath+"\\"
-											       +"icon"+fileName)));//获得文件输出流	
-					
+					BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(uploadPath+"\\icon"+fileName)));//获得文件输出流	
 					//pp为已经上传的文件
-					 pp=uploadPath+dirTime+fileName;
-					 System.out.println("pp="+pp);
-					 //upto为上传的路径
-					 upto=uploadPath;
-					 
-					Streams.copy(in, out, true);//开始把文件写到你指定的上传文件夹
-					}
-	
+					 pp=uploadPath+"\\icon"+fileName;
+					 pp = "\\MPS"+pp.split("MPS")[1];
+					 Streams.copy(in, out, true);//开始把文件写到你指定的上传文件夹
+				  }
 				}
-			/*//定义解压字符串，用于解压上传的rar文件，注意此处需要一个winrar.exe文件
-			String jieya=request.getRealPath("/")+ "WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
-			//String jieya="D:\\Tomcat 5.5\\webapps\\fileupload\\WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
-			Process p=Runtime.getRuntime().exec(jieya);//将传输的rar文件解压*/
-			
-			System.out.println("File upload successfully!");
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-		return false;
+			System.out.println("UpLoad error!");
 			}
-		return true;
+		return pp;
 	}
-	public boolean UpLoadMsgPic(Long userid, Long messageid, HttpServletRequest request){
-	try{
+	public String UpLoadMsgPic(long userid, HttpServletRequest request){
 		String pp = null;
-		String upto = null;
-		
+		try{
 		if(ServletFileUpload.isMultipartContent(request)){
 			DiskFileItemFactory dff = new DiskFileItemFactory();//创建该对象
 			dff.setRepository(tmpDir);//指定上传文件的临时目录
@@ -104,17 +78,10 @@ public class UpLoadPicture extends UpLoad{
 			while(fii.hasNext()){
 				FileItemStream fis = fii.next();//从集合中获得一个文件流
 				if(!fis.isFormField() && fis.getName().length()>0){//过滤掉表单中非文件域
-		/**FileItemStream.getName();
-		 * Returns the original filename in the client's filesystem, 
-			as provided by the browser (or other client software). In most cases, 
-			this will be the base file name, without path information. However, some clients,
-			such as the Opera browser, do include path information.
-		 */
-		//String fileName = fis.getName().substring(fis.getName().lastIndexOf("\\"));//获得上传文件的文件名
+		
 					String fileName = fis.getName();
 					sc = request.getServletContext();
-					//System.out.println("request.getRealPath()=="+sc.getRealPath("/"));
-					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid.toString();//选定上传的目录,此处为当前目录 MPS\
+					String uploadPath = sc.getRealPath("/")+"userdata\\"+userid;//选定上传的目录,此处为当前目录 MPS\
 					if(!new File(uploadPath).isDirectory())//选定上传的目录,此处为当前目录，没有则创建
 						new File(uploadPath).mkdirs();
 		
@@ -123,33 +90,21 @@ public class UpLoadPicture extends UpLoad{
 					Date time=new Date();
 					String dirTime=String.valueOf(time.getTime());
 					BufferedInputStream in = new BufferedInputStream(fis.openStream());//获得文件输入流
-					//BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveDir+"\\"+dirTime+fileName)));//获得文件输出流
 					BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(uploadPath+"\\"
-							+messageid+"_"+i++ +fileName)));//获得文件输出流
+							+dirTime+fileName)));//获得文件输出流
 					//pp为已经上传的文件
-					pp=uploadPath+dirTime+fileName;
+					 pp=uploadPath+"\\"+dirTime+fileName;
+					 pp = "\\MPS"+pp.split("MPS")[1];
 					System.out.println("pp="+pp);
-					//upto为上传的路径
-					upto=uploadPath;
-		 
 					Streams.copy(in, out, true);//开始把文件写到你指定的上传文件夹
+					}
 				}
-
-		}
-		
-			
-		/*//定义解压字符串，用于解压上传的rar文件，注意此处需要一个winrar.exe文件
-		String jieya=request.getRealPath("/")+ "WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
-		//String jieya="D:\\Tomcat 5.5\\webapps\\fileupload\\WinRAR.exe x -t -o+ -p- \""+pp+"\" \""+upto+"\"";
-		Process p=Runtime.getRuntime().exec(jieya);//将传输的rar文件解压*/
-		
-		System.out.println("File upload successfully!");
 			}
 		}catch(Exception e){
 		e.printStackTrace();
-		return false;
+		System.out.println("UpLoad error!");
 		}
-		return true;
+		return pp;
 	
 	}
 	

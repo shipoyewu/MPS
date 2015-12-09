@@ -8,4 +8,6 @@ import com.zzu.modle.Content;
  */
 public interface ContentDao {
 	public Content getContent(long contentid);
+
+	public long addContent(Content content);
 }

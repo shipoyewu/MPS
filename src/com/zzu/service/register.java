@@ -1,6 +1,15 @@
 package com.zzu.service;
 
 import java.io.IOException;
+
+
+
+
+import com.zzu.modle.User;
+import com.zzu.util.baseTools;
+import com.zzu.dao.UserDao;
+import com.zzu.daoImp.UserDaoImp;
+
 import java.io.PrintWriter;
 import java.sql.Date;
 
@@ -10,12 +19,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.zzu.dao.UserDao;
-import com.zzu.daoImp.UserDaoImp;
-import com.zzu.modle.User;
-
-@WebServlet(name="register",urlPatterns="/register")
+@WebServlet(name="register",urlPatterns={"/register"})
 public class register extends HttpServlet {
 
 	/**
@@ -35,7 +41,6 @@ public class register extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
-	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
             processRequest(request, response);
@@ -52,7 +57,6 @@ public class register extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
-	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		    processRequest(request, response);
@@ -67,27 +71,35 @@ public class register extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				try{
 					User user = new User();
-					long userid=Long.parseLong(request.getParameter("uesrid"));
-					if(!((UserDao) user).isUser( userid))
+					/*long userid=Long.parseLong(request.getParameter("uesrid"));
+					if(new UserDaoImp().isUser( userid))
 				           user.setUserid( userid);//类型不一样
-				    user.setUsername(request.getParameter("username"));
+				           */
+	     		    user.setUsername(request.getParameter("username"));
+	     		    //System.out.println("liushuo");
+	     		    //System.out.println((String)request.getParameter("username"));
 				    user.setPassword(request.getParameter("password"));
-				    Object birthday =request.getAttribute("birthday");
-				    user.setBirthday((Date)birthday);//同userid
+				    System.out.println(request.getParameter("birthday"));
+				    System.out.println("liushuo");
+				    String birthday=request.getParameter("birthday");
+				    user.setBirthday(baseTools.str2Date(birthday));
 				    user.setTel(request.getParameter("tel"));
 				    String email=request.getParameter("email");
-				    if(((UserDao) user).isUser(email))
+				    if(!(new UserDaoImp().isUser(email)))
 				          user.setEmail(email);
 				    Date time = new Date(System.currentTimeMillis());
 				    user.setRegistertime(time);
-				    user.setPicture(null);//图片上传问题
-				   new UserDaoImp().addUser(user);
+				    //user.uploadIcon(userid,requset);
+				   long newid=new UserDaoImp().addUser(user);
+				   if(newid != -1){
+					   HttpSession sess=request.getSession();
+					   sess.setAttribute("userid", newid);
+					   request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
+				   }
 				}catch(Exception e){
-					System.out.print("注册失败");
+					out.println("注册失败");
 					e.printStackTrace();
 				}
-				RequestDispatcher dispatcher = request.getRequestDispatcher("mySystem.jsp");
-			    dispatcher.include(request, response);
 				
 	}
 

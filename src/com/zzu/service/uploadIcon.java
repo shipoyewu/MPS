@@ -3,29 +3,25 @@ package com.zzu.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.security.spec.ECPrivateKeySpec;
-import java.sql.Date;
+import java.util.Enumeration;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
-import com.zzu.dao.UserDao;
-import com.zzu.daoImp.UserDaoImp;
-import com.zzu.modle.User;
-import com.zzu.util.DBtools;
-import com.zzu.util.baseTools;
-@WebServlet(name="manger",urlPatterns={"/manger"})
-public class manger extends HttpServlet {
+import com.zzu.util.UpLoadPicture;
+@WebServlet(name="uploadIcon",urlPatterns={"/uploadIcon"})
+public class uploadIcon extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public manger() {
+	public uploadIcon() {
 		super();
 	}
 
@@ -43,41 +39,7 @@ public class manger extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html;charset=utf-8");
-		//PrintWriter out = response.getWriter();
 		processRequest(request, response);
-	}
-
-	private void processRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException{
-		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8");
-		request.setCharacterEncoding("utf-8");
-	    PrintWriter out=response.getWriter();
-		try{
-			HttpSession sess=request.getSession();
-			long userid=Long.parseLong((String)sess.getAttribute("userid"));
-			if(userid == 0  )  System.out.print("\n未能查找到该用户的个人信息");
-			User user = new UserDaoImp().getUser(userid);
-		    user.setUsername(request.getParameter("username"));
-		    user.setPassword(request.getParameter("password"));
-		    String birthday =request.getParameter("birthday");
-		    user.setBirthday(baseTools.str2Date(birthday));//时间的插入错误 插入不进去格式不对  //已解决
-		    user.setTel(request.getParameter("tel"));
-		    String email=request.getParameter("email");
-		    user.setEmail(email);
-		    //user.setPicture(null);               //图片上传问题
-		    boolean temp=new UserDaoImp().updateUser(user);
-		    if(temp){
-		    request.getRequestDispatcher("jsp/mySystem.jsp").forward(request, response);
-		    System.out.println("liushuo");
-		    }
-		    else out.println("修改失败");
-		    System.out.println("liushuo");
-		}catch(Exception e){
-			//System.out.println("修改失败！");
-			out.println("修改失败!");
-			e.printStackTrace();
-		}
 		
 	}
 
@@ -97,6 +59,28 @@ public class manger extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		//PrintWriter out = response.getWriter();
 		processRequest(request, response);
+	}
+
+	private void processRequest(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException,IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("text/html;charset=utf-8");
+	    request.setCharacterEncoding("UTF-8");
+	    try{
+	    	HttpSession sess =request.getSession();
+	    	long userid=Long.parseLong((String)sess.getAttribute("userid"));
+	    	System.out.print(sess.getAttribute("userid"));
+	    	UpLoadPicture u=new UpLoadPicture();
+	    	String temp = u.UpLoadIcon(userid,request);
+	    	System.out .println(temp);
+	    	request.getRequestDispatcher("jsp/manage.jsp").forward(request, response);
+            System.out.println("liushuo@@@@");
+	    
+	    	
+	    	System.out.println("上传成功");
+	    }catch(Exception e){
+	    	e.printStackTrace();
+	    }
 	}
 
 	/**

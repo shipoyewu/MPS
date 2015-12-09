@@ -2,15 +2,19 @@ package com.zzu.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.WebFault;
 
-@WebServlet(name="test",urlPatterns="/test")
-public class test extends HttpServlet {
+import com.zzu.daoImp.SupportDaoImp;
+
+@WebServlet(name="VoteSupport",urlPatterns="/VoteSupport")
+public class VoteSupport extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -54,8 +58,22 @@ public class test extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		System.out.println("asdadasdad");
+		
+		String[] option = request.getParameterValues("choice");
+		for(int i = 0;i < option.length;i++){
+			System.out.println(option[i]);
+		}
+		
+		long spo = Long.parseLong(request.getParameter("groupid"));
+		SupportDaoImp SD = new SupportDaoImp();
+		
+		for(int i = 0;i < option.length;i++){
+			SD.addSupport(Long.parseLong(option[i]),spo);
+		}
+		
+		
+		
+		
 	}
 
 }

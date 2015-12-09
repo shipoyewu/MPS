@@ -30,12 +30,10 @@ public class MessageInfo extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		pro(request, response);
 	}
-
 	public void pro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -52,7 +50,6 @@ public class MessageInfo extends HttpServlet {
 			ses.setAttribute("vote",v);
 		}
 		response.sendRedirect("jsp/MessageInfo.jsp");
-		
 	}
 
 	/**
