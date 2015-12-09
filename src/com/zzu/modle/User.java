@@ -1,7 +1,6 @@
 package com.zzu.modle;
 
 import java.util.Date;
-import java.util.Vector;
 
 public class User {
 	private long userid;
@@ -11,7 +10,7 @@ public class User {
 	private String tel;
 	private String email;
 	private Date registertime;
-	private Vector<Byte> picture;
+	private View picture;
 	public long getUserid() {
 		return userid;
 	}
@@ -54,10 +53,10 @@ public class User {
 	public void setRegistertime(Date registertime) {
 		this.registertime = registertime;
 	}
-	public Vector<Byte> getPicture() {
+	public View getPicture() {
 		return picture;
 	}
-	public void setPicture(Vector<Byte> picture) {
+	public void setPicture(View picture) {
 		this.picture = picture;
 	}
 	public static void main(String args[]){

@@ -15,8 +15,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.mysql.jdbc.PreparedStatement;
-
 public class DataBase {
 	 	static String driver = null;
 	    static String url = null;
@@ -73,7 +71,7 @@ public class DataBase {
 	    public static Connection getConnection() {
 	        Connection conn = null;
 	        try {
-	            conn = (Connection) DriverManager.getConnection(url, username, password);
+	            conn = DriverManager.getConnection(url, username, password);
 	            //System.out.println("连接创建成功");
 	        } catch (SQLException e) {
 	            System.out.println("连接创建失败");
@@ -139,7 +137,7 @@ public class DataBase {
 //				}
 //			}
 //		}
-	    public static void free(ResultSet rs, Connection conn, PreparedStatement pstmt) {
+	    public static void free(ResultSet rs, Connection conn, java.sql.PreparedStatement pre) {
 	        try {
 	            if (rs != null) {
 	                rs.close();
@@ -157,8 +155,8 @@ public class DataBase {
 	                e.printStackTrace();
 	            } finally {
 	                try {
-	                    if (pstmt != null) {
-	                        pstmt.close();
+	                    if (pre != null) {
+	                        pre.close();
 	                    }
 	                } catch (SQLException e) {
 	                    System.out.println("关闭失败");
@@ -188,7 +186,7 @@ public class DataBase {
 	  public static void main(String[] args){
 		  System.out.println("\ntest\n");
 		  DataBase con = new DataBase();
-		  con.getConnection();
+		  DataBase.getConnection();
 	  }  
 	    
 }

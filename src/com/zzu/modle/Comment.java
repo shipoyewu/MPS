@@ -4,12 +4,26 @@ import java.util.Date;
 
 public class Comment {
 	private long commentid;
-	private String comcomtent;
+	private String comcontent;
 	private long groupid;
 	private Date commenttime;
 	private Date deletetime;
 	private long messageid;
-	
+
+	public Comment() {
+
+	}
+
+	public Comment(long commentid, String comcontent, long groupid,
+			Date commenttime, Date deletetime, long messageid) {
+		this.commentid = commentid;
+		this.comcontent = comcontent;
+		this.groupid = groupid;
+		this.commenttime = commenttime;
+		this.deletetime = deletetime;
+		this.messageid = messageid;
+	}
+
 	public long getCommentid() {
 		return commentid;
 	}
@@ -19,11 +33,11 @@ public class Comment {
 	}
 
 	public String getComcomtent() {
-		return comcomtent;
+		return comcontent;
 	}
 
-	public void setComcomtent(String comcomtent) {
-		this.comcomtent = comcomtent;
+	public void setComcomtent(String comcontent) {
+		this.comcontent = comcontent;
 	}
 
 	public long getGroupid() {

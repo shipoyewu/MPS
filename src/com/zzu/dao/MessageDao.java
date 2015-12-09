@@ -8,9 +8,9 @@ import com.zzu.modle.Message;
  */
 public interface MessageDao {
 	public String getTitle(long messageid);
-	public void addMessage(Message msg);
+	public long addMessage(Message msg);
 	public boolean isValid(long messageid);
 	public void deleteMsg(long messageid);
 	public long getContent(long messageid);
-	
+	public Message getMessage(long messageid);
 }

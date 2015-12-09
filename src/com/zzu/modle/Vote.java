@@ -10,7 +10,7 @@ public class Vote {
 	private long messageid;
 	private boolean ismul;
 	private boolean isvalue;
-	
+	private boolean isanonymous;
 	public long getVoteid() {
 		return voteid;
 	}
@@ -71,5 +71,15 @@ public class Vote {
 		// TODO Auto-generated method stub
 
 	}
+
+	public boolean isIsanonymous() {
+		return isanonymous;
+	}
+
+	public void setIsanonymous(boolean isanonymous) {
+		this.isanonymous = isanonymous;
+	}
+
+	
 
 }

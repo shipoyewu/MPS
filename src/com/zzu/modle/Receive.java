@@ -2,7 +2,7 @@ package com.zzu.modle;
 
 public class Receive {
 	private long messageid;
-	private long userid;
+	private long groupid;
 	private boolean status;
 	
 	public long getMessageid() {
@@ -13,12 +13,12 @@ public class Receive {
 		this.messageid = messageid;
 	}
 
-	public long getUserid() {
-		return userid;
+	public long getGroupid() {
+		return groupid;
 	}
 
-	public void setUserid(long userid) {
-		this.userid = userid;
+	public void setGroupid(long groupid) {
+		this.groupid = groupid;
 	}
 
 	public boolean isStatus() {
