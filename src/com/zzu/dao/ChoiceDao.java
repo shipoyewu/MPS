@@ -8,4 +8,5 @@ import com.zzu.modle.Choice;
  */
 public interface ChoiceDao {
 	public long addChoice(Choice choice);//增加一个选项
+	public boolean ifchoice(long groupid,long choiceid);
 }

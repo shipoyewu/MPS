@@ -1,3 +1,4 @@
+<%@page import="com.zzu.daoImp.ChoiceDaoImp"%>
 <%@page import="com.zzu.daoImp.VoteDaoImp"%>
 <%@page import="com.zzu.modle.Choice"%>
 <%@page import="com.zzu.modle.Content"%>
@@ -106,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <%
     	GroupDaoImp GD = new GroupDaoImp();
     	VoteDaoImp VD = new VoteDaoImp();
-    	
+    	ChoiceDaoImp CHD = new ChoiceDaoImp();
     	Message me=(Message)session.getAttribute("message");
     	Vote v = (Vote)session.getAttribute("vote");
     	long  rid= Long.parseLong((String)session.getAttribute("receiveid"));
@@ -194,8 +195,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<ul style="margin-left: 40px">
 								<%
 								for(int i = 0;i < choice.size();i++){
+									boolean  choiced = CHD.ifchoice(rid,choice.get(i).getChoiceid());
+									String choeck = "";
+									if(choiced){
+										choeck = "checked=\"true\"";
+									}
 								%>
-									<li> <input type="<%=type%>" name="choice" value="<%=choice.get(i).getChoiceid() %>"> <%= choice.get(i).getChocontent()%></li>								
+									<li> <input type="<%=type%>" name="choice" <%=choeck %> value="<%=choice.get(i).getChoiceid() %>"> <%= choice.get(i).getChocontent()%></li>								
 								<%}%>
 								</ul>
 							</li>

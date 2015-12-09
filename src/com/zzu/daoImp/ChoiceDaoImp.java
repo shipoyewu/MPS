@@ -40,4 +40,10 @@ public class ChoiceDaoImp implements ChoiceDao {
 		
 	}
 
+	@Override
+	public boolean ifchoice(long groupid, long choiceid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
