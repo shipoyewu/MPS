@@ -17,9 +17,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<script type="text/javascript" charset="UTF-8" src="js/modify.js"></script>
+	
  <%
           Long userid=1l;
           //long userid = (Long) session.getAttribute("userid");
@@ -35,120 +35,74 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       %>
   </head>
   
-  <body>
-    <form  method="post"  action="ModifyGroup" name="modifygroup" align="center">
-      
-      <p>
-        <label>旧群组名：</label>
-        <input type="text" name="groupname1" value="<%=gname%>" readonly="readonly">
-      </p>
-      <p>
-        <label>群组ID：</label>
-        <input type="text" name="groupid" value="<%=groupid%>" readonly="readonly">
-      </p>
-       <p>
-        <label>新群组名：</label>
-        <input type="text" name="groupname" id="groupname">
-      </p>
-      <p>
-         <label>创建用户id：</label>
-         <input type="text" name="userid" id="userid" value="<%=userid%>" readonly="readonly">
-        
-      </p>
-       <p>
-         <label>创建用户名：</label>
-         <input type="text" name="username" id="username" value="<%=username%>"  readonly="readonly">
-        
-      </p>
-     
-      <p>
-         <label>是否需要申请认证：</label>
-                            是：<input type="radio" checked="checked" name="isneedagree" value="true" />
-                            否：<input type="radio" name="isneedagree" value="false" />
-      </p> 
-      
-     
-           <p > 
-                  <input type="reset" name="Reset" value="重置" style="width: 131px; "> <h>&nbsp;&nbsp;</h>
-                  <input type="submit" name="Submit" value="提交" style="width: 149px; "> 
-           </p> 
+  <body style="background-color: #ffffff">
+  
+    <form  method="post"  action="ModifyGroup" name="modifygroup"  class="menuDiv">
+      <h2 class="menuTitle">修改群组</h2>
+      <ul>
+	      <li>
+	        <b>旧群组名：</b>
+	        <input type="text" name="groupname1" value="<%=gname%>" disabled="disabled">
+	      </li>
+	      <li>
+	        <b>群组ID：</b>
+	        <input type="text" name="groupid" value="<%=groupid%>" disabled="disabled" style="width: 186px; ">
+	      </li>
+	      <li>
+	         <b>创建用户id：</b>
+	         <input type="text" name="userid" id="userid" value="<%=userid%>" disabled="disabled" style="width: 159px; ">
+	      </li>
+	       <li>
+	        <b>新群组名：</b>
+	        <input type="text" name="groupname" id="groupname"  value="<%=gname%>">
+	      </li>
+	      
+	       <li>
+	         <b>创建用户名：</b>
+	         <input type="text" name="username" id="username" value="<%=username%>"  disabled="disabled"  style="width: 158px; ">
+	      </li>
+	     
+	      <li>
+	         <b>是否需要申请认证：</b>
+	                            是：<input type="radio" checked="checked" name="isneedagree" value="true" />
+	                            否：<input type="radio" name="isneedagree" value="false" />
+	      </li> 
+	      
+	     
+	      <li> 
+	             <input type="reset" name="Reset" value="重置" style="width: 131px; "> <h>&nbsp;&nbsp;</h>
+	             <input type="submit" name="Submit" value="提交" style="width: 149px; "> 
+	      </li> 
+     </ul>
     </form>
     
-    <form  method="post" name="deleteg" align="center">
-     
-      <script>
-
-            function CheckAll(groupdownid, do_check){
-               if(typeof(groupdownid)=='undefined') return;
-               var cnt = (typeof(groupdownid.length)!='undefined')? groupdownid.length : 0;
-               if(cnt){
-                    for(var i=0;i<cnt; i++)
-                        groupdownid[i].checked = do_check;
-               }else
-                  groupdownid.checked = do_check;
-              }
-
-             function deleteYN(){  
-                        
-              document.deleteg.action="Delete";   
-              alert("asdadsasd");            
-             if(typeof(deleteg.elements['groupdownid'])=='undefined'){
-             return false;
-             }else{
-                  if(deleteg.groupdownid.checked==true){  
-                     if(!confirm('确实要删除吗?')) 
-                        return false;
-                     else
-                       {
-                        document.deleteg.submit(); 
-                        //return true;
-                        }
-                  }else{ 
-                       for(var i=0;i<deleteg.groupdownid.length; i++){
-                           if(deleteg.groupdownid[i].checked==true){
-                                 if(!confirm('确实要删除吗?')) 
-                                 return false;
-                                 else
-                                 {
-                                 document.deleteg.submit(); 
-                                 //return true;
-                                 } 
-                            }
-                       }
-                  }
-                return false; 
-              }
-              return false;
-            }
-            
-           
-          </script>
-         <h1>删除群成员</h1>
-        
-           <p>
-              <label>群组<%=gname %>(<%=groupid %>)共有<%=groupdowns.size() %>个群成员</label><br><br>
-              <input type="text" name="upid" value='<%=groupid%>' style="display: none;">
-              <label>请勾选你要删除的群成员：<br></label><br>
-              <%
-               for(int i=0;i<groupdowns.size();i++){
-               %>
-              <label><%=groupdowns.get(i).getGroupname()%>(<%=groupdowns.get(i).getGroupid()%>)</label>
-              <input type="checkbox" name="groupdownid" value='<%=groupdowns.get(i).getGroupid()%>'  /> 
-              <br><br>         
-              <%
-               }
-               %>                 
-              
-           </p>
-           
-           
-          <p>
-            <input type="button" name="delete" value="删除" onclick="deleteYN();">
+    <form  method="post" name="deleteg" class="menuDiv">
+      
+         <h2 class="menuTitle"><b>删除群成员</b></h2>
+           <ul>
+           <li><b>群组<%=gname %>(<%=groupid %>)共有<%=groupdowns.size() %>个群成员</b> <input type="text" name="upid" value='<%=groupid%>' style="display: none;"></li>	
+	       <li><b>请勾选你要删除的群成员：</b></li>
+           <li>
+           		<ul style="margin-left: 20px">
+	              
+	              <%
+	               for(int i=0;i<groupdowns.size();i++){
+	               %>
+		              <li>
+		              		<b><%=groupdowns.get(i).getGroupname()%>(<%=groupdowns.get(i).getGroupid()%>)</b>
+		              		<input type="checkbox" name="groupdownid" value='<%=groupdowns.get(i).getGroupid()%>'> 
+		              </li>
+	              <%
+	              }%>                 
+              </ul>
+          </li>
+          <li>
+          	<div style="margin-left: 35px">	
+            <input type="button" name="delete" value="删除" onclick="deleteYN();" >
             <input type="checkbox" name="groupdownid" value="0" title="点击全选或者全不选" onclick="CheckAll(this.form.elements['groupdownid'], this.checked)" >
-          </p>
-           
-         
+          	</div>
+          </li>
+         </ul>
     </form>
-    
   </body>
 </html>

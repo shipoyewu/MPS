@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   
   <div class="content_resize">
-     <form action="CreateGroup" method="post">
+     <form action="CreateGroup" method="post" onsubmit="return checkCreate();">
      <% 
           
           Long userid=1l;
@@ -106,9 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <li>
               <b>请选择你的群组(共<%=groups.size() %>个群组):</b>              
               <select name="groupid" id="groupid" style="width: 150pt;height: 20pt;">
-               <option value="">
-                  --请选择--
-                </option> 
+               
                 <%
                  for(int i=0;i<groups.size();i++){
                  %> 
@@ -140,9 +138,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            <li>
               <b>请选择你的群组(共<%=groups.size() %>个群组):</b>              
               <select name="groupup" id="groupup" style="width: 150pt;height: 20pt;">
-               <option value="">
-                  --请选择--
-                </option> 
+                
                 <%
                  for(int i=0;i<groups.size();i++){
                  %> 
@@ -188,9 +184,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            <li>
               <b>请选择你的群组(共<%=groups.size() %>个群组):</b>              
               <select name="groupdown" id="groupdown" style="width: 150pt;height: 20pt;">
-               <option value="">
-                  --请选择--
-                </option> 
+               
                 <%
                  for(int i=0;i<groups.size();i++){
                  %> 

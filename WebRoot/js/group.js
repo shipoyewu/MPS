@@ -2,6 +2,15 @@
  * 
  */
 
+
+function checkCreate() {
+	alert($("#groupname").attr("value"));
+	if($("#groupname").attr("value") == ""){
+		alert("群组名不得为空！");
+		return false;
+	}
+	return true;
+}
 function validate_required(field, alerttxt) {
     with(field) {
         if (value == "" || isNaN(value)) {
@@ -50,34 +59,29 @@ function CheckAll(groupid, do_check) {
 }
 
 function deleteYN() {
-    //if(YN(this.form.elements['delBox'], this.checked)){if(!confirm('ȷʵҪɾ����?')) return false;}else return false;
+    //if(YN(this.form.elements['delBox'], this.checked)){if(!confirm('ȷʵҪɾ����?')) return false;}else return false;
     document.deletegroup.action = "DeleteGroup";
 
     if (typeof(deletegroup.elements['groupid']) == 'undefined') {
         return false;
     } else {
-        if (deletegroup.groupid.checked == true) {
-            if (!confirm('\u786e\u5b9e\u8981\u5220\u9664\u5417\u003f')) return false;
+    	var fg = false;
+    	for (var i = 0; i < deletegroup.groupid.length; i++) {
+			if (deletegroup.groupid[i].checked == true){
+            	fg = true;
+            	break;
+			}
+        }
+    	if(!fg){
+    		alert("请至少选择一个群组！");
+    	}
+    	else{
+    		if (!confirm('\u786e\u5b9e\u8981\u5220\u9664\u5417\u003f')) return false;
             else {
                 document.deletegroup.submit();
                 //return true;
             }
-        } else {
-        	
-            for (var i = 0; i < deletegroup.groupid.length && !flag; i++) {
-                if (deletegroup.groupid[i].checked == true) {
-                    if (!confirm('\u786e\u5b9e\u8981\u5220\u9664\u5417\u003f')){ 
-                    	return false;
-                    }
-                    else {
-                    	flag = true;
-                        document.deletegroup.submit();
-                        //return true;
-                    }
-                    
-                }
-            }
-        }
+    	}
         return false;
     }
     return false;
