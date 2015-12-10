@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.zzu.modle.*,com.zzu.dao.*,com.zzu.daoImp.*" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,9 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+    <%
+          Long userid=1l;
+          //long userid = (Long) session.getAttribute("userid");
+          ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
+      %>
     <p align="center">
                  扩充群组错误<br><br>
-                 请<a href="jsp/ExpandGroup.jsp">重新添加群组</a>           
+                 请<a href="jsp/Group.jsp">重新添加群组</a>           
     </p>
   </body>
 </html>

@@ -1,3 +1,5 @@
+<%@page import="com.zzu.modle.Comment"%>
+<%@page import="com.zzu.daoImp.CommentDaoImp"%>
 <%@page import="com.zzu.daoImp.ReceiveDaoImp"%>
 <%@page import="com.zzu.daoImp.MessageDaoImp"%>
 <%@page import="com.zzu.daoImp.ChoiceDaoImp"%>
@@ -119,6 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	ChoiceDaoImp CHD = new ChoiceDaoImp();
     	MessageDaoImp MD = new MessageDaoImp();
     	ReceiveDaoImp RD = new ReceiveDaoImp();
+    	CommentDaoImp CMD = new CommentDaoImp();
     	
     	
     	Message me=(Message)session.getAttribute("message");
@@ -129,6 +132,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	long sid = GD.getUserid(me.getGroupid());
     	ContentDaoImp CD = new ContentDaoImp();
     	Content con = CD.getContent(me.getContentid()); 
+    	
+    	ArrayList<Comment> clist = CMD.getComm(me.getMessageid());
+    	
     	
     	String width = null;
     	
@@ -172,15 +178,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<%}%>
 							<%}%>
 		  			</li>
+		  			<%
+		  			if(clist.size() >= 0){
+		  				%>
+		  				<li> 
+		  					<b> 评论区:</b>
+		  					<ul>
+		  				<%
+		  				for(int i = 0; i < clist.size();i++){
+		  					Comment c = clist.get(i);
+		  					%>
+		  						<li> <%= GD.getUserName(c.getGroupid()) %>&nbsp; 说：&nbsp;<%= c.getComcontent()%></li>
+		  						<li> <p class="ptime"><%= c.getCommenttime().toLocaleString() %></p> </li>
+		  					<%
+		  				}
+		  				%>
+		  					</ul>
+		  				</li>
+		  				<%
+		  			}
+		  			 %>
+		  			
 		  			<li>
-		  				<form action="CommentServlet">
-		  					<input type="text" style="display: none" name="messageid" value="<%=me.getMessageid()%>"> 
-		  					<div><textarea id="tar" name="comcontent" placeholder="我也说一句" style="width:100%;height:25px;"></textarea></div>
-							<div id="but" align="right">
-								<button type="submit" name="submit" id="button"
-								style="width: 64px; height: 28px; background-color: #5858FF;display:none;"><b>发表</b></button>
-							</div>
-						</form>
+		  				<%if(me.isIscomment()){%>
+			  				<form action="CommentServlet">
+			  					<input type="text" style="display: none" name="messageid" value="<%=me.getMessageid()%>"> 
+			  					<div><textarea id="tar" name="comcontent" placeholder="我也说一句" style="width:100%;height:25px;"></textarea></div>
+								<div id="but" align="right">
+									<button type="submit" name="submit" id="button"
+									style="width: 64px; height: 28px; background-color: #5858FF;display:none;"><b>发表</b></button>
+								</div>
+							</form>
+						<%}%>
 		  			</li>
 	            	 <li>
 	            	 	<%
@@ -214,8 +243,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		 %>
 			    		<ul style="margin-left: 20px;">
 			    			<li><b>投票内容：</b> <%= v.getVotecontent()%></li>
-							
-							<li>投票选项：
+							<li><b>投票选项：</b>
 								<ul style="margin-left: 40px">
 								<%
 								for(int i = 0;i < choice.size();i++){

@@ -18,9 +18,10 @@ public interface RelationDao {
 	public boolean addRelation(Relation relation);//增加relation
 	public void delRelation(long up,long down);
 	public void delRelation(long forkid);
-	ArrayList<Group> getDownOne(long groupid);
-	ArrayList<JsonRelation> getJsonRela(long groupid);
-	String getUserName(long groupid);
-	
+	public ArrayList<Group> getDownOne(long groupid);
+	public ArrayList<JsonRelation> getJsonRela(long groupid);
+	public String getUserName(long groupid);
+	public boolean ifCanRecv(long up, long down);
+
 }
 	

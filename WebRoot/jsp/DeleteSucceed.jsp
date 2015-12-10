@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.zzu.modle.*,com.zzu.dao.*,com.zzu.daoImp.*" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -24,8 +25,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     
-      <p>
-                         成功删除群组！
+     <%
+          Long userid=1l;
+          //long userid = (Long) session.getAttribute("userid");
+          ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
+      %>
+      <p align="center">
+                         成功删除群组！<br><br>
+        <a href="jsp/Group.jsp">返回管理页面</a> <br><br>                 
        <a href="jsp/index.jsp">返回个人主页</a> 
       </p>
  

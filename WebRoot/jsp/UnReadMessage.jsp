@@ -47,10 +47,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	 	String masrc = "userdata/"+userid+"/icon.jpg";
    	%>
 	  	<div class="content_resize">
-	  	<div style="margin-left: 20px">
-	  	<a href="javascript:;" id="pageChangeTop">下一页</a>
-		<a href="javascript:;" id="pageChangeButtom" style="display:none;">上一页</a>
-	  	</div>
+		  	<div style="margin-left: 20px">
+		  	<a href="javascript:;" id="pageChangeTop">下一页</a>
+			<a href="javascript:;" id="pageChangeButtom" style="display:none;">上一页</a>
+		  	</div>
+		  	
 	  		<%
 			GroupDaoImp GD = new GroupDaoImp();
 			ArrayList<Group> glist = GD.findAllGroup(userid);
@@ -70,11 +71,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					else{
 						dip = "disply: none";
 					}
-			%>	
+			%>
+			
+				
 			  	<div class="menuDiv" id="page<%=wh++%>" style="<%=dip %>">
 			  		<h3><b><%= gname%> </b></h3>
 			  		<ul>
-			  		<%
+				  		<%
 			  		for(int j = 0;j < mlist.size();j++){
 						String sendimg="userdata/"+GD.getUserid(mlist.get(j).getGroupid())+"/icon.jpg";
 					 	Content content = CD.getContent(mlist.get(j).getContentid());

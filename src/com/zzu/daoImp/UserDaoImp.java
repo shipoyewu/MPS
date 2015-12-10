@@ -414,7 +414,7 @@ public class UserDaoImp implements UserDao {
 		Connection con = (Connection) DataBase.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		String sql = "select groupid from fork where userid=?";
+		String sql = "select groupid from fork where userid=? and isvalue=true";
 	    try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, userid);

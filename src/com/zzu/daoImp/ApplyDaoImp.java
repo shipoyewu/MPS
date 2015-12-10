@@ -1,7 +1,10 @@
 package com.zzu.daoImp;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import com.zzu.dao.ApplyDao;
 import com.zzu.modle.Apply;
 
@@ -36,6 +39,7 @@ public class ApplyDaoImp implements ApplyDao {
 		
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public void deleteApply(Apply apply) {
 		// TODO Auto-generated method stub
@@ -43,6 +47,8 @@ public class ApplyDaoImp implements ApplyDao {
 		PreparedStatement pre = null;
 		try{
 			con.prepareStatement(sql);
+			pre.setLong(1, apply.getGroupup());
+			pre.setLong(2, apply.getGroupdown());
 			
 		}catch(Exception e){
 			System.out.println("删除失败！");
@@ -55,6 +61,26 @@ public class ApplyDaoImp implements ApplyDao {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public void delete(long groupup, long groupdown) {
+		// TODO Auto-generated method stub
+		String sql="delete from apply where groupup= ? and groupdown= ? ";
+		PreparedStatement pre =null;
+		try{
+			pre=con.prepareStatement(sql);
+			pre.setLong(1, groupup);
+			pre.setLong(2, groupdown);
+		}catch(Exception e){
+			System.out.print("删除失败");
+			e.printStackTrace();
+		}try{
+			pre.close();
+			con.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 

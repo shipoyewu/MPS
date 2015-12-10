@@ -74,6 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          <li><a id="right-panel-link" href="#right-panel">发布私信</a></li>
 	          <li><a href="javascript:showPersonInfo('jsp/mySystem.jsp')">个人信息</a></li>
 	          <li><a href="javascript:showPersonInfo('jsp/UnReadMessage.jsp')">未读消息</a></li>
+	          <li><a href="javascript:showPersonInfo('jsp/Group.jsp')">群组管理</a>
 	          <li><a href="jsp/login.jsp">注销</a></li>
 	          <li><a href="">下一页</a></li>
 	        </ul>

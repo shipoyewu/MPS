@@ -2,22 +2,17 @@ package com.zzu.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 
-import javax.jms.Session;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.zzu.daoImp.GroupDaoImp;
 import com.zzu.modle.Group;
-import com.zzu.util.baseTools;
-@WebServlet(name = "CreateGroup", urlPatterns = "/CreateGroup")
-public class CreateGroup extends HttpServlet {
+@WebServlet(name = "ModifyGroup", urlPatterns = "/ModifyGroup")
+public class ModifyGroup extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -50,36 +45,29 @@ public class CreateGroup extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html");
 		request.setCharacterEncoding("utf-8");
+		long userid=Long.parseLong(request.getParameter("userid"));
+		long groupid=Long.parseLong(request.getParameter("groupid"));
+		String groupname=request.getParameter("groupname");
+		boolean isneedagree=Boolean.parseBoolean(request.getParameter("isneedagree"));
 		Group g=new Group();
-		GroupDaoImp group= new GroupDaoImp();
-		String groupname=(String) request.getParameter("groupname");
-		Boolean isneedagree=Boolean.parseBoolean( request.getParameter("isneedagree"));
-		HttpSession ses = request.getSession();
-		
-		long userid=Long.parseLong((String)ses.getAttribute("userid"));
+		GroupDaoImp gdi=new GroupDaoImp();
+		Group go=gdi.getGroup(groupid);
+		g.setGroupid(groupid);
 		g.setGroupname(groupname);
-		g.setCreatetime(new java.util.Date());
+		g.setCreatetime(go.getCreatetime());
 		g.setIsneedagree(isneedagree);
 		g.setIsvalue(true);
 		g.setUserid(userid);
-		long  gid=group.addGroup(g);
-		System.out.println(gid);
-		PrintWriter out = response.getWriter();
-		
-		if(gid!=0)
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建成功!\");</script>");
-		}
-		else
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建失败!\");</script>");
-		}
-		request.getRequestDispatcher("jsp/Group.jsp").forward(request, response);
-
-		
+		gdi.updateGroup(g);
+		//System.out.println(g.getGroupid());
+		//System.out.println(g.getGroupname());
+		//System.out.println(g.getUserid());
+		//System.out.println(g.getCreatetime());
+		//System.out.println(g.isIsneedagree());
+		//System.out.println(g.isIsvalue());
+		response.sendRedirect("jsp/Group.jsp");		
 	}
 
-	
 }

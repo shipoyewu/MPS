@@ -2,22 +2,17 @@ package com.zzu.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 
-import javax.jms.Session;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.zzu.daoImp.GroupDaoImp;
-import com.zzu.modle.Group;
-import com.zzu.util.baseTools;
-@WebServlet(name = "CreateGroup", urlPatterns = "/CreateGroup")
-public class CreateGroup extends HttpServlet {
+import com.zzu.daoImp.ApplyDaoImp;
+import com.zzu.daoImp.RelationDaoImp;
+import com.zzu.modle.Relation;
+
+public class AgreeApply extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -50,36 +45,35 @@ public class CreateGroup extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html");
 		request.setCharacterEncoding("utf-8");
-		Group g=new Group();
-		GroupDaoImp group= new GroupDaoImp();
-		String groupname=(String) request.getParameter("groupname");
-		Boolean isneedagree=Boolean.parseBoolean( request.getParameter("isneedagree"));
-		HttpSession ses = request.getSession();
-		
-		long userid=Long.parseLong((String)ses.getAttribute("userid"));
-		g.setGroupname(groupname);
-		g.setCreatetime(new java.util.Date());
-		g.setIsneedagree(isneedagree);
-		g.setIsvalue(true);
-		g.setUserid(userid);
-		long  gid=group.addGroup(g);
-		System.out.println(gid);
-		PrintWriter out = response.getWriter();
-		
-		if(gid!=0)
+		long groupup=Long.parseLong(request.getParameter("groupup"));
+		long groupdown=Long.parseLong(request.getParameter("groupdown"));	
+		boolean flag=Boolean.getBoolean((String) request.getAttribute("flag"));
+		//long groupup=32;
+		//long groupdown=1;
+		//boolean flag=true;
+		ApplyDaoImp ad=new ApplyDaoImp();
+		RelationDaoImp rd=new RelationDaoImp();
+		Relation r=new Relation();
+		System.out.println(groupup);
+		System.out.println(groupdown);
+		System.out.println(flag);
+		if(flag)
 		{
-			out.println("<script type=\"text/javascript\">alert(\"创建成功!\");</script>");
+			r.setUp(groupup);
+			r.setDown(groupdown);
+			r.setJointime(new java.util.Date());
+			r.setIsvalid(true);
+			r.setDeletetime(null);
+			rd.addRelation(r);
+			ad.delete(groupup,groupdown);
+			
+		}else{
+		    ad.delete(groupup,groupdown);
 		}
-		else
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建失败!\");</script>");
-		}
-		request.getRequestDispatcher("jsp/Group.jsp").forward(request, response);
-
+				
 		
 	}
 
-	
 }

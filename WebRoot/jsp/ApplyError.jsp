@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.zzu.modle.*,com.zzu.dao.*,com.zzu.daoImp.*" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,8 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+      <%
+          Long userid=1l;
+          //long userid = (Long) session.getAttribute("userid");
+          ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
+      %>
     <p align="center">群组添加错误！</p>
-    <p align="center"><a align="center" href="jsp/index.jsp"> 点此返回主页</a> </p>
+    <p align="center"><a align="center" href="jsp/Group.jsp"> 点此重新添加</a> </p>
   </body>
 </html>
  

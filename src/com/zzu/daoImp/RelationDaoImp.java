@@ -399,7 +399,8 @@ public class RelationDaoImp implements RelationDao {
 	public ArrayList<JsonRelation> getJsonRela(long groupid){//给一个groupid，返回适合json格式的上下级关系list
 		ArrayList<JsonRelation> jrList = new ArrayList<JsonRelation>();
 		String name = getUserName(groupid);
-		jrList.add(new JsonRelation(groupid, 0, name));//该用户的group作为根节点
+		Group g = new GroupDaoImp().getGroup(groupid);
+		jrList.add(new JsonRelation(groupid, 0, g.getGroupname()));//该用户的group作为根节点
 		Queue<Long> que = null;
 		try {
 			que =new LinkedList<Long>();
@@ -433,6 +434,7 @@ public class RelationDaoImp implements RelationDao {
 	public static void main(String args[]){
 		new RelationDaoImp().test();
 	}
+	
 
 	@Override
 	public String getUserName(long groupid) {
@@ -457,6 +459,23 @@ public class RelationDaoImp implements RelationDao {
 		}
 		
 		return ans;
+	}
+
+	@Override
+	public boolean ifCanRecv(long up, long down) {
+		// TODO Auto-generated method stub
+		
+		ArrayList<ArrayList<Long> >  d = findDown(up);
+		
+		for(int i = 0;i < d.size();i++){
+			ArrayList<Long> a = d.get(i);
+			for(int j = 0;j < a.size();j++){
+				if(a.get(j).longValue() == down){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 

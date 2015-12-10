@@ -1,6 +1,9 @@
 package com.zzu.service;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +16,7 @@ import com.zzu.daoImp.RelationDaoImp;
 import com.zzu.modle.Apply;
 import com.zzu.modle.Group;
 import com.zzu.modle.Relation;
+import com.zzu.util.baseTools;
 
 @WebServlet(name = "ExpandGroup", urlPatterns = "/ExpandGroup")
 public class ExpandGroup extends HttpServlet {
@@ -27,7 +31,6 @@ public class ExpandGroup extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
-	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -46,19 +49,18 @@ public class ExpandGroup extends HttpServlet {
 	 * @throws ServletException if an error occurred
 	 * @throws IOException if an error occurred
 	 */
-	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		response.setContentType("text/html");
 		request.setCharacterEncoding("utf-8");       
         Apply ap = new Apply();		
-		ap.setGroupup(Long.parseLong(request.getParameter("groupup")));
+		ap.setGroupup(Long.parseLong((String)request.getParameter("groupup")));
 		System.out.println(ap.getGroupup());
-		ap.setGroupdown(Long.parseLong(request.getParameter("groupdownid")));
+		ap.setGroupdown(Long.parseLong((String)request.getParameter("groupdownid")));
 		ap.setApplytime(new java.util.Date());
 		ap.setType(false);
-		ap.setApplycontent(request.getParameter("applycontent"));
+		ap.setApplycontent((String)request.getParameter("applycontent"));
 		System.out.println("up"+ap.getGroupup());
 		System.out.println("down"+ap.getGroupdown());
 		System.out.println("time"+ap.getApplytime());
@@ -82,7 +84,7 @@ public class ExpandGroup extends HttpServlet {
 					response.sendRedirect("jsp/ExpandError.jsp");
 				}
 				else{
-					response.sendRedirect("jsp/index.jsp");
+					response.sendRedirect("jsp/ApplyWait.jsp");
 				}
 			}
 		}else{

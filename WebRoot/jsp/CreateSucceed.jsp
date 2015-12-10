@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.zzu.modle.*,com.zzu.dao.*,com.zzu.daoImp.*" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,8 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+     <%
+          Long userid=1l;
+          //long userid = (Long) session.getAttribute("userid");
+          ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
+      %>
      <p  align="center">
-                        创建成功<br><br></b>请返回<a align="center" href="jsp/index.jsp">个人主页</a>
+                        创建成功<br><br></b><a align="center" href="jsp/index.jsp">返回个人主页</a>
+          <br><br></b><a align="center" href="jsp/Group.jsp">返回管理页面</a>
       </p>
   </body>
 </html>

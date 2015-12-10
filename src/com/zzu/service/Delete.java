@@ -2,22 +2,17 @@ package com.zzu.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 
-import javax.jms.Session;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.zzu.daoImp.GroupDaoImp;
-import com.zzu.modle.Group;
-import com.zzu.util.baseTools;
-@WebServlet(name = "CreateGroup", urlPatterns = "/CreateGroup")
-public class CreateGroup extends HttpServlet {
+import com.zzu.daoImp.RelationDaoImp;
+@WebServlet(name = "Delete", urlPatterns = "/Delete")
+public class Delete extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -50,36 +45,21 @@ public class CreateGroup extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html");
 		request.setCharacterEncoding("utf-8");
-		Group g=new Group();
-		GroupDaoImp group= new GroupDaoImp();
-		String groupname=(String) request.getParameter("groupname");
-		Boolean isneedagree=Boolean.parseBoolean( request.getParameter("isneedagree"));
-		HttpSession ses = request.getSession();
-		
-		long userid=Long.parseLong((String)ses.getAttribute("userid"));
-		g.setGroupname(groupname);
-		g.setCreatetime(new java.util.Date());
-		g.setIsneedagree(isneedagree);
-		g.setIsvalue(true);
-		g.setUserid(userid);
-		long  gid=group.addGroup(g);
-		System.out.println(gid);
-		PrintWriter out = response.getWriter();
-		
-		if(gid!=0)
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建成功!\");</script>");
-		}
-		else
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建失败!\");</script>");
-		}
-		request.getRequestDispatcher("jsp/Group.jsp").forward(request, response);
-
-		
+		RelationDaoImp r=new RelationDaoImp();
+		String upid=request.getParameter("upid");
+		long groupupid=Long.parseLong(upid);
+		System.out.println(groupupid);
+		String[] check=request.getParameterValues("groupdownid");		
+		//System.out.println(check.length);		
+	    for(int j=0;j<check.length;j++)
+	    {
+	    	long gid=Long.parseLong(check[j]);
+	    	//System.out.println(gid);
+			r.delRelation(groupupid, gid);
+	    }
+	    response.sendRedirect("jsp/Group.jsp");
 	}
 
-	
 }
