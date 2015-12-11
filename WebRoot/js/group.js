@@ -3,8 +3,12 @@
  */
 
 
+function showCreate() {
+	alert("创建已提交，刷新整个页面可同步刷新结果！");
+	return true;
+}
+
 function checkCreate() {
-	alert($("#groupname").attr("value"));
 	if($("#groupname").attr("value") == ""){
 		alert("群组名不得为空！");
 		return false;
@@ -22,10 +26,10 @@ function validate_required(field, alerttxt) {
     }
 }
 
-function validate_form(expandgroup) {
+function validate_form1(expandgroup) {
     with(expandgroup) {
         if (validate_required(groupdownid, "\u7fa4\u7ec4\u0049\u0044\u5fc5\u987b\u4e3a\u6570\u5b57\u4e32\uff01") == false) {
-            groupupid.focus();
+            groupdownid.focus();
             return false;
         }
     }
@@ -78,6 +82,7 @@ function deleteYN() {
     	else{
     		if (!confirm('\u786e\u5b9e\u8981\u5220\u9664\u5417\u003f')) return false;
             else {
+            	alert("页面已提交，刷新整个页面课同步结果！");
                 document.deletegroup.submit();
                 //return true;
             }

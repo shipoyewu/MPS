@@ -2,6 +2,11 @@
  * 
  */
 
+function showCreate() {
+	alert("修改已提交，刷新整个页面可同步结果！");
+	return true;
+}
+
 function CheckAll(groupdownid, do_check) {
     if (typeof(groupdownid) == 'undefined') return;
     var cnt = (typeof(groupdownid.length) != 'undefined') ? groupdownid.length: 0;
@@ -23,11 +28,11 @@ function deleteYN() {
     		}
     	}
     	if(!flag){
-    		alert("请选择一个群组");
+    		alert("请至少选择一个群组成员！");
     		return false;
     	}
     	else{
-    		if (!confirm('确实要删除吗?')) return false;
+    		if (!confirm("你确认要删除吗？")) return false;
             else {
                 document.deleteg.submit();
                 //return true;

@@ -25,6 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           //long userid = (Long) session.getAttribute("userid");
           ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
           User  u=new UserDaoImp().getUser(userid);
+          
           String username=u.getUsername();
            // Long gid=1l;   
           long groupid=(Long.parseLong((String)request.getParameter("groupid")));          
@@ -37,20 +38,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body style="background-color: #ffffff">
   
-    <form  method="post"  action="ModifyGroup" name="modifygroup"  class="menuDiv">
+    <form  method="post"  action="ModifyGroup" name="modifygroup"  class="menuDiv" onsubmit="return showCreate();">
       <h2 class="menuTitle">修改群组</h2>
       <ul>
 	      <li>
 	        <b>旧群组名：</b>
-	        <input type="text" name="groupname1" value="<%=gname%>" disabled="disabled">
+	        <input type="text"  value="<%=gname%>" disabled="disabled">
+	      	<input type="hidden" name="groupname1" value="<%=gname%>" disabled="disabled">
+	        
 	      </li>
 	      <li>
 	        <b>群组ID：</b>
-	        <input type="text" name="groupid" value="<%=groupid%>" disabled="disabled" style="width: 186px; ">
+	        <input type="text"  value="<%=groupid%>" disabled="disabled" style="width: 186px; ">
+	        <input type="hidden" name="groupid" value="<%=groupid%>" style="width: 186px; ">
 	      </li>
 	      <li>
 	         <b>创建用户id：</b>
-	         <input type="text" name="userid" id="userid" value="<%=userid%>" disabled="disabled" style="width: 159px; ">
+	         <input type="text"  id="userid" value="<%=userid%>" disabled="disabled" style="width: 159px; ">
+	         <input type="hidden" name="userid" id="userid" value="<%=userid%>"  style="width: 159px; ">
 	      </li>
 	       <li>
 	        <b>新群组名：</b>
@@ -76,7 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      </ul>
     </form>
     
-    <form  method="post" name="deleteg" class="menuDiv">
+    <form  method="post" name="deleteg" class="menuDiv" onsubmit="return showCreate();">
       
          <h2 class="menuTitle"><b>删除群成员</b></h2>
            <ul>
@@ -89,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	               for(int i=0;i<groupdowns.size();i++){
 	               %>
 		              <li>
-		              		<b><%=groupdowns.get(i).getGroupname()%>(<%=groupdowns.get(i).getGroupid()%>)</b>
+		              		<b><%=new GroupDaoImp().getUserName(groupdowns.get(i).getGroupid())%>(<%=groupdowns.get(i).getGroupid()%>)</b>
 		              		<input type="checkbox" name="groupdownid" value='<%=groupdowns.get(i).getGroupid()%>'> 
 		              </li>
 	              <%

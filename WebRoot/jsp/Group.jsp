@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   
   <div class="content_resize">
-     <form action="CreateGroup" method="post" onsubmit="return checkCreate();">
+     <form action="CreateGroup" method="post" onSubmit="return checkCreate();">
      <% 
           
           Long userid=1l;
@@ -42,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <ul style="margin-left: 10px;">
 	      <li>
 	        <b>群组名：</b>
-	        <input type="text" name="groupname" id="groupname" style="width: 150px;">
+	        <input type="text" name="groupname" id="groupname" style="width: 150px;" onsubmit="return showCreate();">
 	      </li>
 	      <li>
 	         <b>创建者id：</b>
@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                            否<input type="radio" name="isneedagree" value="false" />
 	      </li> 
 	      <li>
-	      	<input type="submit" name="submit" value ="创建" class="button" >
+	      	<input type="submit" name="submit" value ="创建" class="button"  onclick="return showCreate();">
 	      </li>
       </ul>
       </div>
@@ -90,8 +90,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                %>  
                <div style="margin-top: 5px;">
             	&nbsp;&nbsp;&nbsp;&nbsp;
-            	<input type="button" name="delete" value="删除" onclick="deleteYN();">
-            	<input type="checkbox" name="groupid" value="0" title="点击全选或者全不选" onclick="CheckAll(this.form.elements['groupid'], this.checked)" >
+            	<input type="button" name="delete" value="删除" onClick="deleteYN();">
+            	<input type="checkbox" name="groupid" value="0" title="点击全选或者全不选" onClick="CheckAll(this.form.elements['groupid'], this.checked)" >
           	   </div>                
               </div>
            </li>
@@ -131,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </form>
     
     
-  <form action="ExpandGroup" method="post" name="expandgroup"onsubmit="return validate_form(expandGroup)" >
+  <form action="ExpandGroup" method="post" name="expandgroup" onSubmit="return validate_form1(expandgroup)" >
       <div class="menuDiv">
       <h3>扩充群组</h3>
       <ul style="margin-left: 10px;">

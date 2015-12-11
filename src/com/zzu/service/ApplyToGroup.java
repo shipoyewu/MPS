@@ -79,6 +79,7 @@ public class ApplyToGroup extends HttpServlet {
 		GroupDaoImp GD = new GroupDaoImp();
 		Group g = GD.getGroup(ap.getGroupup());
 		RelationDaoImp RD = new RelationDaoImp();
+		
 		if(g!=null){
 			if(g.isIsneedagree()){
 				AD.addApply(ap);
@@ -94,6 +95,7 @@ public class ApplyToGroup extends HttpServlet {
 					response.sendRedirect("jsp/ApplyError.jsp");
 				}
 				else{
+					
 					response.sendRedirect("jsp/ApplyWait.jsp");
 				}
 			}

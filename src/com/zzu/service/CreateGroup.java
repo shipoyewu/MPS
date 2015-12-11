@@ -66,19 +66,7 @@ public class CreateGroup extends HttpServlet {
 		g.setUserid(userid);
 		long  gid=group.addGroup(g);
 		System.out.println(gid);
-		PrintWriter out = response.getWriter();
-		
-		if(gid!=0)
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建成功!\");</script>");
-		}
-		else
-		{
-			out.println("<script type=\"text/javascript\">alert(\"创建失败!\");</script>");
-		}
 		request.getRequestDispatcher("jsp/Group.jsp").forward(request, response);
-
-		
 	}
 
 	
