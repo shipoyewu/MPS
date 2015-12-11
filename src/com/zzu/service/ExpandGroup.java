@@ -59,7 +59,7 @@ public class ExpandGroup extends HttpServlet {
 		System.out.println(ap.getGroupup());
 		ap.setGroupdown(Long.parseLong((String)request.getParameter("groupdownid")));
 		ap.setApplytime(new java.util.Date());
-		ap.setType(false);
+		ap.setType(false);																																																																																																																																																																																														
 		ap.setApplycontent((String)request.getParameter("applycontent"));
 		System.out.println("up"+ap.getGroupup());
 		System.out.println("down"+ap.getGroupdown());
@@ -71,8 +71,12 @@ public class ExpandGroup extends HttpServlet {
 		RelationDaoImp RD = new RelationDaoImp();
 		if(g!=null){
 			if(g.isIsneedagree()){
-				AD.addApply(ap);
-				response.sendRedirect("jsp/ApplyWait.jsp");
+				if(AD.addApply(ap)){
+					response.sendRedirect("jsp/ApplyWait.jsp");
+				}
+				else{
+					response.sendRedirect("jsp/ExpandError.jsp");
+				}
 			}
 			else{
 				Relation R = new Relation();

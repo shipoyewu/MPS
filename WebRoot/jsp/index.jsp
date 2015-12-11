@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		long userid = Long.parseLong((String)session.getAttribute("userid"));
    		UserDaoImp UD = new UserDaoImp();
    		LetterDaoImp LD = new LetterDaoImp();
-   		User u = UD.getUser(1l);
+   		User u = UD.getUser(userid);
   	 	ArrayList<User> Rela = UD.getHaveRelation(userid);
   	 	String masrc = "userdata/"+userid+"/icon.jpg";
    	%>
@@ -85,7 +85,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <table>
 	<tr>
 	<td valign="top">
-		<div class="contentleft">
+	<div class="contentright">
+		<div class="contentright_resize"">
+		<h2 class="lettertitile">成员树</h2>
 			<div class="contentleft_resize">
 				<div class="content_wrap">
 				<div class="zTreeDemoBackground left">
@@ -98,6 +100,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 			</div>
+		</div>
 		</div>
 	</td>
 	<td valign="top">
@@ -194,7 +197,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                    		else
 	                                    			src= "img/emo_"+i+".gif";
 	                                    %>
-	                                    	<li><a href="javascript:;"> <img src="<%=src%>"  style="width: 58px;height: 58px;" ></a></li>
+	                                    	<li><a href="javascript:;"> <img src="<%=src%>"  ></a></li>
 	                                    <%}%>
 	                                    </ul>
 	                                </div>

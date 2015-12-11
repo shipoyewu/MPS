@@ -71,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<br>
 		<p>
-			<a href="jsp/regist.jsp" target="_parent">立即注册</a>
+			<a href="jsp/Register.jsp" target="_parent">立即注册</a>
 			<a href="jsp/forgetPassword.jsp" target="_parent">忘记密码？</a>
 		</p>
 		<button type="submit" value="submit" form="form1"

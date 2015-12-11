@@ -66,7 +66,7 @@ public class CreateGroup extends HttpServlet {
 		g.setUserid(userid);
 		long  gid=group.addGroup(g);
 		System.out.println(gid);
-		request.getRequestDispatcher("jsp/Group.jsp").forward(request, response);
+		response.sendRedirect("jsp/Group.jsp");
 	}
 
 	

@@ -29,4 +29,6 @@ public interface UserDao
 		public ArrayList<User> getHaveRelation(long userid);
 		public ArrayList<Message> getAllSendMeg(long userid);//返回该用户所有发送的信息
 		public ArrayList<Vote> getAllVote(long voteid);//返回发起的所有投票
+		public boolean isUserTel(String tel);
+		
 }

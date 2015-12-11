@@ -52,6 +52,12 @@ public class GroupDaoImp implements GroupDao {
 
 	private void test() {
 		System.out.println(getUserName(1l));
+		
+		String[] a =searchAll();
+		for(int i = 0;i <a.length;i++){
+			System.out.println(a[i]);
+		}
+		System.out.println(searchAll());
 //		Group g = new Group();
 //		g.setCreatetime(new java.util.Date());
 //		g.setGroupname("asdasd");
@@ -331,5 +337,34 @@ public class GroupDaoImp implements GroupDao {
 		
 		return ans;
 	}
+
+	@Override
+	public String[] searchAll() {
+		// TODO Auto-generated method stub
+		String sql = "select groupid,groupname from fork where isvalue=true";
+		PreparedStatement pre = null;
+		Connection con = DataBase.getConnection();
+		ArrayList<String> a = new ArrayList<String>();
+		ResultSet res = null;
+		try{
+			pre = con.prepareStatement(sql);
+			res = pre.executeQuery();
+			while(res.next()){
+				a.add("群组ID: "+res.getLong("groupid")+" 群组名: " + res.getString("groupname"));
+			}
+		}catch(Exception e){
+			System.out.println("shihu:searchAll\n");
+			e.printStackTrace();
+		}finally{
+			DataBase.free(res, con, pre);
+		}
+		
+		String[] ans = new String[a.size()];
+		for(int i = 0;i < a.size();i++){
+			ans[i] = a.get(i);
+		}
+		return ans;
+	}
+	
 
 }

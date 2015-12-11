@@ -1,5 +1,7 @@
 package com.zzu.dao;
 
+import java.util.ArrayList;
+
 import com.zzu.modle.Apply;
 /**
  * 
@@ -7,8 +9,9 @@ import com.zzu.modle.Apply;
  *
  */
 public interface ApplyDao {
-	public void addApply(Apply apply);//添加一个申请
+	public boolean addApply(Apply apply);//添加一个申请
 	public void deleteApply(Apply apply);//删除一个申请
 	public void delete(long groupup, long groupdown);
+	public ArrayList<Apply> getApply(long groupid);
 	
 }

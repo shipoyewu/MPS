@@ -31,7 +31,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       %>
     <p align="center">
                  扩充群组错误<br><br>
-                 请<a href="jsp/Group.jsp">重新添加群组</a>           
     </p>
   </body>
 </html>

@@ -66,7 +66,10 @@ public class LoginServlet extends HttpServlet {
 				userid=""+userInfo;
 			}
 			HttpSession sess=request.getSession();
+			
 			sess.setAttribute("userid",userid);
+			sess.setMaxInactiveInterval(60*60*24*3);
+
 			response.sendRedirect("jsp/index.jsp");
 		} 
 	}

@@ -21,5 +21,5 @@ public interface GroupDao {
 	public Group getGroup(long groupid);
 	public ArrayList<Group> findAllGroup(long userid); 
 	public String getUserName(long groupid);
-	
+	public String[] searchAll();
 }

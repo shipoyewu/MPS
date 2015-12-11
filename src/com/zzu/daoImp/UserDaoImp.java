@@ -19,6 +19,7 @@ import com.zzu.modle.Message;
 import com.zzu.modle.User;
 import com.zzu.modle.Vote;
 import com.zzu.util.DBtools;
+
 import databaseconnection.DataBase;
 
 public class UserDaoImp implements UserDao {
@@ -576,7 +577,34 @@ public class UserDaoImp implements UserDao {
 	}
 		//System.out.println(udi.getId("13027711597", "tel"));
 		//if(udi.confUser(l, "6666663")) System.out.println("yes");
+
+	@Override
+	public boolean isUserTel(String tel) {
+		// TODO Auto-generated method stub
+		
+		Connection con = (Connection) DataBase.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		String sql = "select * from user where tel=?";
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, tel);
+			res = pstmt.executeQuery();
+			if(!res.next()){
+				System.out.println("不存在该用户!");
+				DataBase.freeStatement(con, pstmt);
+				return false;
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			DataBase.freeStatement(con, pstmt);
+		}
+		return true;
 	}
+}
 
 
 

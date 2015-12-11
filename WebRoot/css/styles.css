@@ -14,7 +14,6 @@ h1 a, h1 a:hover { color:#fff; text-decoration:none;font:normal 48px/1.2em Arial
 h2 { font:normal 24px/1.5em Arial, Helvetica, sans-serif; padding:8px 0; margin:0 0 8px; color:#323a3f;}
 p { margin:8px 0; padding:0 0 8px 0; font:normal 12px/1.8em Arial, Helvetica, sans-serif;}
 a { color:#6ec1f3; text-decoration:underline;}
-img{ width="58" height="58" alt="pix"};
 p.spec { }
 p.infopost { line-height:30px;}
 a.rm { }
@@ -35,7 +34,9 @@ a.com { margin:0 8px 0 0; padding:0 12px; line-height:26px; float:left; text-dec
 /* me*/
 .me { margin:0; padding:0 28px; height:41px; background-color:#fff;}
 .me table{width:40%;float: right; margin-top: 10px}
-
+.iframestyle{
+	width: 200px; height: 25px; padding: 0 0 0 0; margin: 0 0 0 0;
+}
 
 /* content */
 .contentleft{padding-top:14px;}
@@ -169,64 +170,6 @@ ol li .send { margin:16px 0 0 0;}
 		margin: 0px;
 }
 
-
-/*menuDiv*/
-.menuDiv{
-	border: 1px solid #CCCCCC;
-	background-color: #FFFFFF;
-	padding: 1px;
-	margin-top: 5px;
-	margin-right: 5px;
-	margin-left: 5px;
-	margin-bottom: 0px;
-}
-.menuDiv h3{
-	font-size: 14px;
-	font-weight: bold;
-	color: #FFFFFF;
-	padding-top: 5px;
-	padding-right: 5px;
-	padding-bottom: 5px;
-	padding-left: 15px;
-	background-color: #999999;
-	margin: 0px;
-}
-.menuDiv ul{
-	margin: 0px;
-	padding: 0px;
-	list-style-type: none;
-}
-.menuDiv ul li{
-	color: #666666;
-	background-color: #EEEEEE;
-	display: block;
-	padding: 5px 5px 5px 15px;
-	font-size: 14px;
-	margin-top: 1px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	height: auto;
-}
-.menuDiv ul li a{
-	color: #666666;
-	background-color: #F4F4F4;
-	display: block;
-	padding: 5px 5px 5px 15px;
-	font-size: 14px;
-	margin-top: -5px;
-	margin-right: -5px;
-	margin-bottom: -5px;
-	margin-left: -15px;
-	text-decoration: none;
-	height: 16px;
-}
-.menuDiv ul li a:hover{	
-	color: #FFFFFF;
-	background-color: #DDDDDD;	
-}
-
-
 .menuTitle{
 		text-align: center;
 		font-size: 25px;
@@ -238,4 +181,32 @@ ol li .send { margin:16px 0 0 0;}
 		padding-left: 15px;
 		background-color: #999999;
 		margin: 0px;
+}
+
+.auto_hidden {
+	width: 204px;
+	position: absolute;
+	display: none;
+}
+
+.auto_show {
+	width: 204px;
+	border: 1px solid #333;
+	position: absolute;
+	z-index: 9999; /* 设置对象的层叠顺序 */
+	display: block;
+}
+
+.auto_onmouseover {
+	font-family:Calibri, Arial, sans-serif;
+	font-size:18px;
+	background-color: highlight;
+	width: 100%;
+}
+
+.auto_onmouseout {	
+	font-family:Calibri, Arial, sans-serif;
+	font-size:18px;
+	width: 100%;
+	background-color: #ffffff;
 }

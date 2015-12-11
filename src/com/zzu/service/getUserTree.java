@@ -60,7 +60,8 @@ public class getUserTree extends HttpServlet {
 			response.getWriter().print(JSONArray.fromObject(rdi.getJsonRela(it.next())).toString());
 		}*/
 		//利用Json插件将Array转换成Json格式
-		ArrayList<Long> gList = udi.findGroup(1);
+		HttpSession session = request.getSession();
+		ArrayList<Long> gList = udi.findGroup(Long.parseLong((String) session.getAttribute("userid")));
 		ArrayList<JsonRelation> JList = new ArrayList<JsonRelation>();
 		for(int i = 0;i < gList.size(); i++){
 			JList.addAll(rdi.getJsonRela(gList.get(i)));

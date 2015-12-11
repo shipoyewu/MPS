@@ -206,27 +206,63 @@ public class RelationDaoImp implements RelationDao {
 		// TODO Auto-generated method stub
 		Connection con = DataBase.getConnection();
 		
-		ArrayList<ArrayList<Long> > up = findUp(relation.getUp());
+		if(relation.getDown() == relation.getUp()) return false;
+		Queue<Long> que = null;
+		try {
+			que =new LinkedList<Long>();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
 		
-		int si = up.size();
+		que.offer(relation.getDown());
+		LinkedList<Long> up = new LinkedList<Long>(); 
 		
-		for(int i = 0;i < up.get(si-1).size();i++){
-			if(up.get(si-1).get(i).longValue() == relation.getDown()) return false;
-			ArrayList<ArrayList<Long>> down = findDown(up.get(si-1).get(i).longValue());
+		String sql = "select up from relation where down=?";
+		while(!que.isEmpty()){
+			long u = que.poll();
+			PreparedStatement pre = null;
+			ResultSet res = null;
+			try{
+				pre = con.prepareStatement(sql);
+				pre.setLong(1, u);
+				res = pre.executeQuery();
+				int flag  = 0;
+				while(res.next()){
+					Long v = res.getLong(1);
+					que.add(v);
+					flag ++;
+				}
+				if(flag == 0){
+					up.add(u);
+				}
+			}catch(Exception e){
+				System.out.println("\nshihu:addRelation\n");
+	            e.printStackTrace();
+	            return false;
+			}
+		}
+		
+		for(int i = 0;i < up.size();i++){
+			ArrayList<ArrayList<Long>> down =  findDown(up.get(i));
+			
 			for(int j = 0;j < down.size();j++){
-				for(int k = 0;k < down.get(j).size();k++){
-					if(relation.getDown() == down.get(j).get(k).longValue()){
+				ArrayList<Long> a = down.get(j);
+				for(int k = 0;k < a.size();k++){
+					if(a.get(k) == relation.getDown()){
 						return false;
 					}
 				}
 			}
+			
 		}
 		
-		
-		String sql = "insert into relation(up,down,isvalid) values(?,?,?)";
+		String sql1 = "insert into relation(up,down,isvalid) values(?,?,?)";
 		PreparedStatement pre = null;
 		try{
-			pre = con.prepareStatement(sql);
+			pre = con.prepareStatement(sql1);
 			pre.setLong(1, relation.getUp());
 			pre.setLong(2, relation.getDown());
 			pre.setBoolean(3, true);
@@ -234,6 +270,7 @@ public class RelationDaoImp implements RelationDao {
 		}catch(Exception e){
 			System.out.println("\nshihu:addRelation\n");
 			e.printStackTrace();
+			return false;
 		}
 		try{
 			pre.close();
@@ -241,7 +278,6 @@ public class RelationDaoImp implements RelationDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	
 		return true;
 	}
 	
@@ -326,13 +362,16 @@ public class RelationDaoImp implements RelationDao {
 		
 		ArrayList<JsonRelation> g = getJsonRela(1);
 		Iterator<JsonRelation> item = g.iterator();
-		while(item.hasNext()){
+		/*while(item.hasNext()){
 			JsonRelation j = item.next();
 			System.out.println("id:"+j.getId());
 			System.out.println("pid:"+j.getPId());
 			System.out.println("name:"+j.getName());
-		}
-		
+		}*/
+		Relation a = new Relation();
+		a.setUp(1);
+		a.setDown(2);
+		System.out.println(addRelation(a));
 		/*Long groupid = Long.parseLong("100");
 		ArrayList<Long> b = this.findAllGroup(groupid);
 		for(int i = 0;i < b.size();i++){

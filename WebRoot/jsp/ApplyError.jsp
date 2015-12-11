@@ -24,13 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-      <%
-          Long userid=1l;
-          //long userid = (Long) session.getAttribute("userid");
-          ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
-      %>
     <p align="center">群组添加错误！</p>
-    <p align="center"><a align="center" href="jsp/Group.jsp"> 点此重新添加</a> </p>
   </body>
 </html>
  

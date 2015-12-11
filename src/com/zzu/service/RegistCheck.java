@@ -2,7 +2,6 @@ package com.zzu.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,22 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.zzu.daoImp.GroupDaoImp;
-import com.zzu.daoImp.RelationDaoImp;
-import com.zzu.modle.Group;
-/**
- * 
- * @author xingjiali
- *
- */
-@WebServlet(name = "DeleteGroup", urlPatterns = "/DeleteGroup")
-public class DeleteGroup extends HttpServlet {
-	
+import com.zzu.daoImp.UserDaoImp;
+
+
+@WebServlet(name="RegistCheck",urlPatterns="/RegistCheck")
+public class RegistCheck extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to get.
+	 * 
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -35,8 +29,18 @@ public class DeleteGroup extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html");
-		request.setCharacterEncoding("utf-8");
-		doPost(request,response);
+		PrintWriter out = response.getWriter();
+		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+		out.println("<HTML>");
+		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <BODY>");
+		out.print("    This is ");
+		out.print(this.getClass());
+		out.println(", using the GET method");
+		out.println("  </BODY>");
+		out.println("</HTML>");
+		out.flush();
+		out.close();
 	}
 
 	/**
@@ -53,19 +57,28 @@ public class DeleteGroup extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
 		request.setCharacterEncoding("utf-8");
-		GroupDaoImp g=new GroupDaoImp();
-		String[] check=request.getParameterValues("groupid");		
-		//System.out.println(check.length);		
-	    for(int j=0;j<check.length;j++)
-	    {
-	    	long gid=Long.parseLong(check[j]);
-	    	//System.out.println(gid);
-			g.deleteGroup(gid);
-	    }
-	    PrintWriter out = response.getWriter();
-	    out.println("<script type=\"text/javascript\">alert(\"删除成功!\");</script>");
-	    response.sendRedirect("jsp/Group.jsp");
+		
+		UserDaoImp UD  =  new UserDaoImp();
+		
+		String mail= request.getParameter("mail");
+		String tel = request.getParameter("tel");
+		
+		boolean flag1,flag2;
+		
+		flag1 = UD.isUser(mail);
+		flag2 = UD.isUserTel(tel);
+		
+		String json = "{\"mail\":"+flag1+",\"tel\":"+flag2+"}";
+		System.out.println(json);
+		out.write(json);
+		out.flush();
+		out.close();
+		
+		
+		
+		
 	}
 
 }

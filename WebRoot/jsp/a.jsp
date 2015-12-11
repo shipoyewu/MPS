@@ -1,113 +1,57 @@
-/**
- * 
- */
-
-function checkCreate() {
-	if(document.getElementById("groupname").value == ""){
-		alert("群组名不得为空！");
-		return false;
-	}
-	alert("创建已提交，刷新整个页面可同步刷新结果！");
-	return true;
-}
-function validate_required(field, alerttxt) {
-    with(field) {
-        if (value == "" || isNaN(value)) {
-            alert(alerttxt);
-            return false;
-        } else {
-            return true;
-        }
-    }
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" import="com.zzu.daoImp.GroupDaoImp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<%-- <script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery-1.7.2.min.js">
+</script> --%>
+</head>
+<style>
+.auto_hidden {
+	width: 204px;
+	position: absolute;
+	display: none;
 }
 
-function validate_form1(expandgroup) {
-    with(expandgroup) {
-        if (validate_required(groupdownid, "\u7fa4\u7ec4\u0049\u0044\u5fc5\u987b\u4e3a\u6570\u5b57\u4e32\uff01") == false) {
-            groupdownid.focus();
-            return false;
-        }
-    }
+.auto_show {
+	width: 204px;
+	border: 1px solid #333;
+	position: absolute;
+	z-index: 9999; /* 设置对象的层叠顺序 */
+	display: block;
 }
 
-function validate_required(field, alerttxt) {
-    with(field) {
-        if (value == "" || isNaN(value)) {
-            alert(alerttxt);
-            return false;
-        } else {
-            return true;
-        }
-    }
+.auto_onmouseover {
+	font-family:Calibri, Arial, sans-serif;
+	font-size:18px;
+	background-color: highlight;
+	width: 100%;
 }
 
-function validate_form(applygroup) {
-    with(applygroup) {
-        if (validate_required(groupupid, "\u7fa4\u7ec4\u0049\u0044\u5fc5\u987b\u4e3a\u6570\u5b57\u4e32\uff01") == false) {
-            groupupid.focus();
-            return false;
-        }
-    }
+.auto_onmouseout {	
+	font-family:Calibri, Arial, sans-serif;
+	font-size:18px;
+	width: 100%;
+	background-color: #ffffff;
 }
-function CheckAll(groupid, do_check) {
-    if (typeof(groupid) == 'undefined') return;
-    var cnt = (typeof(groupid.length) != 'undefined') ? groupid.length: 0;
-    if (cnt) {
-        for (var i = 0; i < cnt; i++) groupid[i].checked = do_check;
-    } else groupid.checked = do_check;
-}
-
-function deleteYN() {
-    //if(YN(this.form.elements['delBox'], this.checked)){if(!confirm('ȷʵҪɾ����?')) return false;}else return false;
-    document.deletegroup.action = "DeleteGroup";
-
-    if (typeof(deletegroup.elements['groupid']) == 'undefined') {
-        return false;
-    } else {
-    	var fg = false;
-    	for (var i = 0; i < deletegroup.groupid.length; i++) {
-			if (deletegroup.groupid[i].checked == true){
-            	fg = true;
-            	break;
-			}
-        }
-    	if(!fg){
-    		alert("请至少选择一个群组！");
-    	}
-    	else{
-    		if (!confirm('\u786e\u5b9e\u8981\u5220\u9664\u5417\u003f')) return false;
-            else {
-            	alert("页面已提交，刷新整个页面课同步结果！");
-                document.deletegroup.submit();
-                //return true;
-            }
-    	}
-        return false;
-    }
-    return false;
-}
-
-function Modify() {
-    //alert("asdadsasd");
-    document.deletegroup.action = "jsp/ModifyGroup.jsp";
-    document.deletegroup.submit();
-}
-
+</style>
+<script>
 var $ = function(id) {
 	return "string" == typeof id ? document.getElementById(id) : id;
-};
+}
 var Bind = function(object, fun) {
 	return function() {
 		return fun.apply(object, arguments);
-	};
-};
+	}
+}
 function AutoComplete(obj, autoObj, arr) {
 	this.obj = $(obj); //输入框
 	this.autoObj = $(autoObj);//DIV的根节点
 	this.value_arr = arr; //不要包含重复值
 	this.index = -1; //当前选中的DIV的索引
 	this.search_value = ""; //保存当前搜索的字符
-};
+}
 AutoComplete.prototype = {
 	//初始化DIV的位置
 	init : function() {
@@ -224,4 +168,33 @@ AutoComplete.prototype = {
 			this.init();
 		});
 	}
-};
+}
+</script>
+
+<body>
+	<div align="center" style="padding-top: 50px;">
+		<input type="text"
+			style="width: 300px; height: 20px; font-size: 14pt;"
+			placeholder="请输入群组名" id="search" onkeyup="autoComplete.start(event)">
+		<button type="submit" name="submit" id="button"
+			style="width: 70px; height: 26px; background-color: #5858FF;">搜索</button>
+	</div>
+	<div id="buttonClick"></div>
+	<div class="auto_hidden" id="auto">
+		<!--自动完成 DIV-->
+	</div>
+	<%
+		String groupInfo[]=new GroupDaoImp().searchAll();
+	%>
+	<script>
+		var codes=new Array();
+		<%if (groupInfo!= null) {
+				for (int i = 0; i < groupInfo.length; i++) {%>
+		    codes[<%=i%>]='<%=groupInfo[i]%>';//将java数组转成js数组
+		
+	<%}
+			}%>
+		var autoComplete = new AutoComplete('search', 'auto', codes);
+	</script>
+</body>
+</html>

@@ -30,8 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
       %>
     <p align="center">
-           申请已发送，请等待申请结果<br><br><a href="jsp/Group.jsp">返回管理页面</a><br><br>
-           <a href="jsp/index.jsp">返回个人主页</a>
+           	申请已发送，请等待申请结果
     </p>
   </body>
 </html>

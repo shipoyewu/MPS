@@ -21,8 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" charset="UTF-8" src="js/modify.js"></script>
 	
  <%
-          Long userid=1l;
-          //long userid = (Long) session.getAttribute("userid");
+          long userid = Long.parseLong((String) session.getAttribute("userid"));
           ArrayList<Group>  groups=new GroupDaoImp().findAllGroup(userid);
           User  u=new UserDaoImp().getUser(userid);
           

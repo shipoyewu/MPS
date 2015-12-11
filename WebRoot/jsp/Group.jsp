@@ -27,11 +27,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   
   <div class="content_resize">
-     <form action="CreateGroup" method="post" onSubmit="return checkCreate();">
+     <form action="CreateGroup" method="post" onsubmit="return checkCreate();">
      <% 
           
-          Long userid=1l;
-          //long userid = (Long) session.getAttribute("userid");
+          long userid = Long.parseLong((String)session.getAttribute("userid"));
           User  u=new UserDaoImp().getUser(userid);
           String username=u.getUsername();
           ArrayList<Long>  groupids=new UserDaoImp().findGroup(userid);
@@ -42,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <ul style="margin-left: 10px;">
 	      <li>
 	        <b>群组名：</b>
-	        <input type="text" name="groupname" id="groupname" style="width: 150px;" onsubmit="return showCreate();">
+	        <input type="text" name="groupname" id="groupname" style="width: 150px;">
 	      </li>
 	      <li>
 	         <b>创建者id：</b>
@@ -60,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                            否<input type="radio" name="isneedagree" value="false" />
 	      </li> 
 	      <li>
-	      	<input type="submit" name="submit" value ="创建" class="button"  onclick="return showCreate();">
+	      	<input type="submit" name="submit" value ="创建" class="button" >
 	      </li>
       </ul>
       </div>
@@ -130,8 +129,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>           
     </form>
     
-    
-  <form action="ExpandGroup" method="post" name="expandgroup" onSubmit="return validate_form1(expandgroup)" >
+  <form action="ExpandGroup" method="post" name="expandgroup" onSubmit="return validate_form1(expandgroup)" target="expand" >
       <div class="menuDiv">
       <h3>扩充群组</h3>
       <ul style="margin-left: 10px;">
@@ -156,8 +154,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               </select>
            </li>
            <li>
-              <b>输入加入我的群组的群组id：</b>
-              <input type="text" name="groupdownid" id="groupdownid" style="width: 120px; ">
+		        <div style="padding-top: 20px;">
+		        <b>要添加的群组ID：</b>
+		        <input type="text" name="groupdownid" 
+					style="width: 300px; height: 24px; font-size: 14pt;"
+					placeholder="请输入群组名" id="search" onkeyup="autoComplete.start(event)" autocomplete="off">
+				<!-- <button type="submit" name="submit" id="button"
+					style="width: 70px; height: 26px; background-color: #5858FF;">搜索</button> -->
+					<iframe name="expand" class="iframestyle" scrolling="no"> </iframe>
+				</div>	
+				<div class="auto_hidden" id="auto" align="center">
+					<!--自动完成 DIV-->
+				</div>
+			
+				<%
+					String groupInfo[]=new GroupDaoImp().searchAll();
+				%>
+				<script>
+					var codes=new Array();
+					<%if (groupInfo!= null) {
+							for (int i = 0; i < groupInfo.length; i++) {%>
+					    codes[<%=i%>]='<%=groupInfo[i]%>';//将java数组转成js数组
+					
+				<%}
+						}%>
+					var autoComplete = new AutoComplete('search', 'auto', codes);
+				</script>      
+        
            </li>
          
            <li>
@@ -176,8 +199,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    
    
    
-    
-    <form action="ApplyToGroup" method="post" name="applygroup"  onsubmit="return validate_form(applygroup)">
+   
+
+    <form action="ApplyToGroup" method="post" name="applygroup"  onsubmit="return validate_form(applygroup)" target="apply">
      <div class="menuDiv">
      <h3><b>加入群组</b></h3>
      <ul style="margin-left: 10px;">
@@ -205,8 +229,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            
            
            <li>
-              <b>输入申请加入到的群组ID：</b>
-              <input type="text" name="groupupid" id="groupupid" style="width: 120px; ">
+              <div style="padding-top: 20px;">
+        
+      		  <b>申请加入到的群组ID：</b>
+        	  <input type="text" name="groupupid" 
+				style="width: 300px; height: 24px; font-size: 14pt;"
+				placeholder="请输入群组名" id="isearch" onkeyup="autoCo.start(event)" autocomplete="off">
+				<!-- <button type="submit" name="submit" id="button"
+					style="width: 70px; height: 26px; background-color: #5858FF;">搜索</button> -->
+				  <iframe name="apply" class="iframestyle" scrolling="no"> </iframe>
+				</div>	
+				
+			<div class="auto_hidden" id="autoi" align="center">
+		<!--自动完成 DIV-->
+			</div>
+           	<script>
+					
+					var autoCo = new AutoComplete('isearch', 'autoi', codes);
+				</script>  
            </li>
           
               
